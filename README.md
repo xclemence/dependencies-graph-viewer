@@ -6,18 +6,18 @@ The aims of this software is to provide simple view to explore assemblies depend
 
 This project helps me to experiment some technical ideas (logon screen without change Angular route for example).
 
-###Features awailables
+### Features awailables
 - View Software assemblies (with graph)
 - View Assembly dependencies (with graph)
 - Modularity
 - Busy indocator
 - Logon components and services
 
-###Main externals packages
+### Main externals packages
 - Angular
 - Angular CLI
 - D3
 
-###How to use
+### How to use
 - Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 - Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
