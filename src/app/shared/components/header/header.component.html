@@ -1,0 +1,12 @@
+<div class="navbar-header">
+  <h3 class="header-title">Dependencies Graph Viewer</h3>
+  <div class="right-panel">
+    <nav mat-tab-nav-bar color="accent" backgroundColor="primary">
+      <a mat-tab-link class="header-link" *ngFor="let link of links" [routerLink]="link.path" routerLinkActive #rla="routerLinkActive"
+        [active]="rla.isActive">
+        {{link.label}}
+      </a>
+    </nav>
+    <app-user-header class="flex-panel"></app-user-header>
+  </div>
+</div>

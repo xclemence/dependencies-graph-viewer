@@ -1,0 +1,38 @@
+.statistics-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    margin: 0px 20px;
+}
+
+.statistics-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.statistics-card {
+    margin: 20px;
+    min-width: 150px;
+}
+
+.dot {
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    margin: 0px 10px 0px 0px;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+}
+
+.header-text {
+    margin: 0px;
+}
+
+.statistic-value {
+    margin-top: 20px;
+}

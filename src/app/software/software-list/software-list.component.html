@@ -1,0 +1,12 @@
+<mat-card class="software-card">
+  <mat-card-header>
+    <mat-card-title class="software-header"><span>Software Names</span></mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="software-content">
+    <mat-selection-list #selectionList (selectionChange)="selectionChanged()" [(ngModel)]="selectedSoftwares" class="scroll-content">
+      <mat-list-option *ngFor="let soft of softwareNames" #mlo [ngClass]="{'selected-software': mlo.selected}" [value]="soft">
+        {{soft.name}} (v{{soft.version}})
+      </mat-list-option>
+    </mat-selection-list>
+  </mat-card-content>
+</mat-card>

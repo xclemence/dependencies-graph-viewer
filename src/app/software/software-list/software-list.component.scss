@@ -1,0 +1,36 @@
+@import '~styles/app-theme';
+
+::ng-deep mat-pseudo-checkbox {
+    visibility: hidden !important;
+}
+
+:host {
+    display: flex;
+}
+
+.software-card {
+    padding: 0px;
+    flex: 1;
+    display: flex; 
+    flex-direction: column;
+    border-radius: 0px;
+}
+
+.software-content {
+    overflow: auto;
+    display: flex;
+    flex: 1;
+}
+
+.software-header {
+    margin: 10px;
+}
+
+::ng-deep mat-list-option.selected-software > div:first-child {
+    background-color: mat-color($accent, 700);
+}
+
+.scroll-content {
+    height: 1px; //only for firefox (good position of scroll bar)
+    flex: 1;
+}

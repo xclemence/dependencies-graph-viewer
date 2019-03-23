@@ -1,0 +1,50 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~styles/app-theme';
+
+body,
+html {
+  font-family: "Roboto", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  margin: 0;
+  height: 100%;
+
+  $foreground : map-get($app-theme, foreground);
+  color: mat-color($foreground, text);
+}
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+.collapse {
+  visibility: collapse;
+}
+
+.overlap-container {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.overlap-item {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.flex-panel {
+  display: flex;
+}

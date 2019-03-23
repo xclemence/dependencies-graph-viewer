@@ -1,0 +1,10 @@
+@import '~styles/app-theme';
+
+:host {
+    flex-direction: column;
+    background-color: mat-color($primary, 300);
+}
+
+.assembly-details {
+    flex-direction: column;
+}

@@ -1,0 +1,22 @@
+@import '~styles/app-theme';
+
+.dialog-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.dialog-title {
+  text-align: center;
+}
+
+.logon-content {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+}
+
+.error-message {
+  overflow-wrap: normal;
+  margin: 0 0 10px 0;
+  color: mat-color($warn, 500);
+}

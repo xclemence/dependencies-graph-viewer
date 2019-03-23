@@ -1,0 +1,47 @@
+<div class="assemblies-container">
+    <table mat-table [dataSource]="dataSource" matSort class="assemblies-table">
+  
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="version">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Version </th>
+        <td mat-cell *matCellDef="let element"> {{element.version}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="isNative">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Is Native </th>
+        <td mat-cell *matCellDef="let element"> {{element.isNative}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="isSystem">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Is System </th>
+        <td mat-cell *matCellDef="let element"> {{element.isSystem}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="isSoftware">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Is Software </th>
+        <td mat-cell *matCellDef="let element"> {{element.isSoftware}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="depth">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Depth Max </th>
+        <td mat-cell *matCellDef="let element"> {{element.depthMax}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="links">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Assembly Link Count </th>
+          <td mat-cell *matCellDef="let element"> {{element.assemblyLinkCount}} </td>
+        </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openDetails(row)"></tr>
+    </table>
+  </div>
