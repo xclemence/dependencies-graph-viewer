@@ -1,7 +1,8 @@
-import { BehaviorSubject, Observable } from 'rxjs';
-import { User } from '@app/Core/models/user';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
+
+import { User } from './../../models/user';
 
 @Injectable({
   providedIn: 'root'
