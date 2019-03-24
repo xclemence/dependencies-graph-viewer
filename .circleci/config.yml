@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           name: Current branch
-          command: echo ${CIRCLE_BRANCH}
+          command: echo ${CIRCLE_BRANCH} 
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
@@ -18,6 +18,9 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
+      - run:
+          name: Angular cli verion
+          command: yarn ng version
       - run:
           name: Linting
           command: yarn ng lint
