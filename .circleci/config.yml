@@ -1,27 +1,26 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/angular-cli-circleci
+    working_directory: ~/
     docker:
       - image: circleci/node:11.12-browsers
     steps:
       - checkout
+      - run:
+          name: Current branch
+          command: echo ${CIRCLE_BRANCH}
       - restore_cache:
-          key: dependency-cache-{{ checksum "yarn.lock" }}
+          key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: install-dependencies
           command: yarn install
       - save_cache:
-          key: dependency-cache-{{ checksum "yarn.lock" }}
+          key: dependency-cache-{{ checksum "package.json" }}
           paths:
-            - ~/.cache/yarn
             - ./node_modules
       - run:
-          name: angular-build
-          command: yarn ng -- build --prod --aot --no-progress
+          name: Linting
+          command: yarn ng lint
       - run:
-          name: angular-lint
-          command: yarn lint -- --formatters-dir ./tslint-formatters --format junit -o tslint.xml
-      - store_artifacts:
-          path: tslint.xml
-          prefix: lint
+          name: angular-build
+          command: yarn ng build --prod --aot --no-progress
