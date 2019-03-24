@@ -1,6 +1,6 @@
-import { BehaviorSubject, Observable } from 'rxjs';
-import { User } from '@app/Core/models/user';
 import { Injectable } from '@angular/core';
+import { User } from '@app/core/models';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
 @Injectable({
