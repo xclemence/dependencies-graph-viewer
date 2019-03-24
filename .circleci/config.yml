@@ -26,4 +26,4 @@ jobs:
           command: yarn ng lint
       - run:
           name: angular-build
-          command: yarn ng build --prod --aot --no-progress
+          command: yarn ng build --prod --aot --verbose=true
