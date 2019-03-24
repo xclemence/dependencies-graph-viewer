@@ -6,11 +6,11 @@
 [![dependencies Status](https://david-dm.org/iceman63/Dependencies.Graph.View/status.svg)](https://david-dm.org/iceman63/Dependencies.Graph.View)
 [![devDependencies Status](https://david-dm.org/iceman63/Dependencies.Graph.View/dev-status.svg)](https://david-dm.org/iceman63/Dependencies.Graph.View?type=dev)
 
-The aims of this software is to provide simple view to explore assemblies dependencies. This version is a pre-alpha version with no link to back end (only mock data are used).
+This software provide a view to explore assemblies dependencies. This version is a pre-alpha version with no link to back end (only mock data are used).
 
 This project helps me to experiment some technical ideas (logon screen without change Angular route for example).
 
-### Features awailables
+### Features available
 - View Software assemblies (with graph)
 - View Assembly dependencies (with graph)
 - Modularity
