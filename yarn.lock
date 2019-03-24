@@ -7067,11 +7067,6 @@ ts-node@~8.0.2:
     source-map-support "^0.5.6"
     yn "^3.0.0"
 
-ts-transform-paths@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/ts-transform-paths/-/ts-transform-paths-1.2.0.tgz#e9493dcacc16a1a01be7e7755a70531a4e2ffb3d"
-  integrity sha512-CGxQWctP/uRZ1KRPMl8wrA8jI+mO35DJ4UyAedDGGsONMjk/MQIEcsWDn62a+Zy7/TrBsulJVqfEt16J71CB9Q==
-
 tslib@^1.7.1, tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
