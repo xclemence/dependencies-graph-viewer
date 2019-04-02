@@ -1,6 +1,12 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<app-header class="mat-elevation-z6"></app-header>
+<div class="mat-elevation-z6 header">
+  <h3 class="header-title">Dependencies Graph Viewer</h3>
+  <div class="right-panel">
+    <app-header-links [allLinks]="links"></app-header-links>
+    <app-header-user class="flex-panel"></app-header-user>
+  </div>
+</div>
+
 <div class="main-view mat-typography">
-    <router-outlet class="absolute" ></router-outlet>
-    <app-main-busy></app-main-busy>
+  <router-outlet class="absolute" appSecureOutlet></router-outlet>
+  <app-main-busy></app-main-busy>
 </div>

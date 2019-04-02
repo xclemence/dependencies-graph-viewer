@@ -1,15 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '@app/core/models';
-import { AuthenticationService, UserService } from '@app/core/services/tech';
+import { AuthenticationService, UserSecurityService } from '@app/security/services';
 import { Subscription } from 'rxjs';
 
+
 @Component({
-  selector: 'app-user-header',
-  templateUrl: './user-header.component.html',
-  styleUrls: ['./user-header.component.scss']
+  selector: 'app-header-user',
+  templateUrl: './header-user.component.html',
+  styleUrls: ['./header-user.component.scss']
 })
-export class UserHeaderComponent implements OnInit, OnDestroy {
+export class HeaderUserComponent implements OnInit, OnDestroy {
 
   private _user: User = null;
   private _userSubscription: Subscription;
@@ -22,7 +23,7 @@ export class UserHeaderComponent implements OnInit, OnDestroy {
     return this._user.name;
   }
 
-  constructor(private _router: Router, private _userService: UserService, private _authSevice: AuthenticationService) { }
+  constructor(private _router: Router, private _userService: UserSecurityService, private _authSevice: AuthenticationService) { }
 
   ngOnInit() {
     this._userSubscription = this._userService.observe().subscribe(x => this._user = x);

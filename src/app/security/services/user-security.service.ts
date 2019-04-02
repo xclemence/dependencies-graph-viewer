@@ -6,10 +6,10 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class UserSecurityService {
 
   private _userChanged: BehaviorSubject<User>;
-
+  
   set user(value: User) {
     if (this._userChanged.value === value) {
       return;
@@ -28,6 +28,10 @@ export class UserService {
 
   observe(): Observable<User> {
     return this._userChanged.asObservable();
+  }
+
+  hasUser(): boolean {
+    return this.user !== null;
   }
 
   observeRight(right: string): Observable<boolean> {

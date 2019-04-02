@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
-import { LogonComponent } from '../components/logon/logon.component';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { UrlService } from '@app/core/services/tech';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Observable, iif } from 'rxjs';
+
+import { LogonComponent } from '../components/logon/logon.component';
 
 @Injectable({
   providedIn: 'root'

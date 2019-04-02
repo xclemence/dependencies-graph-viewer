@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+import { ConnectedGuard, LogonGuard } from '@app/security/guards';
 import { PageNotFoundComponent } from '@app/shared/components';
-import { LogonGuard } from './user-management/guards/logon.guard';
 
 const routes: Routes = [
   {
@@ -10,7 +10,13 @@ const routes: Routes = [
   },
   {
     path: 'assembly',
-    loadChildren: './assembly/assembly.module#AssemblyModule'
+    loadChildren: './assembly/assembly.module#AssemblyModule',
+    canActivate: [ ConnectedGuard ]
+  },
+  {
+    path: 'test',
+    loadChildren: './test/test.module#TestModule',
+    // canActivate: [ ConnectedGuard ]
   },
   {
     path: '',

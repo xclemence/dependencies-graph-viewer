@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
+import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { Guid } from 'guid-typescript';
+
 import { BusyService } from './busy.service';
 import { UrlService } from './url.service';
 
@@ -8,14 +10,14 @@ import { UrlService } from './url.service';
 })
 export class RouterEventService {
 
-  private busyId: any;
+  private _busyId: Guid;
   private _originUrl: string;
 
   private map = new Map<string, () => void>([
     [NavigationStart.name, () => this.proceedNavigationStart()],
-    [NavigationEnd.name, () => this._busyService.unbusy(this.busyId)],
+    [NavigationEnd.name, () => this._busyService.unbusy(this._busyId)],
     [NavigationCancel.name, () => this.proceedNavigationCancel()],
-    [NavigationError.name, () => this._busyService.unbusy(this.busyId)],
+    [NavigationError.name, () => this._busyService.unbusy(this._busyId)],
   ]);
 
   constructor(private _router: Router, private _busyService: BusyService, private _urlService: UrlService) {
@@ -30,11 +32,11 @@ export class RouterEventService {
 
   private proceedNavigationStart() {
     this._originUrl = this._urlService.getCurrentPath();
-    this.busyId = this._busyService.busy();
+    this._busyId = this._busyService.busy();
   }
 
   private proceedNavigationCancel() {
-    this._busyService.unbusy(this.busyId);
+    this._busyService.unbusy(this._busyId);
     this._urlService.moveSegment(this._originUrl);
   }
 }

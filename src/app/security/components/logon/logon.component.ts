@@ -3,7 +3,7 @@ import '@app/core/extensions/form-group-touch';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
-import { AuthenticationService } from '@app/core/services/tech';
+import { AuthenticationService } from '@app/security/services';
 
 @Component({
   selector: 'app-logon',
@@ -39,7 +39,7 @@ export class LogonComponent {
                           this.errorDisplayed = !x;
 
                           if (x) {
-                            this.dialogRef.close();
+                            this.dialogRef.close(true);
                           }
                        });
   }

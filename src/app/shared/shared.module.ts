@@ -1,23 +1,23 @@
-import { ForceGraphComponent } from './components/force-graph/force-graph.component';
-import { HeaderComponent } from './components/header/header.component';
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AllMaterialModuleModule } from './all-material-module.module';
-import { RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { RouterModule } from '@angular/router';
+
+import { AllMaterialModuleModule } from './all-material-module.module';
+import { HeaderLinksComponent, HeaderUserComponent } from './components';
 import { BusyComponent } from './components/busy/busy.component';
 import { MainBusyComponent } from './components/busy/main-busy.component';
-import { UserHeaderComponent } from './components/header/user-header/user-header.component';
+import { ForceGraphComponent } from './components/force-graph/force-graph.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
-    HeaderComponent,
     ForceGraphComponent,
     PageNotFoundComponent,
     BusyComponent,
     MainBusyComponent,
-    UserHeaderComponent
+    HeaderUserComponent,
+    HeaderLinksComponent
   ],
   imports: [
     CommonModule,
@@ -26,11 +26,12 @@ import { UserHeaderComponent } from './components/header/user-header/user-header
     FormsModule
   ],
   exports: [
-    HeaderComponent,
     ForceGraphComponent,
     PageNotFoundComponent,
     BusyComponent,
-    MainBusyComponent
+    MainBusyComponent,
+    HeaderLinksComponent,
+    HeaderUserComponent
   ]
 })
 export class SharedModule { }
