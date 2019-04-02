@@ -9,7 +9,7 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
 export class UserSecurityService {
 
   private _userChanged: BehaviorSubject<User>;
-  
+
   set user(value: User) {
     if (this._userChanged.value === value) {
       return;
