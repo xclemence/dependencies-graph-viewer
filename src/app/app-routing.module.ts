@@ -6,16 +6,16 @@ import { PageNotFoundComponent } from '@app/shared/components';
 const routes: Routes = [
   {
     path: 'software',
-    loadChildren: './software/software.module#SoftwareModule'
+    loadChildren: () => import('./software/software.module').then(m => m.SoftwareModule)
   },
   {
     path: 'assembly',
-    loadChildren: './assembly/assembly.module#AssemblyModule',
+    loadChildren: () => import('./assembly/assembly.module').then(m => m.AssemblyModule),
     canActivate: [ ConnectedGuard ]
   },
   {
     path: 'test',
-    loadChildren: './test/test.module#TestModule',
+    loadChildren: () => import('./test/test.module').then(m => m.TestModule),
     // canActivate: [ ConnectedGuard ]
   },
   {

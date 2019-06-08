@@ -16,7 +16,7 @@ import '@app/core/extensions/observable-busy';
 })
 export class SoftwareListComponent implements OnInit {
 
-  @ViewChild('selectionList') selectionList: MatSelectionList;
+  @ViewChild('selectionList', { static: true }) selectionList: MatSelectionList;
   @Output() selectionChange: EventEmitter<AssemblyBase> = new EventEmitter();
   @Input() selectedId: string;
 

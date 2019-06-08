@@ -32,7 +32,7 @@ export class ForceGraphComponent implements OnInit, AfterViewChecked {
   private _height: number;
   private _width: number;
 
-  @ViewChild('container') private container: ElementRef;
+  @ViewChild('container', { static: true }) private container: ElementRef;
 
   @Input() public disableOpacity = 0.3;
   @Input() public markerSize = 12;

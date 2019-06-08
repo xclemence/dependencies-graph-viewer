@@ -29,7 +29,7 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
   private _openDialogSubscription: Subscription;
   private _closeDialogSubscription: Subscription;
 
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   private _idParameter: string;
 
