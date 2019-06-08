@@ -1,29 +1,34 @@
 import { Injectable } from '@angular/core';
 import { User } from '@app/core/models/user';
+import { LoggerService } from '@app/core/services/tech';
 import { SecurityConfigurationService } from '@app/security/services/security-configuration.service';
-
-import { LoggerService } from './../../core/services/tech/logger.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FeatureRightsService {
 
-  private _currentComponentName: string;
-
-  set currentComponent(component: any) {
-    this._currentComponentName = component.constructor.name;
-    this._loggerService.log(this._currentComponentName);
-  }
+  private _location = new Map<string, string>();
 
   constructor(private _configurationService: SecurityConfigurationService, private _loggerService: LoggerService) { }
 
-  checkCurrentComponentRight(user: User): boolean {
+  addLocation(key: string, component: any) {
+    this._location.set(key, component.constructor.name);
+  }
+
+  removeLocation(key: string) {
+    this._location.delete(key);
+  }
+
+  validateCurrentLocation(user: User): boolean {
+    return Array.from(this._location.values()).every(x => this.validateComponentRight(x, user));
+  }
+
+  validateComponentRight(component: string, user: User): boolean {
     const config = this._configurationService.FeatureRights;
 
-    const componentFeature = config.find(x => x.feature === this._currentComponentName);
+    const componentFeature = config.find(x => x.feature === component);
 
-    this._loggerService.log(`componentFeature ${JSON.stringify(componentFeature)}`);
     if (!componentFeature) {
       return true;
     }

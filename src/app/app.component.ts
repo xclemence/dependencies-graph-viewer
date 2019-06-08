@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { RouterEventService } from '@app/core/services/tech';
 import { HeaderLink } from '@app/shared/components';
+
+import { TestModuleRightsKey } from './app-security.module';
+import { SecurityConfigurationService } from './security/services/security-configuration.service';
 
 @Component({
   selector: 'app-root',
@@ -13,10 +15,11 @@ export class AppComponent {
   links: Array<HeaderLink> = [
     { path : 'software', label: 'Software', roles: [ ] },
     { path : 'assembly', label: 'Assembly', roles: [ ] },
-    // { path : 'test', label: 'Test', roles: [ 'admin' ] }
-    { path : 'test', label: 'Test', roles: [ ] }
   ];
 
+  constructor(private securityConfigurationService: SecurityConfigurationService) {
+    const testModuleRights = securityConfigurationService.getRights(TestModuleRightsKey);
 
-  constructor(private router: RouterEventService) { }
+    this.links.push({ path: 'test',label: 'Test', roles: testModuleRights.rights})
+  }
 }

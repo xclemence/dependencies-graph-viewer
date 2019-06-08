@@ -1,28 +1,33 @@
-import { BusyService } from '@app/core/services/tech/busy.service';
+import '@app/core/extensions/observable-busy';
+
+import { SelectionModel } from '@angular/cdk/collections';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatDialog, MatSort, MatTableDataSource } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
+import { AssemblyStat } from '@app/core/models/assembly';
 import { AssemblyService } from '@app/core/services/api';
 import { UrlService } from '@app/core/services/tech';
-import { AssemblyDetailsComponent } from './../assembly-details/assembly-details.component';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { SelectionModel } from '@angular/cdk/collections';
-import { MatDialog, MatTableDataSource, MatSort } from '@angular/material';
-import { AssemblyStat } from '@app/core/models/assembly';
+import { BusyService } from '@app/core/services/tech/busy.service';
+import { Observable, Subscription } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
-import '@app/core/extensions/observable-busy';
-import { Observable } from 'rxjs';
+import { AssemblyDetailsComponent } from './../assembly-details/assembly-details.component';
 
 @Component({
   selector: 'app-assembly-list',
   templateUrl: './assembly-list.component.html',
   styleUrls: ['./assembly-list.component.scss']
 })
-export class AssemblyListComponent implements OnInit {
+export class AssemblyListComponent implements OnInit, OnDestroy {
 
   displayedColumns = ['id', 'name', 'version', 'isNative', 'isSystem', 'isSoftware', 'depth', 'links'];
+
   dataSource: MatTableDataSource<AssemblyStat>;
   selection = new SelectionModel<AssemblyStat>(false, []);
   assemblyObservable: Observable<AssemblyStat[]>;
+
+  private _openDialogSubscription: Subscription;
+  private _closeDialogSubscription: Subscription;
 
   @ViewChild(MatSort) sort: MatSort;
 
@@ -34,8 +39,11 @@ export class AssemblyListComponent implements OnInit {
               private _route: ActivatedRoute,
               private _busyService: BusyService) {
 
-    this.dialog.afterOpened.subscribe(x => this._urlService.replaceSegment(1, x.componentInstance.assemblyId.toString(), this._route));
-    this.dialog.afterAllClosed.subscribe(x => this._urlService.removeAt(1, this._route));
+    this._openDialogSubscription = this.dialog.afterOpened.subscribe(x => {
+      this._urlService.replaceSegment(1, x.componentInstance.assemblyId.toString(), this._route);
+    });
+
+    this._closeDialogSubscription = this.dialog.afterAllClosed.subscribe(x => this._urlService.removeAt(1, this._route));
   }
 
   ngOnInit() {
@@ -46,6 +54,11 @@ export class AssemblyListComponent implements OnInit {
     );
 
     this.managedAssemblySubscription();
+  }
+
+  ngOnDestroy(): void {
+    this._closeDialogSubscription.unsubscribe();
+    this._openDialogSubscription.unsubscribe();
   }
 
   managedAssemblySubscription() {

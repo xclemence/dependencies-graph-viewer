@@ -34,7 +34,7 @@ export class AuthenticationService {
   }
 
   private ensureCurrentLocation() {
-    if (!this._featureRigthsService.checkCurrentComponentRight(null)) {
+    if (!this._featureRigthsService.validateCurrentLocation(null)) {
       this._router.navigateByUrl('/');
     }
   }

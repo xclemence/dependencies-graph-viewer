@@ -5,8 +5,8 @@ import { CoreModule } from '@app/core';
 import { SharedModule } from '@app/shared';
 
 import { AppRoutingModule } from './app-routing.module';
+import { AppSecurityModule } from './app-security.module';
 import { AppComponent } from './app.component';
-import { SecurityModule } from './security/security.module';
 
 
 @NgModule({
@@ -19,7 +19,7 @@ import { SecurityModule } from './security/security.module';
     AppRoutingModule,
     CoreModule,
     SharedModule,
-    SecurityModule.forRoot({serverUrl: 'toto'}, [ {feature: 'test', rights: [ 'mega'] }])
+    AppSecurityModule
   ],
   bootstrap: [AppComponent]
 })

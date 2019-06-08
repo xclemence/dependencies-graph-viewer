@@ -21,7 +21,10 @@ export class LogonGuard implements CanActivate {
 
       const dialogRef = this.dialog.open(LogonComponent, {});
 
-      dialogRef.afterOpened().subscribe(() => this._urlService.moveSegment('/logon'));
+      const openSubscription = dialogRef.afterOpened().subscribe(() => {
+        openSubscription.unsubscribe();
+        this._urlService.moveSegment('/logon');
+      });
 
       return dialogRef.afterClosed().pipe(
         map(x => shouldReturnToHome ? this._router.parseUrl('/') : false)

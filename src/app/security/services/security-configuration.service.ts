@@ -30,4 +30,8 @@ export class SecurityConfigurationService {
   getServer() {
     return this._moduleConfig.serverUrl;
   }
+
+  getRights(configKey: string): FeatureRightsConfig  {
+    return this._featureConfig.filter(x => x.feature === configKey)[0];
+  }
 }

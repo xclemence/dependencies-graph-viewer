@@ -1,5 +1,6 @@
 import { Directive, OnDestroy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Guid } from 'guid-typescript';
 import { Subscription } from 'rxjs';
 
 import { FeatureRightsService } from './../services/feature-rights.service';
@@ -9,15 +10,23 @@ import { FeatureRightsService } from './../services/feature-rights.service';
 })
 export class SecureOutletDirective implements OnDestroy {
 
-  _subscription: Subscription;
+  private _secureOutletId = Guid.create();
+
+  private _activateSubscription: Subscription;
+  private _deactivateSubscription: Subscription;
 
   constructor(featureRightservice: FeatureRightsService, routerOutlet: RouterOutlet) {
-    this._subscription = routerOutlet.activateEvents.subscribe((x: any) => {
-      featureRightservice.currentComponent = x;
+    this._activateSubscription = routerOutlet.activateEvents.subscribe((x: any) => {
+      featureRightservice.addLocation(this._secureOutletId.toString(), x);
+    });
+
+    this._deactivateSubscription = routerOutlet.deactivateEvents.subscribe((x: any) => {
+      featureRightservice.removeLocation(this._secureOutletId.toString());
     });
   }
 
   ngOnDestroy(): void {
-    this._subscription.unsubscribe();
+    this._activateSubscription.unsubscribe();
+    this._deactivateSubscription.unsubscribe();
   }
 }
