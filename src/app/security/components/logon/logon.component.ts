@@ -2,7 +2,7 @@ import '@app/core/extensions/form-group-touch';
 
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from '@app/security/services';
 
 @Component({

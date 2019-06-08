@@ -1,12 +1,14 @@
 import { FormControl, FormGroup } from '@angular/forms';
 
-declare module '@angular/forms/src/model' {
+declare module '@angular/forms' {
     interface FormGroup {
         touchAllControls(): void;
     }
 }
 
 function touchAllControls(formGroup: FormGroup) {
+    console.log('coucou !!!!!!!!!!!!!!!!!!!!!');
+
     formGroup.markAsTouched({ onlySelf: true });
 
     Object.keys(formGroup.controls).forEach(field => {

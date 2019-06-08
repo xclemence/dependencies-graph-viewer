@@ -2,7 +2,7 @@ import { BusyService } from '@app/core/services/tech/busy.service';
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { SoftwareService } from '@app/core/services/api';
 import { SoftwareMockService } from '@app/core/services/api/software-mock.service';
-import { MatSelectionList } from '@angular/material';
+import { MatSelectionList } from '@angular/material/list';
 import { AssemblyBase } from '@app/core/models/assembly';
 import '@app/core/extensions/observable-busy';
 

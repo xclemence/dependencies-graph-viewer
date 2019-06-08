@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AssemblyService } from '@app/core/services/api';
 import { Graph, Node, Link } from '@app/shared/models';
 import { Assembly } from '@app/core/models/assembly';
