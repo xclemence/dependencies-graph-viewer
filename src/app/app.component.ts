@@ -20,6 +20,6 @@ export class AppComponent {
   constructor(private securityConfigurationService: SecurityConfigurationService) {
     const testModuleRights = securityConfigurationService.getRights(TestModuleRightsKey);
 
-    this.links.push({ path: 'test',label: 'Test', roles: testModuleRights.rights})
+    this.links.push({ path: 'test', label: 'Test', roles: testModuleRights.rights});
   }
 }
