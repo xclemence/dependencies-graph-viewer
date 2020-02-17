@@ -1,7 +1,7 @@
 # Dependencies Graph View (Angular)
 
 [![License](https://img.shields.io/npm/l/@angular/cli.svg)](/LICENSE) 
-[![CircleCI](https://circleci.com/gh/iceman63/Dependencies.Graph.View.svg?style=svg)](https://circleci.com/gh/iceman63/Dependencies.Graph.View)
+[![CircleCI](https://circleci.com/gh/xclemence/Dependencies.Graph.View.svg?style=svg)](https://circleci.com/gh/xclemence/Dependencies.Graph.View)
 
 [![dependencies Status](https://david-dm.org/iceman63/Dependencies.Graph.View/status.svg)](https://david-dm.org/iceman63/Dependencies.Graph.View)
 [![devDependencies Status](https://david-dm.org/iceman63/Dependencies.Graph.View/dev-status.svg)](https://david-dm.org/iceman63/Dependencies.Graph.View?type=dev)
