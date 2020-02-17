@@ -1,9 +1,9 @@
-import { AssemblyBase, Assembly } from '@app/core/models/assembly';
-import { Component, OnInit, Input, AfterViewChecked, OnDestroy } from '@angular/core';
-import { Graph, Node, Link } from '@app/shared/models';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Assembly, AssemblyBase } from '@app/core/models/assembly';
 import { SoftwareService } from '@app/core/services/api';
 import { SoftwareMockService } from '@app/core/services/api/software-mock.service';
-import { Observable, BehaviorSubject, Subscription, iif, of, Subject } from 'rxjs';
+import { Graph, Link, Node } from '@app/shared/models';
+import { iif, Observable, of, Subject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 
 @Component({
