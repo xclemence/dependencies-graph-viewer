@@ -5,7 +5,7 @@ dictionaries:
 # Any files/folders we should ignore?
 excluded_files:
   - ".typo-ci.yml"
-  - "**/.devcontainer/**/*"
+  - ".devcontainer/**/*"
   - ".gitignore"
 
 # Any typos we should ignore?
