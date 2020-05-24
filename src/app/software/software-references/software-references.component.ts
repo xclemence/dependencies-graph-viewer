@@ -1,78 +1,43 @@
+import { Store, select } from '@ngrx/store';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Assembly, AssemblyBase } from '@app/core/models/assembly';
 import { SoftwareService } from '@app/core/services/api';
-import { SoftwareMockService } from '@app/core/services/api/software-mock.service';
 import { Graph, Link, Node } from '@app/shared/models';
 import { iif, Observable, of, Subject, Subscription } from 'rxjs';
-import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
+import { distinctUntilChanged, switchMap, tap, map } from 'rxjs/operators';
+import { SoftwareState } from '../store/software.reducer';
+import { softwareStateSelector } from '../store/software.selectors';
 
 @Component({
   selector: 'app-software-references',
   templateUrl: './software-references.component.html',
-  styleUrls: ['./software-references.component.scss'],
-  providers: [
-    {provide: SoftwareService, useClass: SoftwareMockService}
-  ]
+  styleUrls: ['./software-references.component.scss']
 })
-export class SoftwareReferencesComponent implements OnInit, OnDestroy {
+export class SoftwareReferencesComponent implements OnInit {
   private _softwareName: AssemblyBase;
 
-  graph: Graph;
-  assembly: Assembly;
+  graph: Observable<Graph>;
   isBusy: boolean;
 
-  private _assemblyChanged: Subject<AssemblyBase>;
-  private _assemblyObservable: Observable<AssemblyBase>;
-  private _subscription: Subscription;
-
-
-  @Input() set software(value: AssemblyBase) {
-
-    if (value === this._softwareName) {
-      return;
-    }
-
-    this._softwareName = value;
-    this._assemblyChanged.next(this._softwareName);
-  }
-
-  constructor(private softwareService: SoftwareService) {
-    this._assemblyChanged = new Subject<AssemblyBase>();
+  constructor(private store: Store<SoftwareState>) {
   }
 
   ngOnInit() {
-    this._assemblyObservable = this._assemblyChanged.pipe(
-      distinctUntilChanged()
+    this.graph = this.store.pipe(
+      select(softwareStateSelector),
+      map(x => this.generateGraphData(x.selectedAssembly)),
     );
-
-    this.startAssemblyLoading();
-  }
-
-  ngOnDestroy() {
-    this._subscription.unsubscribe();
-  }
-
-  startAssemblyLoading() {
-    this._subscription = this._assemblyObservable.pipe(
-      tap(x => {
-        this.graph = null;
-        this.assembly = null;
-      }),
-      switchMap(x => iif(() => x === undefined, of(null), this.softwareService.references(x).executeWithBusy(this)))
-    ).subscribe(x => this.generateGraphData(x),
-                x => this.startAssemblyLoading());
   }
 
   generateGraphData(assembly: Assembly): any {
 
-    if (assembly === null) {
-      return;
+    if (assembly == null) {
+      return null;
     }
 
     console.log(`strange loding ${assembly.id}`);
 
     const item = new Graph();
-    this.assembly = assembly;
     item.nodes = assembly.referencedAssemblies.map(x => new Node({
       id: x.id,
       label: `${x.name} (${x.version})`,
@@ -83,6 +48,6 @@ export class SoftwareReferencesComponent implements OnInit, OnDestroy {
 
     item.links = assembly.links.map(x => new Link({ source: x.sourceId, target: x.targetId }));
 
-    this.graph = item;
+    return item;
   }
 }

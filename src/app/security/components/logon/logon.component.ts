@@ -1,5 +1,3 @@
-import '@app/core/extensions/form-group-touch';
-
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -28,7 +26,7 @@ export class LogonComponent {
   }
 
   logon() {
-    this.logonForm.touchAllControls();
+    this.logonForm.markAllAsTouched();
 
     if (!this.logonForm.valid) {
       return;

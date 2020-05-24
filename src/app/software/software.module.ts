@@ -1,3 +1,4 @@
+import { SoftwareStoreModule } from './software-store.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -23,7 +24,8 @@ import { SoftwareComponent } from './software.component';
     SoftwareRoutingModule,
     AllMaterialModuleModule,
     FormsModule,
-    SoftwareSecurityModule
+    SoftwareSecurityModule,
+    SoftwareStoreModule
   ],
   exports: [
     SoftwareComponent

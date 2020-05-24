@@ -1,5 +1,5 @@
 <div class="statistics-container">
-  <mat-card *ngFor="let item of values" class="statistics-card">
+  <mat-card *ngFor="let item of values | async" class="statistics-card">
       <mat-card-content class="statistics-content">
         <div class="header-container">
             <span class="dot" [style.display]="statVisibility(item)" [style.background-color]="item.color"></span>

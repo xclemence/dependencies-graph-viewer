@@ -1,3 +1,4 @@
+import { Guid } from 'guid-typescript';
 import { BusyService } from '@app/core/services/tech/busy.service';
 import { Observable, of } from 'rxjs';
 import { tap, switchMap, catchError } from 'rxjs/operators';
@@ -22,7 +23,7 @@ function executeWithBusy<T>(operation: Observable<T>, busyItem: { isBusy: boolea
 }
 
 function executeWithMainBusy<T>(operation: Observable<T>, service: BusyService): Observable<T>  {
-  let busyId: any;
+  let busyId: Guid;
   return of(null).pipe(
     tap(x => busyId = service.busy()),
     switchMap(x => operation),

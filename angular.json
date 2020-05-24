@@ -141,5 +141,8 @@
       }
     }
   },
-  "defaultProject": "DependenciesGraph"
+  "defaultProject": "DependenciesGraph",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }

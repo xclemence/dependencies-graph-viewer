@@ -1,5 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AssemblyLink, Assembly } from '@app/core/models/assembly';
+import { Store, select } from '@ngrx/store';
+import { SoftwareState } from '../store/software.reducer';
+import { Observable } from 'rxjs';
+import { softwareStateSelector } from '../store/software.selectors';
+import { tap } from 'rxjs/operators';
 
 export class StatValue {
   label: string;
@@ -17,53 +22,39 @@ export class StatValue {
   styleUrls: ['./software-statistics.component.scss']
 })
 export class SoftwareStatisticsComponent implements OnInit {
-  private _software: Assembly;
 
-  values: StatValue[];
+  values: Observable<StatValue[]>;
 
-  @Input() set software(value: Assembly) {
-
-    if (value === this._software) {
-      return;
-    }
-
-    this._software = value;
-    this.updateStatistics();
-  }
-
-  constructor() { }
+  constructor(private store: Store<SoftwareState>) { }
 
   ngOnInit() {
+    this.values = this.store.pipe(
+      select(softwareStateSelector),
+      select(x => this.updateStatistics(x.selectedAssembly)),
+    );
   }
 
-  updateStatistics() {
-    if (this.values != null) {
-      this.values.splice(0, this.values.length);
+  updateStatistics(assembly: Assembly): StatValue[] {
+
+    if (assembly == null) {
+      return [];
     }
 
-    if (this._software == null) {
-      return;
-    }
-
-    this.values = <StatValue[]> [
-      { label: 'Assemblies', value: this._software.referencedAssemblies.length + 1},
-      { label: 'Native', value: this.countAssemblies(x => x.isNative), color: 'lightGreen'},
-      { label: 'Managed', value: this.countAssemblies(x => !x.isNative), color: 'lightBlue'},
-      { label: 'System', value: this.countAssemblies(x => x.isSystem)},
-      { label: 'All References', value: this._software.links.length},
-      { label: 'Direct references', value: this._software.links.filter(x => x.sourceId === this._software.id).length},
+    return <StatValue[]> [
+      { label: 'Assemblies', value: assembly.referencedAssemblies.length + 1},
+      { label: 'Native', value: this.countAssemblies(assembly, x => x.isNative), color: 'lightGreen'},
+      { label: 'Managed', value: this.countAssemblies(assembly, x => !x.isNative), color: 'lightBlue'},
+      { label: 'System', value: this.countAssemblies(assembly, x => x.isSystem)},
+      { label: 'All References', value: assembly.links.length},
+      { label: 'Direct references', value: assembly.links.filter(x => x.sourceId === assembly.id).length},
     ];
   }
 
-  countAssemblies(predicate: (x: Assembly) => boolean): number  {
-    let value = this._software.referencedAssemblies.filter(predicate).length;
-    value += predicate(this._software) ? 1 : 0;
+  countAssemblies(assembly: Assembly, predicate: (x: Assembly) => boolean): number  {
+    let value = assembly.referencedAssemblies.filter(predicate).length;
+    value += predicate(assembly) ? 1 : 0;
 
     return value;
-  }
-
-  countLinks(predicate: (x: AssemblyLink) => boolean): number  {
-    return this._software.links.filter(predicate).length;
   }
 
   statVisibility(stat: StatValue): string {
