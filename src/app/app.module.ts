@@ -8,6 +8,8 @@ import { SharedModule } from '@app/shared';
 import { AppRoutingModule } from './app-routing.module';
 import { AppSecurityModule } from './app-security.module';
 import { AppComponent } from './app.component';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
 
 @NgModule({
@@ -21,7 +23,8 @@ import { AppComponent } from './app.component';
     CoreModule,
     SharedModule,
     AppSecurityModule,
-    AppStoreModule
+    AppStoreModule,
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   bootstrap: [AppComponent]
 })

@@ -1017,6 +1017,11 @@
   resolved "https://registry.yarnpkg.com/@ngrx/schematics/-/schematics-9.1.2.tgz#6b5de7f2294f0df353888ddd48f436bf25667fd2"
   integrity sha512-oa2fSjoaYlTmBPJW45EQlaeTGIJZ5wKXQFDGUBlJQNtZf/El2CXmGyo0VWzxQ40y2GCdt4gCXeDHZWCchUFCLA==
 
+"@ngrx/store-devtools@^9.1.2":
+  version "9.1.2"
+  resolved "https://registry.yarnpkg.com/@ngrx/store-devtools/-/store-devtools-9.1.2.tgz#b10bbde90acce2ab65f3d648051239cdd261049e"
+  integrity sha512-i9gwj9FlUVrei9yMwwFx15RV0JWOI73cjbjKhZ2lUWmCF6bfZeuPYZmEs3/80L8r3R9nZWnBoX9xxQslte65iw==
+
 "@ngrx/store@^9.1.2":
   version "9.1.2"
   resolved "https://registry.yarnpkg.com/@ngrx/store/-/store-9.1.2.tgz#cc443d08d53440cafd669048a974b05456e95070"

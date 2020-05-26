@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { UrlService } from '@app/core/services/tech';
 import { Store } from '@ngrx/store';
-import { SoftwareState } from './store/software.reducer';
+import { SoftwareState } from './store/models';
 import { loadSoftwareAssemblies, loadSoftwareNames } from './store/actions';
 
 @Component({

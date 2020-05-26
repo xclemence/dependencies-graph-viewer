@@ -5,8 +5,8 @@ import { SoftwareService } from '@app/core/services/api';
 import { Graph, Link, Node } from '@app/shared/models';
 import { iif, Observable, of, Subject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap, map } from 'rxjs/operators';
-import { SoftwareState } from '../store/software.reducer';
-import { softwareStateSelector } from '../store/software.selectors';
+import { SoftwareState } from '../store/models';
+import { softwareAssembliesStateSelector } from '../store/software.selectors';
 
 @Component({
   selector: 'app-software-references',
@@ -24,8 +24,8 @@ export class SoftwareReferencesComponent implements OnInit {
 
   ngOnInit() {
     this.graph = this.store.pipe(
-      select(softwareStateSelector),
-      map(x => this.generateGraphData(x.selectedAssembly)),
+      select(softwareAssembliesStateSelector),
+      map(x => this.generateGraphData(x.software)),
     );
   }
 

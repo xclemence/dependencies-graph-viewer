@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, concatMap, switchMap } from 'rxjs/operators';
 import { EMPTY, of } from 'rxjs';
 
-import * as SoftwareActions from '../actions/software-name.actions';
+import * as SoftwareActions from '../actions';
 
 @Injectable()
 export class SoftwareNameEffects {

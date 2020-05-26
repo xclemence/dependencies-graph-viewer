@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AssemblyLink, Assembly } from '@app/core/models/assembly';
 import { Store, select } from '@ngrx/store';
-import { SoftwareState } from '../store/software.reducer';
+import { SoftwareAssembliesState, SoftwareState } from '../store/models';
 import { Observable } from 'rxjs';
-import { softwareStateSelector } from '../store/software.selectors';
-import { tap } from 'rxjs/operators';
+import { softwareStateSelector, softwareAssembliesStateSelector } from '../store/software.selectors';
+import { tap, map } from 'rxjs/operators';
 
 export class StatValue {
   label: string;
@@ -29,8 +29,8 @@ export class SoftwareStatisticsComponent implements OnInit {
 
   ngOnInit() {
     this.values = this.store.pipe(
-      select(softwareStateSelector),
-      select(x => this.updateStatistics(x.selectedAssembly)),
+      select(softwareAssembliesStateSelector),
+      map(x => this.updateStatistics(x.software)),
     );
   }
 
