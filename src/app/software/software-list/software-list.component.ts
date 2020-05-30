@@ -27,7 +27,12 @@ export class SoftwareListComponent implements OnInit {
     this.softwareNames = this.store.pipe(
       select(softwareNameStateSelector),
       map(x => x.softwareNames),
-      tap(x => this.selectedSoftwares = x.filter(s => s.id === this.selectedId)),
+      tap(x => {
+        this.selectedSoftwares = x.filter(s => s.id === this.selectedId);
+        if (this.selectedSoftwares) {
+          this.selectionChanged();
+        }
+      }),
     );
   }
 
