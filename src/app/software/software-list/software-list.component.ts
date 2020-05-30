@@ -1,14 +1,11 @@
 import { tap, map } from 'rxjs/operators';
-import { BusyService } from '@app/core/services/tech/busy.service';
-import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { AssemblyBase } from '@app/core/models/assembly';
-import '@app/core/extensions/observable-busy';
 import { Store, select } from '@ngrx/store';
 import { SoftwareState } from '../store/models';
 import { Observable } from 'rxjs';
 
 import { softwareNameStateSelector } from '../store/software.selectors';
-import { json } from 'd3';
 
 @Component({
   selector: 'app-software-list',
@@ -24,7 +21,7 @@ export class SoftwareListComponent implements OnInit {
 
   public selectedSoftwares = new Array<AssemblyBase>();
 
-  constructor(private store: Store<SoftwareState>, private busyService: BusyService) { }
+  constructor(private store: Store<SoftwareState>) { }
 
   ngOnInit() {
     this.softwareNames = this.store.pipe(

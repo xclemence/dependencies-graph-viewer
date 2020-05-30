@@ -1,17 +1,20 @@
 import { Assembly, AssemblyBase } from '@app/core/models/assembly';
-import { createAction, props } from '@ngrx/store';
+import { createAction, props, Action } from '@ngrx/store';
 
-export const loadSoftwareAssemblies = createAction(
-  '[Software Assemblies] Load Software Assemblies',
-  props<{ assemblyName: AssemblyBase }>()
-);
+export class SoftwareAssembliesActions {
 
-export const loadSoftwareAssembliesSuccess = createAction(
-  '[Software Assemblies] Load Software Assemblies Success',
-  props<{ data: Assembly }>()
-);
+  static loadSoftwareAssemblies =  createAction(
+    '[Software Assemblies] Load Software Assemblies',
+    props<{ assemblyName: AssemblyBase }>()
+  );
 
-export const loadSoftwareAssembliesFailure = createAction(
-  '[Software Assemblies] Load Software Assemblies Failure',
-  props<{ error: any }>()
-);
+  static loadSoftwareAssembliesSuccess = createAction(
+    '[Software Assemblies] Load Software Assemblies Success',
+    props<{ data: Assembly, origin: Action }>()
+  );
+
+  static loadSoftwareAssembliesFailure = createAction(
+    '[Software Assemblies] Load Software Assemblies Failure',
+    props<{ error: any, origin: Action }>()
+  );
+}

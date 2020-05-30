@@ -1,10 +1,9 @@
 import { Store, select } from '@ngrx/store';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Assembly, AssemblyBase } from '@app/core/models/assembly';
-import { SoftwareService } from '@app/core/services/api';
 import { Graph, Link, Node } from '@app/shared/models';
-import { iif, Observable, of, Subject, Subscription } from 'rxjs';
-import { distinctUntilChanged, switchMap, tap, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { SoftwareState } from '../store/models';
 import { softwareAssembliesStateSelector } from '../store/software.selectors';
 
@@ -17,7 +16,6 @@ export class SoftwareReferencesComponent implements OnInit {
   private _softwareName: AssemblyBase;
 
   graph: Observable<Graph>;
-  isBusy: boolean;
 
   constructor(private store: Store<SoftwareState>) {
   }

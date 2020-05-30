@@ -4,7 +4,6 @@ import { AssemblyService } from '@app/core/services/api';
 import { Graph, Node, Link } from '@app/shared/models';
 import { Assembly } from '@app/core/models/assembly';
 
-import '@app/core/extensions/observable-busy';
 import { Subject, Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
@@ -65,10 +64,10 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
   }
 
   startDepthLoading() {
-    this.subscription = this._depthObservable.pipe(
-      switchMap(x => this._assemblyService.references(this.assemblyId, x).executeWithBusy(this))
-    ).subscribe(x => this.generateGraphData(x),
-                x => this.startDepthLoading());
+    // this.subscription = this._depthObservable.pipe(
+    //   switchMap(x => this._assemblyService.references(this.assemblyId, x).executeWithBusy(this))
+    // ).subscribe(x => this.generateGraphData(x),
+    //             x => this.startDepthLoading());
   }
 
   generateGraphData(assembly: Assembly): any {

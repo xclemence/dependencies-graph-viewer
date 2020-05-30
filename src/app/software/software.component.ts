@@ -4,7 +4,9 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { UrlService } from '@app/core/services/tech';
 import { Store } from '@ngrx/store';
 import { SoftwareState } from './store/models';
-import { loadSoftwareAssemblies, loadSoftwareNames } from './store/actions';
+import { SoftwareAssembliesActions, loadSoftwareNames } from './store/actions';
+
+import '@app/core/extensions/action-busy';
 
 @Component({
   selector: 'app-software',
@@ -26,13 +28,13 @@ export class SoftwareComponent implements OnInit {
       }
     });
 
-    this.store.dispatch(loadSoftwareNames());
+    this.store.dispatch(loadSoftwareNames().executeWithMainBusy());
   }
 
   selectedSoftwareChanged(software: AssemblyBase) {
     if (software !== undefined) {
       this.urlService.replaceSegment(1, software.id.toString(), this.route);
-      this.store.dispatch(loadSoftwareAssemblies({ assemblyName: software }));
+      this.store.dispatch(SoftwareAssembliesActions.loadSoftwareAssemblies( {assemblyName: software} ).executeWithBusy('SelectedSoftware'));
     }
   }
 }

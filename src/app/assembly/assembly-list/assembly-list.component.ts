@@ -1,5 +1,3 @@
-import '@app/core/extensions/observable-busy';
-
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,7 +7,6 @@ import { ActivatedRoute } from '@angular/router';
 import { AssemblyStat } from '@app/core/models/assembly';
 import { AssemblyService } from '@app/core/services/api';
 import { UrlService } from '@app/core/services/tech';
-import { BusyService } from '@app/core/services/tech/busy.service';
 import { Observable, Subscription } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
@@ -38,8 +35,7 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
   constructor(public dialog: MatDialog,
               private _assemblyService: AssemblyService,
               private _urlService: UrlService,
-              private _route: ActivatedRoute,
-              private _busyService: BusyService) {
+              private _route: ActivatedRoute) {
 
     this._openDialogSubscription = this.dialog.afterOpened.subscribe(x => {
       this._urlService.replaceSegment(1, x.componentInstance.assemblyId.toString(), this._route);
@@ -64,9 +60,9 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
   }
 
   managedAssemblySubscription() {
-    this.assemblyObservable.executeWithMainBusy(this._busyService)
-                           .subscribe(x => this.updateAssemblies(x, this._idParameter),
-                                      x => this.managedAssemblySubscription());
+    // this.assemblyObservable.executeWithMainBusy(this._busyService)
+    //                        .subscribe(x => this.updateAssemblies(x, this._idParameter),
+    //                                   x => this.managedAssemblySubscription());
   }
 
   openDetails(item: AssemblyStat) {

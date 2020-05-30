@@ -15,7 +15,7 @@ export class HeaderLink {
 })
 export class HeaderLinksComponent implements OnInit, OnDestroy {
   @Input() allLinks: Array<HeaderLink>;
-  @Input() userLinks: Array<HeaderLink>;
+  userLinks: Array<HeaderLink> = [];
   private _serviceSubscription: Subscription;
 
   constructor(private _userService: UserSecurityService) {

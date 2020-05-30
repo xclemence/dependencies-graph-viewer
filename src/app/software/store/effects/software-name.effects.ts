@@ -12,10 +12,11 @@ export class SoftwareNameEffects {
   loadSoftwareNames$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(SoftwareActions.loadSoftwareNames),
-      switchMap((_) => this.softwareService.names()),
-      map(data => SoftwareActions.loadSoftwareNamesSuccess({ data })),
-      catchError(error => of(SoftwareActions.loadSoftwareNamesFailure({ error })))
-    );
+      switchMap(action => this.softwareService.names().pipe(
+        map(data => SoftwareActions.loadSoftwareNamesSuccess({ data, origin: action })),
+        catchError(error => of(SoftwareActions.loadSoftwareNamesFailure({ error, origin: action })))
+      )),
+    )
   });
 
   constructor(private actions$: Actions, private softwareService: SoftwareService) {}
