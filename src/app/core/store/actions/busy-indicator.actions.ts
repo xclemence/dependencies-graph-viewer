@@ -1,4 +1,5 @@
-import { createAction, props } from '@ngrx/store';
+import { TypedAction } from '@ngrx/store/src/models';
+import { createAction, props, Action } from '@ngrx/store';
 
 export const addBusyIndicatorAction = createAction(
   '[Shared - Busy] Add Busy',

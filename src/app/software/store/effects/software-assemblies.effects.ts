@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { SoftwareAssembliesActions } from '../actions';
+import { loadSoftwareAssembliesFailure, loadSoftwareAssembliesSuccess, loadSoftwareAssemblies } from '../actions';
 
 @Injectable()
 export class SoftwareAssembliesEffects {
@@ -12,10 +12,10 @@ export class SoftwareAssembliesEffects {
 
   loadSoftwareNames = createEffect(() => {
     return this.actions.pipe(
-      ofType(SoftwareAssembliesActions.loadSoftwareAssemblies),
+      ofType(loadSoftwareAssemblies),
       switchMap(action => this.softwareService.references(action.assemblyName).pipe(
-        map(data => SoftwareAssembliesActions.loadSoftwareAssembliesSuccess( { data: data, origin: action} )),
-        catchError(error => of(SoftwareAssembliesActions.loadSoftwareAssembliesFailure( { error: error, origin: action })))
+        map(data => loadSoftwareAssembliesSuccess( { data: data, origin: action} )),
+        catchError(error => of(loadSoftwareAssembliesFailure( { error: error, origin: action })))
       )),
     );
   });
