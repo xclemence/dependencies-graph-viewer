@@ -1,3 +1,4 @@
+import { GraphQLModule } from './graphql.module';
 import { CoreStoreModule } from './core-store.module';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -7,7 +8,8 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     CommonModule,
     HttpClientModule,
-    CoreStoreModule
+    CoreStoreModule,
+    GraphQLModule
   ],
 })
 export class CoreModule {

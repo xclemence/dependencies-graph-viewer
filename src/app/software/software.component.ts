@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { SoftwareState } from './store/models';
 import { loadSoftwareNames, loadSoftwareAssemblies } from './store/actions';
 
-import { ActionBusyAppender } from '@app/core/busy/action-busy-appender'
+import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 
 @Component({
   selector: 'app-software',

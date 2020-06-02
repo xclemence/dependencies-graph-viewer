@@ -14,7 +14,7 @@ export class AssemblyLink {
 
 export class Assembly extends AssemblyBase {
     public links: AssemblyLink[];
-    public referencedAssemblies: Assembly[];
+    public referencedAssemblies: AssemblyBase[];
 }
 
 export interface AssemblyStat extends AssemblyBase {

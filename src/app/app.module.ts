@@ -10,6 +10,7 @@ import { AppSecurityModule } from './app-security.module';
 import { AppComponent } from './app.component';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { environment } from '../environments/environment';
     SharedModule,
     AppSecurityModule,
     AppStoreModule,
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    HttpClientModule
   ],
   bootstrap: [AppComponent]
 })

@@ -1,12 +1,10 @@
-// import { AssemblyMockProvider } from './assembly.mock-provider';
-// import { Assembly, AssemblyBase } from '../../models/assembly';
 // import { Injectable } from '@angular/core';
-
 // import { Observable, of } from 'rxjs';
+// import { Assembly, AssemblyBase } from '../../models/assembly';
 // import { delay } from 'rxjs/operators';
+// import { AssemblyMockProvider } from './assembly.mock-provider';
 
 // @Injectable({
-//   providedIn: 'root'
 // })
 // export class SoftwareMockService {
 
