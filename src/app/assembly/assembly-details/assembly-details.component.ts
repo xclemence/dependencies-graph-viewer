@@ -9,7 +9,7 @@ import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { AssemblyState } from '../store/models';
 import { Store } from '@ngrx/store';
-import { assemblyDepthStateSelector } from '../store/software.selectors';
+import { assemblyDepthStateSelector } from '../store/assembly.selectors';
 
 @Component({
   selector: 'app-assembly-details',

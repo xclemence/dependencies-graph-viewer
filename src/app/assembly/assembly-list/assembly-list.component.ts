@@ -14,7 +14,7 @@ import { map, switchMap, tap } from 'rxjs/operators';
 
 import { AssemblyDetailsComponent } from './../assembly-details/assembly-details.component';
 import { AssemblyState } from '../store/models';
-import { assembliesStateSelector as assembliesStateSelector } from '../store/software.selectors';
+import { assembliesStateSelector as assembliesStateSelector } from '../store/assembly.selectors';
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 
 @Component({
