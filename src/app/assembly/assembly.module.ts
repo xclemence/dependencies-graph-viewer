@@ -1,3 +1,4 @@
+import { AssemblyStoreModule } from './assembly-store.module';
 import { AssemblyRoutingModule } from './assembly-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -13,7 +14,8 @@ import { AssemblyDetailsComponent } from './assembly-details/assembly-details.co
     SharedModule,
     AssemblyRoutingModule,
     AllMaterialModuleModule,
-    FormsModule
+    FormsModule,
+    AssemblyStoreModule
   ],
   entryComponents: [
     AssemblyDetailsComponent

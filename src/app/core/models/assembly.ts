@@ -3,7 +3,6 @@ export class AssemblyBase {
     public name: string;
     public version: string;
     public isNative: boolean;
-    public isSystem: boolean;
     public isSoftware: boolean;
 }
 

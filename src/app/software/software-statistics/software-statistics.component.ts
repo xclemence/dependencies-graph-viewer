@@ -44,7 +44,6 @@ export class SoftwareStatisticsComponent implements OnInit {
       { label: 'Assemblies', value: assembly.referencedAssemblies.length + 1},
       { label: 'Native', value: this.countAssemblies(assembly, x => x.isNative), color: 'lightGreen'},
       { label: 'Managed', value: this.countAssemblies(assembly, x => !x.isNative), color: 'lightBlue'},
-      { label: 'System', value: this.countAssemblies(assembly, x => x.isSystem)},
       { label: 'All References', value: assembly.links.length},
       { label: 'Direct references', value: assembly.links.filter(x => x.sourceId === assembly.id).length},
     ];

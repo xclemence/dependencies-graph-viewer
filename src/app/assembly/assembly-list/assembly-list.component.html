@@ -1,5 +1,5 @@
 <div class="assemblies-container">
-    <table mat-table [dataSource]="dataSource" matSort class="assemblies-table">
+    <table mat-table [dataSource]="dataSource | async" matSort class="assemblies-table">
   
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>

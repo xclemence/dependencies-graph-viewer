@@ -1,3 +1,5 @@
+import { loadAssemblies } from './../store/actions/assemblies.actions';
+import { Store, select } from '@ngrx/store';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,6 +13,9 @@ import { Observable, Subscription } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
 import { AssemblyDetailsComponent } from './../assembly-details/assembly-details.component';
+import { AssemblyState } from '../store/models';
+import { assembliesStateSelector as assembliesStateSelector } from '../store/software.selectors';
+import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 
 @Component({
   selector: 'app-assembly-list',
@@ -21,19 +26,23 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
 
   displayedColumns = ['id', 'name', 'version', 'isNative', 'isSystem', 'isSoftware', 'depth', 'links'];
 
-  dataSource: MatTableDataSource<AssemblyStat>;
+  // dataSource: MatTableDataSource<AssemblyStat>;
+
+  dataSource: Observable<MatTableDataSource<AssemblyStat>>;
+
   selection = new SelectionModel<AssemblyStat>(false, []);
-  assemblyObservable: Observable<AssemblyStat[]>;
+  // assemblyObservable: Observable<AssemblyStat[]>;
 
   private _openDialogSubscription: Subscription;
   private _closeDialogSubscription: Subscription;
+  private _routeSubscription: Subscription;
+
+  private _idParameter: string = null;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  private _idParameter: string;
-
   constructor(public dialog: MatDialog,
-              private _assemblyService: AssemblyService,
+              private _store: Store<AssemblyState>,
               private _urlService: UrlService,
               private _route: ActivatedRoute) {
 
@@ -45,13 +54,29 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.assemblyObservable = this._route.paramMap.pipe(
+
+    this._routeSubscription = this._route.paramMap.pipe(
       map(x => x.has('id') ? x.get('id') : null),
-      tap(x => this._idParameter = x),
-      switchMap(x => this._assemblyService.assemblyStatistics(1, 1))
+    ).subscribe(x => this._idParameter = x);
+
+    this.dataSource = this._store.pipe(
+      select(assembliesStateSelector),
+      tap(x => {
+        if (this._idParameter !== null) {
+          const index = x.findIndex(y => y.id === this._idParameter);
+          if (index !== -1) {
+            this.openDetails(x[index]);
+          }
+        }
+      }),
+      map(x => {
+        const source = new MatTableDataSource(x);
+        source.sort = this.sort;
+        return source;
+      }),
     );
 
-    this.managedAssemblySubscription();
+    this._store.dispatch(ActionBusyAppender.executeWithMainBusy(loadAssemblies()));
   }
 
   ngOnDestroy(): void {
@@ -74,14 +99,14 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
   }
 
   private updateAssemblies(assemblies: AssemblyStat[], selectedId: string) {
-      this.dataSource = new MatTableDataSource(assemblies);
-      this.dataSource.sort = this.sort;
+      // this.dataSource = new MatTableDataSource(assemblies);
+      // this.dataSource.sort = this.sort;
 
-      if (selectedId !== null) {
-        const index = assemblies.findIndex(x => x.id === selectedId);
-        if (index !== -1) {
-          this.openDetails(assemblies[index]);
-        }
-      }
+      // if (selectedId !== null) {
+      //   const index = assemblies.findIndex(x => x.id === selectedId);
+      //   if (index !== -1) {
+      //     this.openDetails(assemblies[index]);
+      //   }
+      // }
   }
 }

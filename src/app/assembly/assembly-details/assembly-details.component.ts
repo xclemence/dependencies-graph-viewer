@@ -1,11 +1,15 @@
+import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
+import { loadAssemblyDepth } from './../store/actions/assembly-depth.actions';
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AssemblyService } from '@app/core/services/api';
 import { Graph, Node, Link } from '@app/shared/models';
 import { Assembly } from '@app/core/models/assembly';
 
-import { Subject, Observable, Subscription, BehaviorSubject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { Observable, Subscription, BehaviorSubject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
+import { AssemblyState } from '../store/models';
+import { Store } from '@ngrx/store';
+import { assemblyDepthStateSelector } from '../store/software.selectors';
 
 @Component({
   selector: 'app-assembly-details',
@@ -16,15 +20,13 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
 
   assemblyName: string;
   depthMax = 10;
-  graph: Graph;
+  graph: Observable<Graph>;
 
   private _selectedDepth = 1;
   private _depthChanged: BehaviorSubject<number>;
-  private _depthObservable: Observable<number>;
 
-  assemblyId: string;
-  isBusy = false;
-  subscription: Subscription;
+  private _assemblyId: string;
+  private _subscription: Subscription;
 
   public set selectedDepth(value: number) {
     if (value === this._selectedDepth) {
@@ -38,39 +40,35 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
     return this._selectedDepth;
   }
 
-  constructor(private _assemblyService: AssemblyService, @Inject(MAT_DIALOG_DATA) data: {name: string, depthMax: number, id: string}) {
+  constructor(private _store: Store<AssemblyState>, @Inject(MAT_DIALOG_DATA) data: {name: string, depthMax: number, id: string}) {
     this.assemblyName = data.name;
-    this.assemblyId = data.id;
+    this._assemblyId = data.id;
     this.depthMax = data.depthMax;
 
     this._depthChanged = new BehaviorSubject(this.selectedDepth);
   }
 
   ngOnInit() {
-    this._depthObservable = this._depthChanged.pipe(
-      debounceTime(100),
-      distinctUntilChanged()
+
+    this.graph = this._store.select(assemblyDepthStateSelector).pipe(
+      map(x => this.generateGraphData(x))
     );
 
-    this.startDepthLoading();
+    this._subscription = this._depthChanged.pipe(
+      debounceTime(100),
+      distinctUntilChanged(),
+    ).subscribe(x => this._store.dispatch(ActionBusyAppender.executeWithBusy(loadAssemblyDepth( { assemblyId: this._assemblyId, depth: x }), 'AssemblyDepth')));
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this._subscription.unsubscribe();
   }
 
   loadDepth(value: number) {
     this._depthChanged.next(value);
   }
 
-  startDepthLoading() {
-    // this.subscription = this._depthObservable.pipe(
-    //   switchMap(x => this._assemblyService.references(this.assemblyId, x).executeWithBusy(this))
-    // ).subscribe(x => this.generateGraphData(x),
-    //             x => this.startDepthLoading());
-  }
-
-  generateGraphData(assembly: Assembly): any {
+  generateGraphData(assembly: Assembly): Graph {
     const item = new Graph();
     item.nodes = assembly.referencedAssemblies.map(x => new Node({
       id: x.id,
@@ -81,6 +79,6 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
     item.nodes.push(new Node({ id: assembly.id, label: `${assembly.name} (${assembly.version})`, color: 'red' }));
 
     item.links = assembly.links.map(x => new Link({ source: x.sourceId, target: x.targetId }));
-    this.graph = item;
+    return item;
   }
 }
