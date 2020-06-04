@@ -24,14 +24,11 @@ import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 })
 export class AssemblyListComponent implements OnInit, OnDestroy {
 
-  displayedColumns = ['id', 'name', 'version', 'isNative', 'isSystem', 'isSoftware', 'depth', 'links'];
-
-  // dataSource: MatTableDataSource<AssemblyStat>;
+  displayedColumns = [ 'name', 'version', 'isNative', 'depth', 'links'];
 
   dataSource: Observable<MatTableDataSource<AssemblyStat>>;
 
   selection = new SelectionModel<AssemblyStat>(false, []);
-  // assemblyObservable: Observable<AssemblyStat[]>;
 
   private _openDialogSubscription: Subscription;
   private _closeDialogSubscription: Subscription;
@@ -84,29 +81,11 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
     this._openDialogSubscription.unsubscribe();
   }
 
-  managedAssemblySubscription() {
-    // this.assemblyObservable.executeWithMainBusy(this._busyService)
-    //                        .subscribe(x => this.updateAssemblies(x, this._idParameter),
-    //                                   x => this.managedAssemblySubscription());
-  }
-
   openDetails(item: AssemblyStat) {
     this.dialog.open(AssemblyDetailsComponent, {
       width: '80%',
       height: '80%',
       data: {name: `${item.name} (${item.version})`, id: item.id, depthMax: item.depthMax}
     });
-  }
-
-  private updateAssemblies(assemblies: AssemblyStat[], selectedId: string) {
-      // this.dataSource = new MatTableDataSource(assemblies);
-      // this.dataSource.sort = this.sort;
-
-      // if (selectedId !== null) {
-      //   const index = assemblies.findIndex(x => x.id === selectedId);
-      //   if (index !== -1) {
-      //     this.openDetails(assemblies[index]);
-      //   }
-      // }
   }
 }

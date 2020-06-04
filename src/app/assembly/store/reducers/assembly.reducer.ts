@@ -5,7 +5,7 @@ import * as AssembliesAction from '../actions/assemblies.actions';
 import * as AssemblyDepth from '../actions/assembly-depth.actions';
 
 const initialState: AssemblyState = {
-  assembyDepth: undefined,
+  assemblyDepth: undefined,
   assemblies: []
 };
 
@@ -20,7 +20,7 @@ export const assemblyReducer = createReducer(
 
   on(AssemblyDepth.loadAssemblyDepth, state => state),
   on(AssemblyDepth.loadAssemblyDepthSuccess, (state, action) => {
-    return {...state, assembyDepth: action.data };
+    return {...state, assemblyDepth: action.data };
   }),
   on(AssemblyDepth.loadAssemblyDepthFailure, (state, action) => state)
 );

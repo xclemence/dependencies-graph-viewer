@@ -4,6 +4,7 @@ import { Assembly, AssemblyBase, AssemblyLink } from '../../models/assembly';
 import { map, flatMap, toArray } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
+import { AssemblyConverter } from './assembly-converter';
 
 const getSoftwareNames = gql`
   query softwareNames {
@@ -21,10 +22,12 @@ const getSoftwareAssemblies = gql`
       name,
       shortName,
     	isNative,
+      version,
       allReferencedAssemblies {
         name,
         shortName,
         isNative,
+        version,
         directReferencedAssemblies {
         	name
         },
@@ -46,7 +49,7 @@ export class SoftwareService {
   names(): Observable<AssemblyBase[]> {
     return this.appoloService.query({ query: getSoftwareNames }).pipe(
       flatMap((x: any) => x.data.Software),
-      map((x: any) => this.toAssemblyBase<AssemblyBase>(x)),
+      map((x: any) => AssemblyConverter.toAssemblyBase<AssemblyBase>(x)),
       toArray()
     );
   }
@@ -54,29 +57,7 @@ export class SoftwareService {
   references(assemblyName: AssemblyBase): Observable<Assembly> {
     return this.appoloService.query({ query: getSoftwareAssemblies, variables: { assemblyId: assemblyName.id } }).pipe(
       map((x: any) => x.data.Assembly[0]),
-      map((x: any) => this.toAssembly(x))
+      map((x: any) => AssemblyConverter.toAssembly(x))
     );
-  }
-
-  toAssemblyBase<T extends AssemblyBase>(item: any): T {
-    return <T> { id: item.name, version: item.version, name: item.shortName, isNative: item.isNative };
-  }
-
-  toAssembly(item: any): Assembly {
-    
-    const assembly = this.toAssemblyBase<Assembly>(item);
-
-    assembly.referencedAssemblies = item.allReferencedAssemblies.map((x: any) => this.toAssemblyBase<AssemblyBase>(x));
-
-    assembly.links = [
-      ...this.toAssemblyLinks(assembly.id, item.directReferencedAssemblies),
-      ...item.allReferencedAssemblies.flatMap(x => this.toAssemblyLinks(x.name, x.directReferencedAssemblies))
-    ];
-
-    return assembly;
-  }
-
-  toAssemblyLinks(sourceId: any, items: any): AssemblyLink[] {
-    return items.map(x => <AssemblyLink> { sourceId, targetId: x.name });
   }
 }

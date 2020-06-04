@@ -1,3 +1,4 @@
+import { assembliesStateSelector, assemblyStateSelector } from './../store/assembly.selectors';
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { loadAssemblyDepth } from './../store/actions/assembly-depth.actions';
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
@@ -6,7 +7,7 @@ import { Graph, Node, Link } from '@app/shared/models';
 import { Assembly } from '@app/core/models/assembly';
 
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap, map, filter } from 'rxjs/operators';
 import { AssemblyState } from '../store/models';
 import { Store } from '@ngrx/store';
 import { assemblyDepthStateSelector } from '../store/assembly.selectors';
@@ -51,6 +52,7 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.graph = this._store.select(assemblyDepthStateSelector).pipe(
+      filter(x => x !== undefined),
       map(x => this.generateGraphData(x))
     );
 
