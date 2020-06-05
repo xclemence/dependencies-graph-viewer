@@ -23,7 +23,7 @@ import { loadAssemblies } from './../store/actions/assemblies.actions';
 })
 export class AssemblyListComponent implements OnInit, OnDestroy {
 
-  displayedColumns = [ 'name', 'version', 'isNative', 'depth', 'links'];
+  displayedColumns = [ 'type', 'name', 'version', 'depth', 'links'];
 
   dataSource: Observable<MatTableDataSource<AssemblyStat>>;
 
@@ -78,6 +78,18 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this._closeDialogSubscription.unsubscribe();
     this._openDialogSubscription.unsubscribe();
+  }
+
+  hasReferences(assemblyStat: AssemblyStat): boolean {
+    return assemblyStat.depthMax > 0;
+  }
+
+  getAssemblyTypeName(assemblyStat: AssemblyStat): string {
+    return assemblyStat.isNative ? 'Native' : 'Managed';
+  }
+
+  getTypeColor(assemblyStat: AssemblyStat): string {
+    return assemblyStat.isNative ? 'lightgreen' : 'lightblue';
   }
 
   openDetails(item: AssemblyStat) {

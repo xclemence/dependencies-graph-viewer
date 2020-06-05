@@ -8,22 +8,18 @@ export class AssemblyConverter {
 
     static toAssembly(item: any): Assembly {
 
-        console.log(JSON.stringify(item ));
-
         const assembly = AssemblyConverter.toAssemblyBase<Assembly>(item);
 
         assembly.referencedAssemblies = item.allReferencedAssemblies.map((x: any) => this.toAssemblyBase<AssemblyBase>(x));
 
-       const links = item.allReferencedAssemblIesLinks.map(x => <AssemblyLink>{ sourceId: x.source, targetId: x.target });
+        const links = item.allReferencedAssemblIesLinks.map(x => <AssemblyLink>{ sourceId: x.source, targetId: x.target });
 
         assembly.links = AssemblyConverter.filterBadLinks(links, assembly.referencedAssemblies);
-
-        console.log(JSON.stringify(assembly));
 
         return assembly;
     }
 
-    static filterBadLinks(assemblyLinks: AssemblyLink[],  knowedAssemblies: AssemblyBase[]): AssemblyLink[] {
+    static filterBadLinks(assemblyLinks: AssemblyLink[], knowedAssemblies: AssemblyBase[]): AssemblyLink[] {
         const assembliesIds = knowedAssemblies.map(x => x.id);
         return assemblyLinks.filter(x => assembliesIds.includes(x.targetId));
     }

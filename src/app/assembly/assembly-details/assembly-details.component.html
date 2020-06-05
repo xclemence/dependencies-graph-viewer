@@ -1,9 +1,9 @@
 
 <div class="main-div" >
   <div class="header">
-    <h3>{{assemblyName}}</h3>
+    <h3>Depth View : {{assemblyName}}</h3>
   </div>
-  <mat-slider min="1" step=1 [max]="depthMax" [(ngModel)]="selectedDepth" thumbLabel="true" ></mat-slider>
+  <mat-slider min="0" step=1 [max]="depthMax" [(ngModel)]="selectedDepth" thumbLabel="true" class="depth-slider" [disabled]="!depthAvailable" ></mat-slider>
   <div class="overlap-container">
     <app-force-graph [graph]="graph | async" class="force-graph"></app-force-graph>
     <app-busy opacity="0.7" busyKey="AssemblyDepth"  ></app-busy>

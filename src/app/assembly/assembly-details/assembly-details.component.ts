@@ -69,6 +69,10 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
     this._depthChanged.next(value);
   }
 
+  get depthAvailable(): boolean {
+    return this.depthMax > 1;
+  }
+
   generateGraphData(assembly: Assembly): Graph {
     const item = new Graph();
     item.nodes = assembly.referencedAssemblies.map(x => new Node({

@@ -1,7 +1,7 @@
 <div class="overlap-container" >
     <div class="overlap-item assembly-details">
-        <app-software-statistics></app-software-statistics>
         <app-force-graph [graph]="graph | async" updateMode="ClearAndAdd"></app-force-graph>
+        <app-software-statistics class="absolute-position"></app-software-statistics>
     </div>
     <app-busy opacity="0.7" busyKey="SelectedSoftware" ></app-busy>
 </div>
