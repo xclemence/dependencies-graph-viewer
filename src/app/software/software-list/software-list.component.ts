@@ -1,10 +1,10 @@
-import { tap, map } from 'rxjs/operators';
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AssemblyBase } from '@app/core/models/assembly';
-import { Store, select } from '@ngrx/store';
-import { SoftwareState } from '../store/models';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
+import { SoftwareState } from '../store/models';
 import { softwareNameStateSelector } from '../store/software.selectors';
 
 @Component({

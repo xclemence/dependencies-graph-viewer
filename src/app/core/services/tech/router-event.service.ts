@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { addBusyIndicatorAction, removeBusyIndicatorAction } from '@app/core/store/actions/busy-indicator.actions';
+import { CoreState } from '@app/core/store/models';
+import { Store } from '@ngrx/store';
 import { Guid } from 'guid-typescript';
 
 import { UrlService } from './url.service';
-import { CoreState } from '@app/core/store/models';
-import { Store } from '@ngrx/store';
-import { addBusyIndicatorAction, removeBusyIndicatorAction } from '@app/core/store/actions/busy-indicator.actions';
 
 @Injectable({
   providedIn: 'root'

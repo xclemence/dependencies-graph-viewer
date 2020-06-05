@@ -1,9 +1,10 @@
-import { Store, select } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
 import { Assembly, AssemblyBase } from '@app/core/models/assembly';
 import { Graph, Link, Node } from '@app/shared/models';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
 import { SoftwareState } from '../store/models';
 import { softwareAssembliesStateSelector } from '../store/software.selectors';
 

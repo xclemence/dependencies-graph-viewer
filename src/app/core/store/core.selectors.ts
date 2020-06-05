@@ -1,5 +1,6 @@
-import { CoreState, BusyState } from './models';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+
+import { CoreState } from './models';
 
 export const coreFeatureKey = 'core';
 

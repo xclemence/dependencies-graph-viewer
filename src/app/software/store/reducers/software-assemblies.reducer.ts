@@ -1,7 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 
+import { loadSoftwareAssemblies, loadSoftwareAssembliesFailure, loadSoftwareAssembliesSuccess } from '../actions';
 import { SoftwareAssembliesState } from '../models';
-import { loadSoftwareAssemblies, loadSoftwareAssembliesSuccess, loadSoftwareAssembliesFailure } from '../actions';
 
 const initialState: SoftwareAssembliesState = {
   software: undefined,

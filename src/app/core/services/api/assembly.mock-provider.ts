@@ -1,6 +1,6 @@
-import { AssemblyLink } from '../../models/assembly';
 import { Injectable } from '@angular/core';
-import { AssemblyStat, Assembly } from '../../models/assembly';
+
+import { Assembly, AssemblyLink } from '../../models/assembly';
 
 @Injectable({
   providedIn: 'root'

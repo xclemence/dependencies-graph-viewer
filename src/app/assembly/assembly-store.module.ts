@@ -1,9 +1,10 @@
-import { assemblyFeatureKey } from './store/assembly.selectors';
 import { NgModule } from '@angular/core';
-import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { assemblyReducer } from './store/reducers';
+import { StoreModule } from '@ngrx/store';
+
+import { assemblyFeatureKey } from './store/assembly.selectors';
 import { AssembliesEffects, AssemblyDepthEffects } from './store/effects';
+import { assemblyReducer } from './store/reducers';
 
 @NgModule({
   imports: [

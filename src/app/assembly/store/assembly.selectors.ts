@@ -1,4 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+
 import { AssemblyState } from './models/assembly.state';
 
 export const assemblyFeatureKey = 'assembly';

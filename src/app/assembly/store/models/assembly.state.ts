@@ -1,4 +1,4 @@
-import { AssemblyStat, Assembly } from '@app/core/models/assembly';
+import { Assembly, AssemblyStat } from '@app/core/models/assembly';
 
 export interface AssemblyState {
   assemblies: AssemblyStat[];

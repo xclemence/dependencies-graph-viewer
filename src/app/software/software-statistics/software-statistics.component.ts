@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { AssemblyLink, Assembly } from '@app/core/models/assembly';
-import { Store, select } from '@ngrx/store';
-import { SoftwareAssembliesState, SoftwareState } from '../store/models';
+import { Component, OnInit } from '@angular/core';
+import { Assembly } from '@app/core/models/assembly';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { softwareStateSelector, softwareAssembliesStateSelector } from '../store/software.selectors';
-import { tap, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+
+import { SoftwareState } from '../store/models';
+import { softwareAssembliesStateSelector } from '../store/software.selectors';
 
 export class StatValue {
   label: string;

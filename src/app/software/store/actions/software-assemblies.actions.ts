@@ -1,5 +1,5 @@
 import { Assembly, AssemblyBase } from '@app/core/models/assembly';
-import { createAction, props, Action } from '@ngrx/store';
+import { Action, createAction, props } from '@ngrx/store';
 
 export const loadSoftwareAssemblies = createAction(
   '[Software Assemblies] Load Software Assemblies',

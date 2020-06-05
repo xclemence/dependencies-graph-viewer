@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { Assembly, AssemblyBase, AssemblyLink } from '../../models/assembly';
-import { map, flatMap, toArray } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
+import { Observable } from 'rxjs';
+import { flatMap, map, toArray } from 'rxjs/operators';
+
+import { Assembly, AssemblyBase } from '../../models/assembly';
 import { AssemblyConverter } from './assembly-converter';
 
 const getSoftwareNames = gql`
@@ -21,20 +22,15 @@ const getSoftwareAssemblies = gql`
     Assembly(filter: { name: $assemblyId }){
       name,
       shortName,
-    	isNative,
+      isNative,
       version,
       allReferencedAssemblies {
         name,
         shortName,
         isNative,
         version,
-        directReferencedAssemblies {
-        	name
-        },
       },
-      directReferencedAssemblies {
-        name
-      }
+      allReferencedAssemblIesLinks {source, target}
     }
   }
 `;

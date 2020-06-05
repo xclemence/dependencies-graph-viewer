@@ -1,5 +1,5 @@
 import { Assembly } from '@app/core/models/assembly';
-import { createAction, props, Action } from '@ngrx/store';
+import { Action, createAction, props } from '@ngrx/store';
 
 export const loadAssemblyDepth = createAction(
   '[Assembly Depth] Load Assembly Depth',

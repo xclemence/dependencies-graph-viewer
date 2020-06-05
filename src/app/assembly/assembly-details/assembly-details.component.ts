@@ -1,16 +1,15 @@
-import { assembliesStateSelector, assemblyStateSelector } from './../store/assembly.selectors';
-import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
-import { loadAssemblyDepth } from './../store/actions/assembly-depth.actions';
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Graph, Node, Link } from '@app/shared/models';
+import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { Assembly } from '@app/core/models/assembly';
-
-import { Observable, Subscription, BehaviorSubject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, map, filter } from 'rxjs/operators';
-import { AssemblyState } from '../store/models';
+import { Graph, Link, Node } from '@app/shared/models';
 import { Store } from '@ngrx/store';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
+
 import { assemblyDepthStateSelector } from '../store/assembly.selectors';
+import { AssemblyState } from '../store/models';
+import { loadAssemblyDepth } from './../store/actions/assembly-depth.actions';
 
 @Component({
   selector: 'app-assembly-details',

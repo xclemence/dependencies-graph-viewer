@@ -1,4 +1,5 @@
-import { Action, createReducer, on } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
+
 import { addBusyIndicatorAction, removeBusyIndicatorAction } from '../actions/busy-indicator.actions';
 import { BusyState } from '../models';
 

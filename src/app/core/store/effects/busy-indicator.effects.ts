@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-
+import { Actions, createEffect } from '@ngrx/effects';
 import { filter, map } from 'rxjs/operators';
+
 import { addBusyIndicatorAction, removeBusyIndicatorAction } from '../actions/busy-indicator.actions';
 
 @Injectable()

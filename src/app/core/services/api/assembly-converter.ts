@@ -1,5 +1,4 @@
-import { filter } from 'rxjs/operators';
-import { AssemblyBase, AssemblyLink, Assembly, AssemblyStat } from '@app/core/models';
+import { Assembly, AssemblyBase, AssemblyLink, AssemblyStat } from '@app/core/models';
 
 export class AssemblyConverter {
 
@@ -9,15 +8,18 @@ export class AssemblyConverter {
 
     static toAssembly(item: any): Assembly {
 
+        console.log(JSON.stringify(item ));
+
         const assembly = AssemblyConverter.toAssemblyBase<Assembly>(item);
 
         assembly.referencedAssemblies = item.allReferencedAssemblies.map((x: any) => this.toAssemblyBase<AssemblyBase>(x));
 
-       const links = [
-            ...AssemblyConverter.toAssemblyLinks(assembly.id, item.directReferencedAssemblies),
-            ...item.allReferencedAssemblies.flatMap(x => AssemblyConverter.toAssemblyLinks(x.name, x.directReferencedAssemblies))
-        ];
+       const links = item.allReferencedAssemblIesLinks.map(x => <AssemblyLink>{ sourceId: x.source, targetId: x.target });
+
         assembly.links = AssemblyConverter.filterBadLinks(links, assembly.referencedAssemblies);
+
+        console.log(JSON.stringify(assembly));
+
         return assembly;
     }
 

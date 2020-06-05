@@ -1,4 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+
 import { SoftwareState } from './models/software.state';
 
 export const softwareFeatureKey = 'software';

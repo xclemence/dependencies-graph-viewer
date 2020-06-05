@@ -1,4 +1,3 @@
-import { SoftwareStoreModule } from './software-store.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -9,6 +8,7 @@ import { SoftwareReferencesComponent } from './software-references/software-refe
 import { SoftwareRoutingModule } from './software-routing.module';
 import { SoftwareSecurityModule } from './software-security.module';
 import { SoftwareStatisticsComponent } from './software-statistics/software-statistics.component';
+import { SoftwareStoreModule } from './software-store.module';
 import { SoftwareComponent } from './software.component';
 
 @NgModule({

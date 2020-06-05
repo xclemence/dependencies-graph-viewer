@@ -1,12 +1,12 @@
-import { AssemblyBase } from '@app/core/models/assembly';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
+import { AssemblyBase } from '@app/core/models/assembly';
 import { UrlService } from '@app/core/services/tech';
 import { Store } from '@ngrx/store';
-import { SoftwareState } from './store/models';
-import { loadSoftwareNames, loadSoftwareAssemblies } from './store/actions';
 
-import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
+import { loadSoftwareAssemblies, loadSoftwareNames } from './store/actions';
+import { SoftwareState } from './store/models';
 
 @Component({
   selector: 'app-software',

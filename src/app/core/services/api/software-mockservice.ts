@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Assembly, AssemblyBase } from '../../models/assembly';
 import { delay } from 'rxjs/operators';
+
+import { Assembly, AssemblyBase } from '../../models/assembly';
 import { AssemblyMockProvider } from './assembly.mock-provider';
 
 @Injectable()

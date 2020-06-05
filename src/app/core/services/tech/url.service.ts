@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { Router, ActivatedRoute, UrlSegment, UrlSegmentGroup, UrlTree } from '@angular/router';
 import { Location } from '@angular/common';
+import { Injectable } from '@angular/core';
+import { ActivatedRoute, Router, UrlSegment, UrlSegmentGroup, UrlTree } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'

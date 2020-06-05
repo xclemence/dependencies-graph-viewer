@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { AssemblyStat, Assembly, AssemblyLink } from '../../models/assembly';
-import { delay, flatMap, map, toArray } from 'rxjs/operators';
-import gql from 'graphql-tag';
-import { AssemblyConverter } from './assembly-converter';
 import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
+import { Observable } from 'rxjs';
+import { flatMap, map, toArray } from 'rxjs/operators';
+
+import { Assembly, AssemblyStat } from '../../models/assembly';
+import { AssemblyConverter } from './assembly-converter';
 
 const getAssemblies = gql`
   query assemblies {
@@ -24,20 +25,15 @@ const getAssemblyDepth = gql`
     Assembly(filter: { name: $assemblyId }){
       name,
       shortName,
-    	isNative,
+      isNative,
       version,
       allReferencedAssemblies(depth: $depth) {
         name,
         shortName,
         isNative,
         version,
-        directReferencedAssemblies {
-        	name
-        },
       },
-      directReferencedAssemblies {
-        name
-      }
+      allReferencedAssemblIesLinks {source, target}
     }
   }
 `;

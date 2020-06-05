@@ -1,9 +1,10 @@
-import { SoftwareService } from '@app/core/services/api';
 import { Injectable } from '@angular/core';
+import { SoftwareService } from '@app/core/services/api';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { loadSoftwareAssembliesFailure, loadSoftwareAssembliesSuccess, loadSoftwareAssemblies } from '../actions';
+import { catchError, map, switchMap } from 'rxjs/operators';
+
+import { loadSoftwareAssemblies, loadSoftwareAssembliesFailure, loadSoftwareAssembliesSuccess } from '../actions';
 
 @Injectable()
 export class SoftwareAssembliesEffects {

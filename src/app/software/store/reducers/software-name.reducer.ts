@@ -1,4 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
+
 import * as SoftwareNameActions from '../actions/software-name.actions';
 import { SoftwareNameState } from '../models/software-name.state';
 

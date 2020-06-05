@@ -1,21 +1,20 @@
-import { loadAssemblies } from './../store/actions/assemblies.actions';
-import { Store, select } from '@ngrx/store';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
-import { AssemblyStat } from '@app/core/models/assembly';
-import { AssemblyService } from '@app/core/services/api';
-import { UrlService } from '@app/core/services/tech';
-import { Observable, Subscription } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
-
-import { AssemblyDetailsComponent } from './../assembly-details/assembly-details.component';
-import { AssemblyState } from '../store/models';
-import { assembliesStateSelector as assembliesStateSelector } from '../store/assembly.selectors';
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
+import { AssemblyStat } from '@app/core/models/assembly';
+import { UrlService } from '@app/core/services/tech';
+import { select, Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+
+import { assembliesStateSelector as assembliesStateSelector } from '../store/assembly.selectors';
+import { AssemblyState } from '../store/models';
+import { AssemblyDetailsComponent } from './../assembly-details/assembly-details.component';
+import { loadAssemblies } from './../store/actions/assemblies.actions';
 
 @Component({
   selector: 'app-assembly-list',
