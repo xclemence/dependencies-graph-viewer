@@ -1,10 +1,13 @@
 <mat-card class="software-card">
-  <mat-card-header>
-    <mat-card-title class="software-header"><span>Software Names</span></mat-card-title>
+  <mat-card-header class="software-header">
+    <mat-card-title class="software-header-title"><span>Software Names</span></mat-card-title>
+    <button mat-icon-button aria-label="Previous" class="refresh-button" (click)="refreshSoftwares()">
+      <mat-icon>refresh</mat-icon>
+  </button>
   </mat-card-header>
   <mat-card-content class="software-content">
     <mat-selection-list #selectionList (selectionChange)="selectionChanged()" [(ngModel)]="selectedSoftwares" class="scroll-content" [multiple]="false" >
-      <mat-list-option *ngFor="let soft of softwareNames | async" #mlo [ngClass]="{'selected-software': mlo.selected}" [value]="soft" role="listbox">
+      <mat-list-option *ngFor="let soft of softwareNames" #mlo [ngClass]="{'selected-software': mlo.selected}" [value]="soft" role="listbox">
         {{soft.name}} (v{{soft.version}})
       </mat-list-option>
     </mat-selection-list>

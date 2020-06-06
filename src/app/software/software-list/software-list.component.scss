@@ -23,7 +23,16 @@
 }
 
 .software-header {
-    margin: 10px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.software-header-title {
+    margin-top: 10px;
+}
+
+.refresh-button {
+    margin-left: 5px;
 }
 
 ::ng-deep mat-list-option.selected-software > div:first-child {

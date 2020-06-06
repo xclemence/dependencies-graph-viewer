@@ -8,8 +8,8 @@ import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { AssemblyStat } from '@app/core/models/assembly';
 import { UrlService } from '@app/core/services';
 import { select, Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 import { assembliesStateSelector as assembliesStateSelector } from '../store/assembly.selectors';
 import { AssemblyState } from '../store/models';
@@ -25,16 +25,13 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
 
   displayedColumns = ['type', 'name', 'version', 'depth', 'links'];
 
-  dataSource: Observable<MatTableDataSource<AssemblyStat>>;
-
-
+  dataSource: MatTableDataSource<AssemblyStat>;
   selection = new SelectionModel<AssemblyStat>(false, []);
-
-  private _assemblyStatistiques: AssemblyStat[];
 
   private _openDialogSubscription: Subscription;
   private _closeDialogSubscription: Subscription;
   private _routeSubscription: Subscription;
+  private _storeSubscription: Subscription;
 
   private _idParameter: string;
 
@@ -62,26 +59,26 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
       this.tryOpenDetailsFromParameter();
     });
 
-    this.dataSource = this._store.pipe(
+    this._storeSubscription = this._store.pipe(
       select(assembliesStateSelector),
-      tap(x => {
-        this._assemblyStatistiques = x;
-        this.tryOpenDetailsFromParameter();
-      }),
       map(x => {
         const source = new MatTableDataSource(x);
         source.sort = this.sort;
         return source;
       }),
-    );
+    ).subscribe(x => {
+      this.dataSource = x;
+      this.tryOpenDetailsFromParameter();
+    });
 
     this._store.dispatch(ActionBusyAppender.executeWithMainBusy(loadAssemblies()));
   }
 
   ngOnDestroy(): void {
-    this._closeDialogSubscription.unsubscribe();
-    this._openDialogSubscription.unsubscribe();
-    this._routeSubscription.unsubscribe();
+    this._closeDialogSubscription?.unsubscribe();
+    this._openDialogSubscription?.unsubscribe();
+    this._routeSubscription?.unsubscribe();
+    this._storeSubscription?.unsubscribe();
   }
 
   hasReferences(assemblyStat: AssemblyStat): boolean {
@@ -101,14 +98,14 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (!this._assemblyStatistiques) {
+    if (!this.dataSource || !this.dataSource.data) {
       return;
     }
 
-    const index = this._assemblyStatistiques.findIndex(x => x.id === this._idParameter);
+    const index = this.dataSource.data.findIndex(x => x.id === this._idParameter);
 
     if (index !== -1) {
-      this.openDetails(this._assemblyStatistiques[index]);
+      this.openDetails(this.dataSource.data[index]);
     }
   }
 

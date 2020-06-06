@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { AssemblyBase } from '@app/core/models/assembly';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { SoftwareState } from '../store/models';
 import { softwareNameStateSelector } from '../store/software.selectors';
@@ -12,14 +12,15 @@ import { softwareNameStateSelector } from '../store/software.selectors';
   templateUrl: './software-list.component.html',
   styleUrls: ['./software-list.component.scss']
 })
-export class SoftwareListComponent implements OnInit {
+export class SoftwareListComponent implements OnInit, OnDestroy {
 
   private _selectedId: string;
+  private _storeSubscription: Subscription;
 
   @Output() selectionChange: EventEmitter<AssemblyBase> = new EventEmitter();
+  @Output() refreshSoftwaresRequest = new EventEmitter();
 
-  softwareNames: Observable<AssemblyBase[]>;
-  currentSoftwareNames: AssemblyBase[];
+  softwareNames: AssemblyBase[];
 
   selectedSoftwares = new Array<AssemblyBase>();
 
@@ -36,20 +37,23 @@ export class SoftwareListComponent implements OnInit {
   }
 
   constructor(private store: Store<SoftwareState>) { }
-
+  
   ngOnInit() {
-    this.softwareNames = this.store.pipe(
+    this._storeSubscription = this.store.pipe(
       select(softwareNameStateSelector),
       map(x => x.softwareNames),
-      tap(x => {
-        this.currentSoftwareNames = x;
-        this.selectSoftwareById();
-      }),
-    );
+    ).subscribe(x => {
+      this.softwareNames = x;
+      this.selectSoftwareById();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this._storeSubscription?.unsubscribe();
   }
 
   selectSoftwareById() {
-    if (!this.currentSoftwareNames) {
+    if (!this.softwareNames) {
       return;
     }
 
@@ -57,11 +61,15 @@ export class SoftwareListComponent implements OnInit {
       return;
     }
 
-    this.selectedSoftwares = this.currentSoftwareNames.filter(s => s.id === this.selectedId);
+    this.selectedSoftwares = this.softwareNames.filter(s => s.id === this.selectedId);
 
     if (this.selectedSoftwares) {
       this.selectionChanged();
     }
+  }
+
+  refreshSoftwares() {
+    this.refreshSoftwaresRequest.emit();
   }
 
   selectionChanged() {

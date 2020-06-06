@@ -25,7 +25,7 @@ export class SoftwareMainComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(params => this.onParameterChanged(params));
 
-    this.store.dispatch(ActionBusyAppender.executeWithMainBusy(loadSoftwareNames()));
+    this.refreshSoftwares();
   }
 
   private onParameterChanged(params: ParamMap) {
@@ -34,6 +34,10 @@ export class SoftwareMainComponent implements OnInit {
     } else {
       this.store.dispatch(clearSoftwareAssemblies());
     }
+  }
+
+  refreshSoftwares() {
+    this.store.dispatch(ActionBusyAppender.executeWithMainBusy(loadSoftwareNames()));
   }
 
   selectedSoftwareChanged(software: AssemblyBase) {
