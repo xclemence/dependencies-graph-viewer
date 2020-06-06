@@ -25,7 +25,7 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
   private _selectedDepth = 1;
   private _depthChanged: BehaviorSubject<number>;
 
-  private _assemblyId: string;
+  assemblyId: string;
   private _subscription: Subscription;
 
   public set selectedDepth(value: number) {
@@ -42,7 +42,7 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
 
   constructor(private _store: Store<AssemblyState>, @Inject(MAT_DIALOG_DATA) data: {name: string, depthMax: number, id: string}) {
     this.assemblyName = data.name;
-    this._assemblyId = data.id;
+    this.assemblyId = data.id;
     this.depthMax = data.depthMax;
 
     this._depthChanged = new BehaviorSubject(this.selectedDepth);
@@ -58,7 +58,7 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
     this._subscription = this._depthChanged.pipe(
       debounceTime(100),
       distinctUntilChanged(),
-    ).subscribe(x => this._store.dispatch(ActionBusyAppender.executeWithBusy(loadAssemblyDepth( { assemblyId: this._assemblyId, depth: x }), 'AssemblyDepth')));
+    ).subscribe(x => this._store.dispatch(ActionBusyAppender.executeWithBusy(loadAssemblyDepth( { assemblyId: this.assemblyId, depth: x }), 'AssemblyDepth')));
   }
 
   ngOnDestroy(): void {

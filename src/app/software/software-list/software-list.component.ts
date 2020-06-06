@@ -14,12 +14,26 @@ import { softwareNameStateSelector } from '../store/software.selectors';
 })
 export class SoftwareListComponent implements OnInit {
 
+  private _selectedId: string;
+
   @Output() selectionChange: EventEmitter<AssemblyBase> = new EventEmitter();
-  @Input() selectedId: string;
 
   softwareNames: Observable<AssemblyBase[]>;
+  currentSoftwareNames: AssemblyBase[];
 
-  public selectedSoftwares = new Array<AssemblyBase>();
+  selectedSoftwares = new Array<AssemblyBase>();
+
+  get selectedId(): string {
+    return this._selectedId;
+  }
+
+  @Input() set selectedId(value: string) {
+    if (value === this._selectedId) {
+      return;
+    }
+    this._selectedId = value;
+    this.selectSoftwareById();
+  }
 
   constructor(private store: Store<SoftwareState>) { }
 
@@ -28,12 +42,26 @@ export class SoftwareListComponent implements OnInit {
       select(softwareNameStateSelector),
       map(x => x.softwareNames),
       tap(x => {
-        this.selectedSoftwares = x.filter(s => s.id === this.selectedId);
-        if (this.selectedSoftwares) {
-          this.selectionChanged();
-        }
+        this.currentSoftwareNames = x;
+        this.selectSoftwareById();
       }),
     );
+  }
+
+  selectSoftwareById() {
+    if (!this.currentSoftwareNames) {
+      return;
+    }
+
+    if (!this.selectedId) {
+      return;
+    }
+
+    this.selectedSoftwares = this.currentSoftwareNames.filter(s => s.id === this.selectedId);
+
+    if (this.selectedSoftwares) {
+      this.selectionChanged();
+    }
   }
 
   selectionChanged() {
