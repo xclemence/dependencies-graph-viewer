@@ -32,7 +32,7 @@ export class SoftwareListComponent implements OnInit, OnDestroy {
     if (value === this.#selectedId) {
       return;
     }
-    this.selectedId = value;
+    this.#selectedId = value;
     this.selectSoftwareById();
   }
 

@@ -49,11 +49,11 @@ export class ForceGraphComponent implements OnInit, AfterViewChecked {
   }
 
   private get nodeSelector(): any {
-    return this.#svgGroup.attr('class', 'nodes').selectAll('g');
+    return this.#svgGroup.select('.nodes').selectAll('g');
   }
 
   private get linkSelector(): any {
-    return this.#svgGroup.attr('class', 'links').selectAll('line');
+    return this.#svgGroup.select('.links').selectAll('line');
   }
 
   constructor() { }
@@ -85,9 +85,9 @@ export class ForceGraphComponent implements OnInit, AfterViewChecked {
     this.#svg.attr('height', this.#height);
 
     this.#simulation = d3.forceSimulation()
-      .force('link', d3.forceLink().id((d: any) => d.id).distance(200))
-      .force('collide', d3.forceCollide(this.circleSize * 1.5).iterations(16))
-      .force('charge', d3.forceManyBody().strength(-30))
+      .force('link', d3.forceLink().id((d: any) => d.id).distance(150))
+      .force('collide', d3.forceCollide(this.circleSize * 1.5).iterations(20))
+      .force('charge', d3.forceManyBody().strength(-30).distanceMin(10))
       .force('center', d3.forceCenter(this.#width / 2, this.#height / 2));
 
     this.#svgGroup = this.#svg.append('g');
@@ -109,6 +109,10 @@ export class ForceGraphComponent implements OnInit, AfterViewChecked {
 
     const zoomHandler = d3.zoom().on('zoom', () => this.#svgGroup.attr('transform', d3.event.transform));
     zoomHandler(d3.select('svg'));
+
+    this.#svgGroup.append('g').attr('class', 'links');
+    this.#svgGroup.append('g').attr('class', 'nodes');
+
   }
 
   private generateGraphData() {
@@ -149,17 +153,17 @@ export class ForceGraphComponent implements OnInit, AfterViewChecked {
     nodes = nodes.enter().append('g');
 
     nodes.append('circle')
-               .attr('stroke', (d: Node) => d.color)
-               .attr('stroke-width', this.circleSize / 2.0)
-               .attr('fill', (d: Node) => d.color)
-               .attr('r', this.circleSize);
+         .attr('stroke', (d: Node) => d.color)
+         .attr('stroke-width', this.circleSize / 2.0)
+         .attr('fill', (d: Node) => d.color)
+         .attr('r', this.circleSize);
 
     nodes.append('text')
-              .text((d: Node) => d.label)
-              .attr('font-size', 15)
-              .attr('fill', 'white')
-              .attr('dx', 15)
-              .attr('dy', 4);
+         .text((d: Node) => d.label)
+         .attr('font-size', 15)
+         .attr('fill', 'white')
+         .attr('dx', 15)
+         .attr('dy', 4);
 
     this.#nodes = this.nodeSelector;
 
@@ -175,6 +179,9 @@ export class ForceGraphComponent implements OnInit, AfterViewChecked {
 
     this.#simulation.force<d3.ForceLink<any, any>>('link').links(this.#graph.links);
     this.#simulation.alphaTarget(0.3).restart();
+
+    const link = this.linkSelector;
+    this.#nodes = this.nodeSelector;
   }
 
   clearData() {
