@@ -11,10 +11,10 @@ import { UserSecurityService } from '../services';
 })
 export class ConnectedGuard implements CanActivate {
 
-  constructor(public dialog: MatDialog, private _userServie: UserSecurityService) { }
+  constructor(public dialog: MatDialog, private userServie: UserSecurityService) { }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> {
-    if (this._userServie.hasUser()) {
+    if (this.userServie.hasUser()) {
       return true;
     }
 

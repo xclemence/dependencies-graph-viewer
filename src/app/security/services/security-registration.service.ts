@@ -6,12 +6,12 @@ import { FeatureSecurityToken, SecurityConfigurationService } from './security-c
 @Injectable()
 export class SecurityRegistrationService {
 
-  constructor(@Inject(FeatureSecurityToken) private _featureConfig: FeatureRightsConfig[][],
-              private _securityConfigService: SecurityConfigurationService) {
+  constructor(@Inject(FeatureSecurityToken) private featureConfig: FeatureRightsConfig[][],
+              private securityConfigService: SecurityConfigurationService) {
   }
 
   register() {
-    this._securityConfigService.addFeatureRights(this._featureConfig.reduce((x, y) => x.concat(y)));
+    this.securityConfigService.addFeatureRights(this.featureConfig.reduce((x, y) => x.concat(y)));
 
   }
 }

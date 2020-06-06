@@ -8,9 +8,9 @@ import { Component } from '@angular/core';
 })
 export class HeaderPreviousComponent {
 
-  constructor(private _location: Location) { }
+  constructor(private location: Location) { }
 
   back() {
-    this._location.back();
+    this.location.back();
   }
 }

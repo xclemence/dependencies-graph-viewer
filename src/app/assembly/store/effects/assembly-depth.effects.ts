@@ -15,8 +15,8 @@ export class AssemblyDepthEffects {
     return this.actions.pipe(
       ofType(loadAssemblyDepth),
       switchMap(action => this.assemblyService.references(action.assemblyId, action.depth).pipe(
-        map(data => loadAssemblyDepthSuccess( { data: data, origin: action} )),
-        catchError(error => of(loadAssemblyDepthFailure( { error: error, origin: action })))
+        map(data => loadAssemblyDepthSuccess( { data, origin: action} )),
+        catchError(error => of(loadAssemblyDepthFailure( { error, origin: action })))
       )),
     );
   });

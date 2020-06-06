@@ -1,3 +1,3 @@
 export interface BusyState {
-  actionsInProgress: String[];
+  actionsInProgress: string[];
 }

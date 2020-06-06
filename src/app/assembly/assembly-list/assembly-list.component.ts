@@ -28,38 +28,38 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<AssemblyStat>;
   selection = new SelectionModel<AssemblyStat>(false, []);
 
-  private _openDialogSubscription: Subscription;
-  private _closeDialogSubscription: Subscription;
-  private _routeSubscription: Subscription;
-  private _storeSubscription: Subscription;
+  #openDialogSubscription: Subscription;
+  #closeDialogSubscription: Subscription;
+  #routeSubscription: Subscription;
+  #storeSubscription: Subscription;
 
-  private _idParameter: string;
+  #idParameter: string;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(public dialog: MatDialog,
-    private _store: Store<AssemblyState>,
-    private _urlService: UrlService,
-    private _route: ActivatedRoute) {
+              private store: Store<AssemblyState>,
+              private urlService: UrlService,
+              private route: ActivatedRoute) {
 
-    this._openDialogSubscription = this.dialog.afterOpened.subscribe(x => {
-      this._urlService.replaceSegment(1, x.componentInstance.assemblyId.toString(), this._route);
+    this.#openDialogSubscription = this.dialog.afterOpened.subscribe(x => {
+      this.urlService.replaceSegment(1, x.componentInstance.assemblyId.toString(), this.route);
     });
 
-    this._closeDialogSubscription = this.dialog.afterAllClosed.subscribe(x => this._urlService.removeAt(1, this._route));
+    this.#closeDialogSubscription = this.dialog.afterAllClosed.subscribe(x => this.urlService.removeAt(1, this.route));
   }
 
   ngOnInit() {
 
-    this._routeSubscription = this._route.paramMap.pipe(
+    this.#routeSubscription = this.route.paramMap.pipe(
       filter(x => x.has('id')),
       map(x => x.get('id'))
     ).subscribe(x => {
-      this._idParameter = x;
+      this.#idParameter = x;
       this.tryOpenDetailsFromParameter();
     });
 
-    this._storeSubscription = this._store.pipe(
+    this.#storeSubscription = this.store.pipe(
       select(assembliesStateSelector),
       map(x => {
         const source = new MatTableDataSource(x);
@@ -71,14 +71,14 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
       this.tryOpenDetailsFromParameter();
     });
 
-    this._store.dispatch(ActionBusyAppender.executeWithMainBusy(loadAssemblies()));
+    this.store.dispatch(ActionBusyAppender.executeWithMainBusy(loadAssemblies()));
   }
 
   ngOnDestroy(): void {
-    this._closeDialogSubscription?.unsubscribe();
-    this._openDialogSubscription?.unsubscribe();
-    this._routeSubscription?.unsubscribe();
-    this._storeSubscription?.unsubscribe();
+    this.#closeDialogSubscription?.unsubscribe();
+    this.#openDialogSubscription?.unsubscribe();
+    this.#routeSubscription?.unsubscribe();
+    this.#storeSubscription?.unsubscribe();
   }
 
   hasReferences(assemblyStat: AssemblyStat): boolean {
@@ -94,7 +94,7 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
   }
 
   tryOpenDetailsFromParameter() {
-    if (!this._idParameter) {
+    if (!this.#idParameter) {
       return;
     }
 
@@ -102,7 +102,7 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const index = this.dataSource.data.findIndex(x => x.id === this._idParameter);
+    const index = this.dataSource.data.findIndex(x => x.id === this.#idParameter);
 
     if (index !== -1) {
       this.openDetails(this.dataSource.data[index]);

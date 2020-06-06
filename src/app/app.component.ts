@@ -17,8 +17,8 @@ export class AppComponent {
     { path : 'assembly', label: 'Assembly', roles: [ ] },
   ];
 
-  constructor(private _securityConfigurationService: SecurityConfigurationService) {
-    const testModuleRights = _securityConfigurationService.getRights(TestModuleRightsKey);
+  constructor(private securityConfigurationService: SecurityConfigurationService) {
+    const testModuleRights = securityConfigurationService.getRights(TestModuleRightsKey);
 
     this.links.push({ path: 'test', label: 'Test', roles: testModuleRights.rights});
   }

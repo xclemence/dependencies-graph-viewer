@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Assembly, AssemblyBase } from '@app/core/models/assembly';
+import { Assembly } from '@app/core/models/assembly';
 import { Graph, Link, Node } from '@app/shared/models';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -14,7 +14,6 @@ import { softwareAssembliesStateSelector } from '../store/software.selectors';
   styleUrls: ['./software-references.component.scss']
 })
 export class SoftwareReferencesComponent implements OnInit {
-  private _softwareName: AssemblyBase;
 
   graph: Observable<Graph>;
 

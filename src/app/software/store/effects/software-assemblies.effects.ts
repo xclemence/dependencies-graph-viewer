@@ -15,8 +15,8 @@ export class SoftwareAssembliesEffects {
     return this.actions.pipe(
       ofType(loadSoftwareAssemblies),
       switchMap(action => this.softwareService.references(action.assemblyName).pipe(
-        map(data => loadSoftwareAssembliesSuccess( { data: data, origin: action} )),
-        catchError(error => of(loadSoftwareAssembliesFailure( { error: error, origin: action })))
+        map(data => loadSoftwareAssembliesSuccess( { data, origin: action} )),
+        catchError(error => of(loadSoftwareAssembliesFailure( { error, origin: action })))
       )),
     );
   });

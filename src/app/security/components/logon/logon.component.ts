@@ -18,7 +18,7 @@ export class LogonComponent {
 
   get hasErrors(): boolean { return !this.logonForm.valid; }
 
-  constructor(formBuilder: FormBuilder, private _authenService: AuthenticationService, public dialogRef: MatDialogRef<LogonComponent>) {
+  constructor(formBuilder: FormBuilder, private authenService: AuthenticationService, public dialogRef: MatDialogRef<LogonComponent>) {
     this.logonForm = formBuilder.group({
       userName: ['', Validators.required],
       password: ['', Validators.required],
@@ -32,7 +32,7 @@ export class LogonComponent {
       return;
     }
 
-    this._authenService.logon(this.userName.value, this.password.value)
+    this.authenService.logon(this.userName.value, this.password.value)
                        .subscribe(x => {
                           this.errorDisplayed = !x;
 

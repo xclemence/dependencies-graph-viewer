@@ -22,51 +22,51 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
   depthMax = 10;
   graph: Observable<Graph>;
 
-  private _selectedDepth = 1;
-  private _depthChanged: BehaviorSubject<number>;
+  #selectedDepth = 1;
+  #depthChanged: BehaviorSubject<number>;
+  #subscription: Subscription;
 
   assemblyId: string;
-  private _subscription: Subscription;
 
   public set selectedDepth(value: number) {
-    if (value === this._selectedDepth) {
+    if (value === this.#selectedDepth) {
       return;
     }
-    this._selectedDepth = value;
+    this.#selectedDepth = value;
     this.loadDepth(value);
   }
 
   public get selectedDepth(): number {
-    return this._selectedDepth;
+    return this.#selectedDepth;
   }
 
-  constructor(private _store: Store<AssemblyState>, @Inject(MAT_DIALOG_DATA) data: {name: string, depthMax: number, id: string}) {
+  constructor(private store: Store<AssemblyState>, @Inject(MAT_DIALOG_DATA) data: {name: string, depthMax: number, id: string}) {
     this.assemblyName = data.name;
     this.assemblyId = data.id;
     this.depthMax = data.depthMax;
 
-    this._depthChanged = new BehaviorSubject(this.selectedDepth);
+    this.#depthChanged = new BehaviorSubject(this.selectedDepth);
   }
 
   ngOnInit() {
 
-    this.graph = this._store.select(assemblyDepthStateSelector).pipe(
+    this.graph = this.store.select(assemblyDepthStateSelector).pipe(
       filter(x => x !== undefined),
       map(x => this.generateGraphData(x))
     );
 
-    this._subscription = this._depthChanged.pipe(
+    this.#subscription = this.#depthChanged.pipe(
       debounceTime(100),
       distinctUntilChanged(),
-    ).subscribe(x => this._store.dispatch(ActionBusyAppender.executeWithBusy(loadAssemblyDepth( { assemblyId: this.assemblyId, depth: x }), 'AssemblyDepth')));
+    ).subscribe(x => this.store.dispatch(ActionBusyAppender.executeWithBusy(loadAssemblyDepth( { assemblyId: this.assemblyId, depth: x }), 'AssemblyDepth')));
   }
 
   ngOnDestroy(): void {
-    this._subscription.unsubscribe();
+    this.#subscription.unsubscribe();
   }
 
   loadDepth(value: number) {
-    this._depthChanged.next(value);
+    this.#depthChanged.next(value);
   }
 
   get depthAvailable(): boolean {

@@ -59,7 +59,7 @@ export class AssemblyService {
         query: getAssemblyDepth,
         variables: {
           assemblyId: id,
-          depth: depth
+          depth
        } }).pipe(
       map((x: any) => x.data.Assembly[0]),
       map((x: any) => AssemblyConverter.toAssembly(x))

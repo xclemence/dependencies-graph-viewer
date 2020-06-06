@@ -3,7 +3,7 @@ import { Assembly, AssemblyBase, AssemblyLink, AssemblyStat } from '@app/core/mo
 export class AssemblyConverter {
 
     static toAssemblyBase<T extends AssemblyBase>(item: any): T {
-        return <T>{ id: item.name, version: item.version, name: item.shortName, isNative: item.isNative };
+        return { id: item.name, version: item.version, name: item.shortName, isNative: item.isNative } as T;
     }
 
     static toAssembly(item: any): Assembly {
@@ -12,7 +12,7 @@ export class AssemblyConverter {
 
         assembly.referencedAssemblies = item.allReferencedAssemblies.map((x: any) => this.toAssemblyBase<AssemblyBase>(x));
 
-        const links = item.allReferencedAssemblIesLinks.map(x => <AssemblyLink>{ sourceId: x.source, targetId: x.target });
+        const links = item.allReferencedAssemblIesLinks.map(x => ({ sourceId: x.source, targetId: x.target }));
 
         assembly.links = AssemblyConverter.filterBadLinks(links, assembly.referencedAssemblies);
 
@@ -34,6 +34,6 @@ export class AssemblyConverter {
     }
 
     static toAssemblyLinks(sourceId: any, items: any): AssemblyLink[] {
-        return items.map(x => <AssemblyLink>{ sourceId, targetId: x.name });
+        return items.map(x => ({ sourceId, targetId: x.name }));
     }
 }

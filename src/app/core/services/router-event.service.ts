@@ -12,8 +12,7 @@ import { UrlService } from './url.service';
 })
 export class RouterEventService {
 
-  private _busyId: Guid;
-  private _originUrl: string;
+  #originUrl: string;
 
   private map = new Map<string, () => void>([
     [NavigationStart.name, () => this.proceedNavigationStart()],
@@ -22,8 +21,8 @@ export class RouterEventService {
     [NavigationError.name, () => this.stopBusy()]
   ]);
 
-  constructor(private _router: Router, private store: Store<CoreState>, private _urlService: UrlService) {
-    this._router.events.subscribe(x => {
+  constructor(private router: Router, private store: Store<CoreState>, private urlService: UrlService) {
+    this.router.events.subscribe(x => {
       const action = this.map.get(x.constructor.name);
 
       if (action !== undefined) {
@@ -41,12 +40,12 @@ export class RouterEventService {
   }
 
   private proceedNavigationStart() {
-    this._originUrl = this._urlService.getCurrentPath();
+    this.#originUrl = this.urlService.getCurrentPath();
     this.startBusy();
   }
 
   private proceedNavigationCancel() {
     this.stopBusy();
-    this._urlService.moveSegment(this._originUrl);
+    this.urlService.moveSegment(this.#originUrl);
   }
 }

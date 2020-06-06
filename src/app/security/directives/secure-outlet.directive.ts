@@ -10,23 +10,23 @@ import { FeatureRightsService } from './../services/feature-rights.service';
 })
 export class SecureOutletDirective implements OnDestroy {
 
-  private _secureOutletId = Guid.create();
+  #secureOutletId = Guid.create();
 
-  private _activateSubscription: Subscription;
-  private _deactivateSubscription: Subscription;
+  #activateSubscription: Subscription;
+  #deactivateSubscription: Subscription;
 
   constructor(featureRightservice: FeatureRightsService, routerOutlet: RouterOutlet) {
-    this._activateSubscription = routerOutlet.activateEvents.subscribe((x: any) => {
-      featureRightservice.addLocation(this._secureOutletId.toString(), x);
+    this.#activateSubscription = routerOutlet.activateEvents.subscribe((x: any) => {
+      featureRightservice.addLocation(this.#secureOutletId.toString(), x);
     });
 
-    this._deactivateSubscription = routerOutlet.deactivateEvents.subscribe((x: any) => {
-      featureRightservice.removeLocation(this._secureOutletId.toString());
+    this.#deactivateSubscription = routerOutlet.deactivateEvents.subscribe((x: any) => {
+      featureRightservice.removeLocation(this.#secureOutletId.toString());
     });
   }
 
   ngOnDestroy(): void {
-    this._activateSubscription.unsubscribe();
-    this._deactivateSubscription.unsubscribe();
+    this.#activateSubscription.unsubscribe();
+    this.#deactivateSubscription.unsubscribe();
   }
 }

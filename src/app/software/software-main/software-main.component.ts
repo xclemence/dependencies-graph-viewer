@@ -19,8 +19,8 @@ export class SoftwareMainComponent implements OnInit {
   selectedSoftwareId: string;
 
   constructor(private urlService: UrlService,
-    private route: ActivatedRoute,
-    private store: Store<SoftwareState>) { }
+              private route: ActivatedRoute,
+              private store: Store<SoftwareState>) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => this.onParameterChanged(params));

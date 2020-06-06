@@ -15,7 +15,7 @@ export class AssembliesEffects {
     return this.actions.pipe(
       ofType(loadAssemblies),
       switchMap(action => this.assemblyService.assemblyStatistics(1, 1).pipe(
-        map(data => loadAssembliesSuccess({ data: data, origin: action })),
+        map(data => loadAssembliesSuccess({ data, origin: action })),
         catchError(error => of(loadAssembliesFailure({ error, origin: action })))
       )),
     );

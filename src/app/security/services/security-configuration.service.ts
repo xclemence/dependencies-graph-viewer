@@ -13,25 +13,25 @@ export const ModuleSecurityToken = new InjectionToken<ModuleSecurityConfig>('Con
 })
 export class SecurityConfigurationService {
 
-  private _featureConfig = new Array<FeatureRightsConfig>();
+  #featureConfig = new Array<FeatureRightsConfig>();
 
   get FeatureRights(): FeatureRightsConfig[] {
-    this._logger.log(JSON.stringify(this._featureConfig));
-    return this._featureConfig;
+    this.logger.log(JSON.stringify(this.#featureConfig));
+    return this.#featureConfig;
   }
 
-  constructor(@Inject(ModuleSecurityToken) private _moduleConfig: ModuleSecurityConfig,
-              private _logger: LoggerService) {}
+  constructor(@Inject(ModuleSecurityToken) private moduleConfig: ModuleSecurityConfig,
+              private logger: LoggerService) {}
 
   addFeatureRights(rigths: FeatureRightsConfig[]) {
-    this._featureConfig.push(...rigths);
+    this.#featureConfig.push(...rigths);
   }
 
   getServer() {
-    return this._moduleConfig.serverUrl;
+    return this.moduleConfig.serverUrl;
   }
 
   getRights(configKey: string): FeatureRightsConfig  {
-    return this._featureConfig.filter(x => x.feature === configKey)[0];
+    return this.#featureConfig.filter(x => x.feature === configKey)[0];
   }
 }

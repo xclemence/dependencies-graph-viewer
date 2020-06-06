@@ -10,7 +10,7 @@ import { softwareAssembliesStateSelector } from '../store/software.selectors';
 export class StatValue {
   label: string;
   value: number;
-  color: string = null;
+  color?: string = null;
 
   public constructor(init?: Partial<StatValue>) {
     Object.assign(this, init);
@@ -41,7 +41,7 @@ export class SoftwareStatisticsComponent implements OnInit {
       return [];
     }
 
-    return <StatValue[]> [
+    return [
       { label: 'Assemblies', value: assembly.referencedAssemblies.length + 1},
       { label: 'Native', value: this.countAssemblies(assembly, x => x.isNative), color: 'lightGreen'},
       { label: 'Managed', value: this.countAssemblies(assembly, x => !x.isNative), color: 'lightBlue'},

@@ -11,9 +11,9 @@ import { UserSecurityService } from './user-security.service';
 })
 export class AuthenticationService {
 
-  constructor(private _userService: UserSecurityService,
-              private _featureRigthsService: FeatureRightsService,
-              private _router: Router) { }
+  constructor(private userService: UserSecurityService,
+              private featureRigthsService: FeatureRightsService,
+              private router: Router) { }
 
   logon(userName: string, password: string): Observable<boolean> {
     if (userName !== 'xce') {
@@ -21,21 +21,21 @@ export class AuthenticationService {
     }
 
     const user = new User({name: userName, roles: ['admin', 'super-user']});
-    this._userService.user = user;
+    this.userService.user = user;
     localStorage.setItem('userToken', 'TokenForAuthen');
     return of(true);
   }
 
   logout() {
-    this._userService.user = null;
+    this.userService.user = null;
     localStorage.removeItem('userToken');
 
     this.ensureCurrentLocation();
   }
 
   private ensureCurrentLocation() {
-    if (!this._featureRigthsService.validateCurrentLocation(null)) {
-      this._router.navigateByUrl('/');
+    if (!this.featureRigthsService.validateCurrentLocation(null)) {
+      this.router.navigateByUrl('/');
     }
   }
 }
