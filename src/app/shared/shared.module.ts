@@ -7,6 +7,7 @@ import { AllMaterialModuleModule } from './all-material-module.module';
 import { HeaderLinksComponent, HeaderUserComponent } from './components';
 import { BusyComponent } from './components/busy/busy.component';
 import { ForceGraphComponent } from './components/force-graph/force-graph.component';
+import { HeaderPreviousComponent } from './components/header/header-previous/header-previous.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 
@@ -16,7 +17,8 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     PageNotFoundComponent,
     BusyComponent,
     HeaderUserComponent,
-    HeaderLinksComponent
+    HeaderLinksComponent,
+    HeaderPreviousComponent
   ],
   imports: [
     CommonModule,
@@ -29,7 +31,8 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     PageNotFoundComponent,
     BusyComponent,
     HeaderLinksComponent,
-    HeaderUserComponent
+    HeaderUserComponent,
+    HeaderPreviousComponent
   ]
 })
 export class SharedModule { }

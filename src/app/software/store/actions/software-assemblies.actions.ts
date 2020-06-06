@@ -15,3 +15,7 @@ export const loadSoftwareAssembliesFailure = createAction(
   '[Software Assemblies] Load Software Assemblies Failure',
   props<{ error: any, origin: Action }>()
 );
+
+export const clearSoftwareAssemblies = createAction(
+  '[Software Assemblies] CLear Software Assemblies'
+);
