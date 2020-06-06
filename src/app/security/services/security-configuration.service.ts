@@ -1,5 +1,5 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
-import { LoggerService } from '@app/core/services/tech';
+import { LoggerService } from '@app/core/services';
 
 import { FeatureRightsConfig } from '../models/SeccurityConfig';
 import { ModuleSecurityConfig } from './../models/SeccurityConfig';

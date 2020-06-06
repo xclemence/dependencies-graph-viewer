@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AssemblyService } from '@app/core/services/api';
+import { AssemblyService } from '@app/assembly/services/assembly.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
@@ -9,7 +9,9 @@ import { loadAssemblies, loadAssembliesFailure, loadAssembliesSuccess } from './
 @Injectable()
 export class AssembliesEffects {
 
-  loadSoftwareNames = createEffect(() => {
+  constructor(private actions: Actions, private assemblyService: AssemblyService) {}
+
+  loadAssemblies = createEffect(() => {
     return this.actions.pipe(
       ofType(loadAssemblies),
       switchMap(action => this.assemblyService.assemblyStatistics(1, 1).pipe(
@@ -18,6 +20,4 @@ export class AssembliesEffects {
       )),
     );
   });
-
-  constructor(private actions: Actions, private assemblyService: AssemblyService) {}
 }

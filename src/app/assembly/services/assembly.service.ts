@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
+import { AssemblyConverter } from '@app/core/converters';
+import { Assembly, AssemblyStat } from '@app/core/models/assembly';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { Observable } from 'rxjs';
 import { flatMap, map, toArray } from 'rxjs/operators';
-
-import { Assembly, AssemblyStat } from '../../models/assembly';
-import { AssemblyConverter } from './assembly-converter';
 
 const getAssemblies = gql`
   query assemblies {

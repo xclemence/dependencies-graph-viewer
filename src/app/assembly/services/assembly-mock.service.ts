@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import { AssemblyMockProvider } from '@app/core/services/assembly.mock-provider';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
-import { Assembly, AssemblyLink, AssemblyStat } from '../../models/assembly';
-import { AssemblyMockProvider } from './assembly.mock-provider';
+import { Assembly, AssemblyLink, AssemblyStat } from '../../core/models/assembly';
 
 @Injectable()
 export class AssemblyMockService {

@@ -6,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { AssemblyStat } from '@app/core/models/assembly';
-import { UrlService } from '@app/core/services/tech';
+import { UrlService } from '@app/core/services';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';

@@ -2,18 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { AssemblyBase } from '@app/core/models/assembly';
-import { UrlService } from '@app/core/services/tech';
+import { UrlService } from '@app/core/services';
 import { Store } from '@ngrx/store';
 
-import { loadSoftwareAssemblies, loadSoftwareNames } from './store/actions';
-import { SoftwareState } from './store/models';
+import { loadSoftwareAssemblies, loadSoftwareNames } from '../store/actions';
+import { SoftwareState } from '../store/models';
 
 @Component({
-  selector: 'app-software',
-  templateUrl: './software.component.html',
-  styleUrls: ['./software.component.scss']
+  selector: 'app-software-main',
+  templateUrl: './software-main.component.html',
+  styleUrls: ['./software-main.component.scss']
 })
-export class SoftwareComponent implements OnInit {
+export class SoftwareMainComponent implements OnInit {
 
   selectedSoftwareId: string;
 

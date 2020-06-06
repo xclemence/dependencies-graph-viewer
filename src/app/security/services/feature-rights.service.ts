@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '@app/core/models/user';
-import { LoggerService } from '@app/core/services/tech';
+import { LoggerService } from '@app/core/services';
 import { SecurityConfigurationService } from '@app/security/services/security-configuration.service';
 
 @Injectable({

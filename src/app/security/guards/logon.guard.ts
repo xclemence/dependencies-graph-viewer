@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { UrlService } from '@app/core/services/tech';
+import { UrlService } from '@app/core/services';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 

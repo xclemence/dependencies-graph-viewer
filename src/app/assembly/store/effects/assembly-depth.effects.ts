@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AssemblyService } from '@app/core/services/api';
+import { AssemblyService } from '@app/assembly/services/assembly.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
@@ -11,7 +11,7 @@ export class AssemblyDepthEffects {
 
   constructor(private actions: Actions, private assemblyService: AssemblyService) {}
 
-  loadSoftwareNames = createEffect(() => {
+  loadAssemblyDepth = createEffect(() => {
     return this.actions.pipe(
       ofType(loadAssemblyDepth),
       switchMap(action => this.assemblyService.references(action.assemblyId, action.depth).pipe(
