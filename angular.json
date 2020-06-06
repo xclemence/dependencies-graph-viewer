@@ -24,7 +24,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
-              "src/favicon.ico",
+              "src/application.ico",
               "src/assets"
             ],
             "styles": [
@@ -93,7 +93,7 @@
             ],
             "scripts": [],
             "assets": [
-              "src/favicon.ico",
+              "src/application.ico",
               "src/assets"
             ]
           }
@@ -141,5 +141,8 @@
       }
     }
   },
-  "defaultProject": "DependenciesGraph"
+  "defaultProject": "DependenciesGraph",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }

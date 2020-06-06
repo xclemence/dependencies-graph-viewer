@@ -15,22 +15,22 @@ export class HeaderLink {
 })
 export class HeaderLinksComponent implements OnInit, OnDestroy {
   @Input() allLinks: Array<HeaderLink>;
-  @Input() userLinks: Array<HeaderLink>;
-  private _serviceSubscription: Subscription;
+  userLinks: Array<HeaderLink> = [];
+  #serviceSubscription: Subscription;
 
-  constructor(private _userService: UserSecurityService) {
+  constructor(private userService: UserSecurityService) {
   }
 
   ngOnInit() {
-    this._serviceSubscription = this._userService.observe().subscribe(x => this.updateUserLinks());
+    this.#serviceSubscription = this.userService.observe().subscribe(x => this.updateUserLinks());
   }
 
   ngOnDestroy(): void {
-    this._serviceSubscription.unsubscribe();
+    this.#serviceSubscription.unsubscribe();
   }
 
   hasRoles(roles: Array<string>) {
-    return roles.every(x => this._userService.hasRight(x));
+    return roles.every(x => this.userService.hasRight(x));
   }
 
   private updateUserLinks() {

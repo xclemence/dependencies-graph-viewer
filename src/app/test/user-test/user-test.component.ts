@@ -9,10 +9,10 @@ import { SecurityConfigurationService } from '@app/security/services/security-co
 export class UserTestComponent implements OnInit {
 
   result: any;
-  constructor(private _config: SecurityConfigurationService) { }
+  constructor(private config: SecurityConfigurationService) { }
 
   ngOnInit() {
-    this.result = this._config.FeatureRights;
+    this.result = this.config.FeatureRights;
   }
 
 }

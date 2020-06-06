@@ -1,23 +1,42 @@
 @import '~styles/app-theme';
 
 .assemblies-container {
-    flex: 1;
-    display: flex;
-    height: 1px; //only for firefox (good position of scroll bar)
+  flex: 1;
+  display: flex;
+  height: 1px; //only for firefox (good position of scroll bar)
 }
 
 :host {
-    flex: 1;
-    display: flex;
-    overflow: auto;
+  flex: 1;
+  display: flex;
+  overflow: auto;
 }
 
 .assemblies-table {
-    flex: 1;
-    width: 100%; //only for firefox
+  flex: 1;
+  width: 100%; //only for firefox
 }
 
 .mat-row:hover {
-    background: mat-color($accent, 700);
-    cursor: pointer;
+  background: mat-color($accent, 700);
+  cursor: pointer;
+}
+
+.no-value {
+  opacity: 40%;
+}
+
+.dot {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.native-dot {
+  background: lightgreen;
+}
+
+.managed-dot {
+    background: lightblue;
 }

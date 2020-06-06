@@ -1,10 +1,12 @@
-import { AssemblyRoutingModule } from './assembly-routing.module';
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AssemblyListComponent } from './assembly-list/assembly-list.component';
-import { SharedModule, AllMaterialModuleModule } from '@app/shared';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AllMaterialModuleModule, SharedModule } from '@app/shared';
+
 import { AssemblyDetailsComponent } from './assembly-details/assembly-details.component';
+import { AssemblyListComponent } from './assembly-list/assembly-list.component';
+import { AssemblyRoutingModule } from './assembly-routing.module';
+import { AssemblyStoreModule } from './assembly-store.module';
 
 @NgModule({
   declarations: [AssemblyListComponent, AssemblyDetailsComponent],
@@ -13,7 +15,8 @@ import { AssemblyDetailsComponent } from './assembly-details/assembly-details.co
     SharedModule,
     AssemblyRoutingModule,
     AllMaterialModuleModule,
-    FormsModule
+    FormsModule,
+    AssemblyStoreModule
   ],
   entryComponents: [
     AssemblyDetailsComponent

@@ -12,32 +12,32 @@ import { Subscription } from 'rxjs';
 })
 export class HeaderUserComponent implements OnInit, OnDestroy {
 
-  private _user: User = null;
-  private _userSubscription: Subscription;
+  #user: User = null;
+  #userSubscription: Subscription;
 
   get userConnected(): boolean {
-    return this._user !== null && this._user !== undefined;
+    return this.#user !== null && this.#user !== undefined;
   }
 
   get userName(): string {
-    return this._user.name;
+    return this.#user.name;
   }
 
-  constructor(private _router: Router, private _userService: UserSecurityService, private _authSevice: AuthenticationService) { }
+  constructor(private router: Router, private userService: UserSecurityService, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
-    this._userSubscription = this._userService.observe().subscribe(x => this._user = x);
+    this.#userSubscription = this.userService.observe().subscribe(x => this.#user = x);
   }
 
   ngOnDestroy(): void {
-    this._userSubscription.unsubscribe();
+    this.#userSubscription.unsubscribe();
   }
 
   logon() {
-    this._router.navigateByUrl('/logon');
+    this.router.navigateByUrl('/logon');
   }
 
   logout() {
-    this._authSevice.logout();
+    this.authenticationService.logout();
   }
 }

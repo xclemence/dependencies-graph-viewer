@@ -3,7 +3,6 @@ export class AssemblyBase {
     public name: string;
     public version: string;
     public isNative: boolean;
-    public isSystem: boolean;
     public isSoftware: boolean;
 }
 
@@ -14,7 +13,7 @@ export class AssemblyLink {
 
 export class Assembly extends AssemblyBase {
     public links: AssemblyLink[];
-    public referencedAssemblies: Assembly[];
+    public referencedAssemblies: AssemblyBase[];
 }
 
 export interface AssemblyStat extends AssemblyBase {

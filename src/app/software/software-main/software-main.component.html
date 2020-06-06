@@ -1,0 +1,4 @@
+<div class="container">
+  <app-software-list class="list" (selectionChange)="selectedSoftwareChanged($event)" (refreshSoftwaresRequest)="refreshSoftwares()" [selectedId]="selectedSoftwareId"></app-software-list>
+  <app-software-references class="references-details"></app-software-references>
+</div>

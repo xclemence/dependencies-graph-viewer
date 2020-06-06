@@ -1,19 +1,20 @@
-import '@app/core/extensions/observable-busy';
-
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
+import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { AssemblyStat } from '@app/core/models/assembly';
-import { AssemblyService } from '@app/core/services/api';
-import { UrlService } from '@app/core/services/tech';
-import { BusyService } from '@app/core/services/tech/busy.service';
-import { Observable, Subscription } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { UrlService } from '@app/core/services';
+import { select, Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
+import { assembliesStateSelector as assembliesStateSelector } from '../store/assembly.selectors';
+import { AssemblyState } from '../store/models';
 import { AssemblyDetailsComponent } from './../assembly-details/assembly-details.component';
+import { loadAssemblies } from './../store/actions/assemblies.actions';
 
 @Component({
   selector: 'app-assembly-list',
@@ -22,70 +23,97 @@ import { AssemblyDetailsComponent } from './../assembly-details/assembly-details
 })
 export class AssemblyListComponent implements OnInit, OnDestroy {
 
-  displayedColumns = ['id', 'name', 'version', 'isNative', 'isSystem', 'isSoftware', 'depth', 'links'];
+  displayedColumns = ['type', 'name', 'version', 'depth', 'links'];
 
   dataSource: MatTableDataSource<AssemblyStat>;
   selection = new SelectionModel<AssemblyStat>(false, []);
-  assemblyObservable: Observable<AssemblyStat[]>;
 
-  private _openDialogSubscription: Subscription;
-  private _closeDialogSubscription: Subscription;
+  #openDialogSubscription: Subscription;
+  #closeDialogSubscription: Subscription;
+  #routeSubscription: Subscription;
+  #storeSubscription: Subscription;
+
+  #idParameter: string;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  private _idParameter: string;
-
   constructor(public dialog: MatDialog,
-              private _assemblyService: AssemblyService,
-              private _urlService: UrlService,
-              private _route: ActivatedRoute,
-              private _busyService: BusyService) {
+              private store: Store<AssemblyState>,
+              private urlService: UrlService,
+              private route: ActivatedRoute) {
 
-    this._openDialogSubscription = this.dialog.afterOpened.subscribe(x => {
-      this._urlService.replaceSegment(1, x.componentInstance.assemblyId.toString(), this._route);
+    this.#openDialogSubscription = this.dialog.afterOpened.subscribe(x => {
+      this.urlService.replaceSegment(1, x.componentInstance.assemblyId.toString(), this.route);
     });
 
-    this._closeDialogSubscription = this.dialog.afterAllClosed.subscribe(x => this._urlService.removeAt(1, this._route));
+    this.#closeDialogSubscription = this.dialog.afterAllClosed.subscribe(x => this.urlService.removeAt(1, this.route));
   }
 
   ngOnInit() {
-    this.assemblyObservable = this._route.paramMap.pipe(
-      map(x => x.has('id') ? x.get('id') : null),
-      tap(x => this._idParameter = x),
-      switchMap(x => this._assemblyService.assemblyStatistics(1, 1))
-    );
 
-    this.managedAssemblySubscription();
+    this.#routeSubscription = this.route.paramMap.pipe(
+      filter(x => x.has('id')),
+      map(x => x.get('id'))
+    ).subscribe(x => {
+      this.#idParameter = x;
+      this.tryOpenDetailsFromParameter();
+    });
+
+    this.#storeSubscription = this.store.pipe(
+      select(assembliesStateSelector),
+      map(x => {
+        const source = new MatTableDataSource(x);
+        source.sort = this.sort;
+        return source;
+      }),
+    ).subscribe(x => {
+      this.dataSource = x;
+      this.tryOpenDetailsFromParameter();
+    });
+
+    this.store.dispatch(ActionBusyAppender.executeWithMainBusy(loadAssemblies()));
   }
 
   ngOnDestroy(): void {
-    this._closeDialogSubscription.unsubscribe();
-    this._openDialogSubscription.unsubscribe();
+    this.#closeDialogSubscription?.unsubscribe();
+    this.#openDialogSubscription?.unsubscribe();
+    this.#routeSubscription?.unsubscribe();
+    this.#storeSubscription?.unsubscribe();
   }
 
-  managedAssemblySubscription() {
-    this.assemblyObservable.executeWithMainBusy(this._busyService)
-                           .subscribe(x => this.updateAssemblies(x, this._idParameter),
-                                      x => this.managedAssemblySubscription());
+  hasReferences(assemblyStat: AssemblyStat): boolean {
+    return assemblyStat.depthMax > 0;
+  }
+
+  getAssemblyTypeName(assemblyStat: AssemblyStat): string {
+    return assemblyStat.isNative ? 'Native' : 'Managed';
+  }
+
+  getTypeColor(assemblyStat: AssemblyStat): string {
+    return assemblyStat.isNative ? 'lightgreen' : 'lightblue';
+  }
+
+  tryOpenDetailsFromParameter() {
+    if (!this.#idParameter) {
+      return;
+    }
+
+    if (!this.dataSource || !this.dataSource.data) {
+      return;
+    }
+
+    const index = this.dataSource.data.findIndex(x => x.id === this.#idParameter);
+
+    if (index !== -1) {
+      this.openDetails(this.dataSource.data[index]);
+    }
   }
 
   openDetails(item: AssemblyStat) {
     this.dialog.open(AssemblyDetailsComponent, {
       width: '80%',
       height: '80%',
-      data: {name: `${item.name} (${item.version})`, id: item.id, depthMax: item.depthMax}
+      data: { name: `${item.name} (${item.version})`, id: item.id, depthMax: item.depthMax }
     });
-  }
-
-  private updateAssemblies(assemblies: AssemblyStat[], selectedId: string) {
-      this.dataSource = new MatTableDataSource(assemblies);
-      this.dataSource.sort = this.sort;
-
-      if (selectedId !== null) {
-        const index = assemblies.findIndex(x => x.id === selectedId);
-        if (index !== -1) {
-          this.openDetails(assemblies[index]);
-        }
-      }
   }
 }

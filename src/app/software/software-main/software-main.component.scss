@@ -1,0 +1,18 @@
+.container {
+    display: flex;
+    flex: 1;
+}
+
+.list {
+    width: 300px;
+}
+
+.references-details {
+    flex: 1;
+    display: flex;
+}
+
+:host {
+    flex: 1;
+    display: flex;
+}

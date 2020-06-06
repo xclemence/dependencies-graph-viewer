@@ -11,12 +11,11 @@ const routes: Routes = [
   {
     path: 'assembly',
     loadChildren: () => import('./assembly/assembly.module').then(m => m.AssemblyModule),
-    canActivate: [ ConnectedGuard ]
   },
   {
     path: 'test',
     loadChildren: () => import('./test/test.module').then(m => m.TestModule),
-    // canActivate: [ ConnectedGuard ]
+    canActivate: [ ConnectedGuard ]
   },
   {
     path: '',

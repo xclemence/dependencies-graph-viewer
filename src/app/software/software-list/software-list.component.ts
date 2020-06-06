@@ -1,45 +1,75 @@
-import { BusyService } from '@app/core/services/tech/busy.service';
-import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
-import { SoftwareService } from '@app/core/services/api';
-import { SoftwareMockService } from '@app/core/services/api/software-mock.service';
-import { MatSelectionList } from '@angular/material/list';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { AssemblyBase } from '@app/core/models/assembly';
-import '@app/core/extensions/observable-busy';
+import { select, Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { SoftwareState } from '../store/models';
+import { softwareNameStateSelector } from '../store/software.selectors';
 
 @Component({
   selector: 'app-software-list',
   templateUrl: './software-list.component.html',
-  styleUrls: ['./software-list.component.scss'],
-  providers: [
-    {provide: SoftwareService, useClass: SoftwareMockService}
-  ]
+  styleUrls: ['./software-list.component.scss']
 })
-export class SoftwareListComponent implements OnInit {
+export class SoftwareListComponent implements OnInit, OnDestroy {
 
-  @ViewChild('selectionList', { static: true }) selectionList: MatSelectionList;
+  #selectedId: string;
+  #storeSubscription: Subscription;
+
   @Output() selectionChange: EventEmitter<AssemblyBase> = new EventEmitter();
-  @Input() selectedId: string;
+  @Output() refreshSoftwaresRequest = new EventEmitter();
 
-  public softwareNames: AssemblyBase[];
+  softwareNames: AssemblyBase[];
 
-  public selectedSoftwares = new Array<AssemblyBase>();
+  selectedSoftwares = new Array<AssemblyBase>();
 
-  constructor(private softwareService: SoftwareService, private busyService: BusyService) { }
-
-  ngOnInit() {
-    this.softwareService.names()
-                        .executeWithMainBusy(this.busyService)
-                        .subscribe(x => {
-                          this.softwareNames = x;
-                          this.refreshSelection();
-                        });
-
-    (<any>this.selectionList.selectedOptions)._multiple = false;
+  get selectedId(): string {
+    return this.#selectedId;
   }
 
-  refreshSelection() {
-    this.selectedSoftwares = this.softwareNames.filter(x => x.id === this.selectedId);
-    this.selectionChanged();
+  @Input() set selectedId(value: string) {
+    if (value === this.#selectedId) {
+      return;
+    }
+    this.#selectedId = value;
+    this.selectSoftwareById();
+  }
+
+  constructor(private store: Store<SoftwareState>) { }
+
+  ngOnInit() {
+    this.#storeSubscription = this.store.pipe(
+      select(softwareNameStateSelector),
+      map(x => x.softwareNames),
+    ).subscribe(x => {
+      this.softwareNames = x;
+      this.selectSoftwareById();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.#storeSubscription?.unsubscribe();
+  }
+
+  selectSoftwareById() {
+    if (!this.softwareNames) {
+      return;
+    }
+
+    if (!this.selectedId) {
+      return;
+    }
+
+    this.selectedSoftwares = this.softwareNames.filter(s => s.id === this.selectedId);
+
+    if (this.selectedSoftwares) {
+      this.selectionChanged();
+    }
+  }
+
+  refreshSoftwares() {
+    this.refreshSoftwaresRequest.emit();
   }
 
   selectionChanged() {

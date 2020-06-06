@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '@app/core/models/user';
-import { LoggerService } from '@app/core/services/tech';
+import { LoggerService } from '@app/core/services';
 import { SecurityConfigurationService } from '@app/security/services/security-configuration.service';
 
 @Injectable({
@@ -8,24 +8,24 @@ import { SecurityConfigurationService } from '@app/security/services/security-co
 })
 export class FeatureRightsService {
 
-  private _location = new Map<string, string>();
+  #location = new Map<string, string>();
 
-  constructor(private _configurationService: SecurityConfigurationService, private _loggerService: LoggerService) { }
+  constructor(private configurationService: SecurityConfigurationService, private loggerService: LoggerService) { }
 
   addLocation(key: string, component: any) {
-    this._location.set(key, component.constructor.name);
+    this.#location.set(key, component.constructor.name);
   }
 
   removeLocation(key: string) {
-    this._location.delete(key);
+    this.#location.delete(key);
   }
 
   validateCurrentLocation(user: User): boolean {
-    return Array.from(this._location.values()).every(x => this.validateComponentRight(x, user));
+    return Array.from(this.#location.values()).every(x => this.validateComponentRight(x, user));
   }
 
   validateComponentRight(component: string, user: User): boolean {
-    const config = this._configurationService.FeatureRights;
+    const config = this.configurationService.FeatureRights;
 
     const componentFeature = config.find(x => x.feature === component);
 

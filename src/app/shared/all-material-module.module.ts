@@ -11,11 +11,12 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   imports: [ MatToolbarModule, MatListModule, MatCardModule, MatTabsModule, MatInputModule, MatIconModule,
-    MatTableModule, MatDialogModule, MatSliderModule, MatSortModule, MatButtonModule, MatMenuModule ],
+    MatTableModule, MatDialogModule, MatSliderModule, MatSortModule, MatButtonModule, MatMenuModule, MatTooltipModule ],
   exports: [ MatToolbarModule, MatListModule, MatCardModule, MatTabsModule, MatInputModule, MatIconModule,
-    MatTableModule, MatDialogModule, MatSliderModule, MatSortModule, MatButtonModule, MatMenuModule ],
+    MatTableModule, MatDialogModule, MatSliderModule, MatSortModule, MatButtonModule, MatMenuModule, MatTooltipModule ],
 })
 export class AllMaterialModuleModule {}

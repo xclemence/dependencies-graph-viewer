@@ -17,20 +17,20 @@ export enum GraphUpdateMode {
 })
 export class ForceGraphComponent implements OnInit, AfterViewChecked {
 
-  private _isInitialized = false;
-  private _simulation: Simulation<{}, undefined>;
+  #isInitialized = false;
+  #simulation: Simulation<{}, undefined>;
 
-  private _graph: Graph;
-  private _linkedByIndex = {};
+  #graph: Graph;
+  #linkedByIndex = {};
 
-  private _nodes: any = null;
-  private _links: any;
+  #nodes: any = null;
+  #links: any;
 
-  private _svg: any;
-  private _svgGroup: any;
+  #svg: any;
+  #svgGroup: any;
 
-  private _height: number;
-  private _width: number;
+  #height: number;
+  #width: number;
 
   @ViewChild('container', { static: true }) private container: ElementRef;
 
@@ -41,19 +41,19 @@ export class ForceGraphComponent implements OnInit, AfterViewChecked {
   @Input() public updateMode = GraphUpdateMode.Update;
 
   @Input() set graph(value: Graph) {
-    if (value === this._graph) {
+    if (value === this.#graph) {
       return;
     }
-    this._graph = value;
+    this.#graph = value;
     this.generateGraphData();
   }
 
   private get nodeSelector(): any {
-    return this._svgGroup.attr('class', 'nodes').selectAll('g');
+    return this.#svgGroup.select('.nodes').selectAll('g');
   }
 
   private get linkSelector(): any {
-    return this._svgGroup.attr('class', 'links').selectAll('line');
+    return this.#svgGroup.select('.links').selectAll('line');
   }
 
   constructor() { }
@@ -69,30 +69,30 @@ export class ForceGraphComponent implements OnInit, AfterViewChecked {
 
   private initializeGraph() {
 
-    if (this._isInitialized) {
+    if (this.#isInitialized) {
       return;
     }
 
-    this._isInitialized = true;
+    this.#isInitialized = true;
 
-    this._svg = d3.select('svg');
+    this.#svg = d3.select('svg');
     const size = this.getControlSize();
 
-    this._height = size.height;
-    this._width = size.width;
+    this.#height = size.height;
+    this.#width = size.width;
 
-    this._svg.attr('width', this._width);
-    this._svg.attr('height', this._height);
+    this.#svg.attr('width', this.#width);
+    this.#svg.attr('height', this.#height);
 
-    this._simulation = d3.forceSimulation()
-      .force('link', d3.forceLink().id((d: any) => d.id).distance(200))
-      .force('collide', d3.forceCollide(this.circleSize * 1.5).iterations(16))
-      .force('charge', d3.forceManyBody().strength(-30))
-      .force('center', d3.forceCenter(this._width / 2, this._height / 2));
+    this.#simulation = d3.forceSimulation()
+      .force('link', d3.forceLink().id((d: any) => d.id).distance(150))
+      .force('collide', d3.forceCollide(this.circleSize * 1.5).iterations(20))
+      .force('charge', d3.forceManyBody().strength(-30).distanceMin(10))
+      .force('center', d3.forceCenter(this.#width / 2, this.#height / 2));
 
-    this._svgGroup = this._svg.append('g');
+    this.#svgGroup = this.#svg.append('g');
 
-    this._svg.append('defs')
+    this.#svg.append('defs')
             .append('marker')
             .attr('id', 'arrowhead')
             .attr('viewBox', '-0 -5 10 10')
@@ -107,74 +107,81 @@ export class ForceGraphComponent implements OnInit, AfterViewChecked {
             .attr('stroke', 'none')
             .attr('fill', 'DimGray');
 
-    const zoom_handler = d3.zoom().on('zoom', () => this._svgGroup.attr('transform', d3.event.transform));
-    zoom_handler(d3.select('svg'));
+    const zoomHandler = d3.zoom().on('zoom', () => this.#svgGroup.attr('transform', d3.event.transform));
+    zoomHandler(d3.select('svg'));
+
+    this.#svgGroup.append('g').attr('class', 'links');
+    this.#svgGroup.append('g').attr('class', 'nodes');
+
   }
 
   private generateGraphData() {
 
-    if (!this._isInitialized) {
+    if (!this.#isInitialized) {
       this.initializeGraph();
     }
 
-    if (this._graph == null || this.updateMode === GraphUpdateMode.ClearAndAdd) {
+    if (this.#graph == null || this.updateMode === GraphUpdateMode.ClearAndAdd) {
       this.clearData();
     }
 
-    if (this._graph == null) {
-      this._simulation.restart();
+    if (this.#graph == null) {
+      this.#simulation.restart();
       return;
     }
 
-    this._linkedByIndex = {};
+    this.#linkedByIndex = {};
 
-    this._graph.links.forEach(d => {
-      this._linkedByIndex[`${d.source},${d.target}`] = true;
+    this.#graph.links.forEach(d => {
+      this.#linkedByIndex[`${d.source},${d.target}`] = true;
     });
 
-    const linkData = this.linkSelector.data(this._graph.links, (x: Link) => `${x.source}|${x.target}`);
+    const linkData = this.linkSelector.data(this.#graph.links, (x: Link) => `${x.source}|${x.target}`);
 
     linkData.exit().remove();
 
-    this._links = linkData.enter()
+    this.#links = linkData.enter()
                           .append('line')
                           .attr('marker-end', 'url(#arrowhead)')
                           .style('stroke-width', this.linkStroke)
                           .style('stroke', 'DimGray');
 
-    let nodes = this.nodeSelector.data(this._graph.nodes, (x: Node) => x.id);
+    let nodes = this.nodeSelector.data(this.#graph.nodes, (x: Node) => x.id);
 
     nodes.exit().remove();
 
     nodes = nodes.enter().append('g');
 
     nodes.append('circle')
-               .attr('stroke', (d: Node) => d.color)
-               .attr('stroke-width', this.circleSize / 2.0)
-               .attr('fill', (d: Node) => d.color)
-               .attr('r', this.circleSize);
+         .attr('stroke', (d: Node) => d.color)
+         .attr('stroke-width', this.circleSize / 2.0)
+         .attr('fill', (d: Node) => d.color)
+         .attr('r', this.circleSize);
 
     nodes.append('text')
-              .text((d: Node) => d.label)
-              .attr('font-size', 15)
-              .attr('fill', 'white')
-              .attr('dx', 15)
-              .attr('dy', 4);
+         .text((d: Node) => d.label)
+         .attr('font-size', 15)
+         .attr('fill', 'white')
+         .attr('dx', 15)
+         .attr('dy', 4);
 
-    this._nodes = this.nodeSelector;
+    this.#nodes = this.nodeSelector;
 
     // Here we need the real item
-    this._nodes.on('mouseover.fade', this.fade(this.disableOpacity))
+    this.#nodes.on('mouseover.fade', this.fade(this.disableOpacity))
                .on('mouseout.fade', this.fade(1));
 
-    this._simulation.nodes(this._graph.nodes).on('tick', () => this.ticked());
+    this.#simulation.nodes(this.#graph.nodes).on('tick', () => this.ticked());
 
-    this._nodes.call(d3.drag().on('start', d => this.dragstarted(d, this._simulation))
+    this.#nodes.call(d3.drag().on('start', d => this.dragstarted(d, this.#simulation))
                               .on('drag', this.dragged)
-                              .on('end', d => this.dragended(d, this._simulation)));
+                              .on('end', d => this.dragended(d, this.#simulation)));
 
-    this._simulation.force<d3.ForceLink<any, any>>('link').links(this._graph.links);
-    this._simulation.alphaTarget(0.3).restart();
+    this.#simulation.force<d3.ForceLink<any, any>>('link').links(this.#graph.links);
+    this.#simulation.alphaTarget(0.3).restart();
+
+    const link = this.linkSelector;
+    this.#nodes = this.nodeSelector;
   }
 
   clearData() {
@@ -185,23 +192,23 @@ export class ForceGraphComponent implements OnInit, AfterViewChecked {
   }
 
   ticked() {
-    this._links
+    this.#links
       .attr('x1', (d: any) => d.source.x)
       .attr('y1', (d: any) => d.source.y)
       .attr('x2', (d: any) => d.target.x)
       .attr('y2', (d: any) => d.target.y);
 
-    this._nodes.attr('transform', (d: any) => `translate(${d.x}, ${d.y})`);
+    this.#nodes.attr('transform', (d: any) => `translate(${d.x}, ${d.y})`);
   }
 
   isConnected(a: Node, b: Node) {
-    return this._linkedByIndex[`${a.id},${b.id}`] || a.id === b.id;
+    return this.#linkedByIndex[`${a.id},${b.id}`] || a.id === b.id;
   }
 
   fade(opacity: number) {
     return (d: any) => {
-      this._nodes.style('opacity', (o: any) => this.isConnected(d, o) ? 1 : opacity);
-      this._links.style('opacity', (o: any) => (o.source === d ? 1 : opacity));
+      this.#nodes.style('opacity', (o: any) => this.isConnected(d, o) ? 1 : opacity);
+      this.#links.style('opacity', (o: any) => (o.source === d ? 1 : opacity));
     };
   }
 
@@ -231,18 +238,18 @@ export class ForceGraphComponent implements OnInit, AfterViewChecked {
   onResize() {
     const size = this.getControlSize();
 
-    if (this._height === size.height && this._width === size.width) {
+    if (this.#height === size.height && this.#width === size.width) {
       return;
     }
 
-    this._height = size.height;
-    this._width = size.width;
+    this.#height = size.height;
+    this.#width = size.width;
 
-    this._svg.attr('width', this._width);
-    this._svg.attr('height', this._height);
+    this.#svg.attr('width', this.#width);
+    this.#svg.attr('height', this.#height);
 
-    this._simulation = this._simulation.force('center', d3.forceCenter(this._width / 2, this._height / 2));
-    this._simulation.restart();
+    this.#simulation = this.#simulation.force('center', d3.forceCenter(this.#width / 2, this.#height / 2));
+    this.#simulation.restart();
   }
 
   getControlSize(): {width: number, height: number} {

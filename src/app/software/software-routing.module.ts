@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
-import { SoftwareComponent } from './software.component';
-
+import { SoftwareMainComponent } from './software-main/software-main.component';
 
 const routes: Routes = [
-  { path: ':id', component: SoftwareComponent },
-  { path: '', component: SoftwareComponent }
+  { path: ':id', component: SoftwareMainComponent },
+  { path: '', component: SoftwareMainComponent }
 ];
 
 @NgModule({

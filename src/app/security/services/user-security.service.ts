@@ -8,26 +8,26 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
 })
 export class UserSecurityService {
 
-  private _userChanged: BehaviorSubject<User>;
+  #userChanged: BehaviorSubject<User>;
 
   set user(value: User) {
-    if (this._userChanged.value === value) {
+    if (this.#userChanged.value === value) {
       return;
     }
 
-    this._userChanged.next(value);
+    this.#userChanged.next(value);
   }
 
   get user(): User {
-    return this._userChanged.value;
+    return this.#userChanged.value;
   }
 
   constructor() {
-    this._userChanged = new BehaviorSubject<User>(null);
+    this.#userChanged = new BehaviorSubject<User>(null);
   }
 
   observe(): Observable<User> {
-    return this._userChanged.asObservable();
+    return this.#userChanged.asObservable();
   }
 
   hasUser(): boolean {

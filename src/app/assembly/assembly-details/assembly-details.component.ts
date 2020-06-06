@@ -1,12 +1,15 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AssemblyService } from '@app/core/services/api';
-import { Graph, Node, Link } from '@app/shared/models';
+import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { Assembly } from '@app/core/models/assembly';
+import { Graph, Link, Node } from '@app/shared/models';
+import { Store } from '@ngrx/store';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 
-import '@app/core/extensions/observable-busy';
-import { Subject, Observable, Subscription, BehaviorSubject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { assemblyDepthStateSelector } from '../store/assembly.selectors';
+import { AssemblyState } from '../store/models';
+import { loadAssemblyDepth } from './../store/actions/assembly-depth.actions';
 
 @Component({
   selector: 'app-assembly-details',
@@ -17,61 +20,60 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
 
   assemblyName: string;
   depthMax = 10;
-  graph: Graph;
+  graph: Observable<Graph>;
 
-  private _selectedDepth = 1;
-  private _depthChanged: BehaviorSubject<number>;
-  private _depthObservable: Observable<number>;
+  #selectedDepth = 1;
+  #depthChanged: BehaviorSubject<number>;
+  #subscription: Subscription;
 
   assemblyId: string;
-  isBusy = false;
-  subscription: Subscription;
 
   public set selectedDepth(value: number) {
-    if (value === this._selectedDepth) {
+    if (value === this.#selectedDepth) {
       return;
     }
-    this._selectedDepth = value;
+    this.#selectedDepth = value;
     this.loadDepth(value);
   }
 
   public get selectedDepth(): number {
-    return this._selectedDepth;
+    return this.#selectedDepth;
   }
 
-  constructor(private _assemblyService: AssemblyService, @Inject(MAT_DIALOG_DATA) data: {name: string, depthMax: number, id: string}) {
+  constructor(private store: Store<AssemblyState>, @Inject(MAT_DIALOG_DATA) data: {name: string, depthMax: number, id: string}) {
     this.assemblyName = data.name;
     this.assemblyId = data.id;
     this.depthMax = data.depthMax;
 
-    this._depthChanged = new BehaviorSubject(this.selectedDepth);
+    this.#depthChanged = new BehaviorSubject(this.selectedDepth);
   }
 
   ngOnInit() {
-    this._depthObservable = this._depthChanged.pipe(
-      debounceTime(100),
-      distinctUntilChanged()
+
+    this.graph = this.store.select(assemblyDepthStateSelector).pipe(
+      filter(x => x !== undefined),
+      map(x => this.generateGraphData(x))
     );
 
-    this.startDepthLoading();
+    this.#subscription = this.#depthChanged.pipe(
+      debounceTime(100),
+      distinctUntilChanged(),
+    ).subscribe(x => this.store.dispatch(ActionBusyAppender.executeWithBusy(loadAssemblyDepth( { assemblyId: this.assemblyId, depth: x }), 'AssemblyDepth')));
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.#subscription.unsubscribe();
   }
 
   loadDepth(value: number) {
-    this._depthChanged.next(value);
+    this.#depthChanged.next(value);
   }
 
-  startDepthLoading() {
-    this.subscription = this._depthObservable.pipe(
-      switchMap(x => this._assemblyService.references(this.assemblyId, x).executeWithBusy(this))
-    ).subscribe(x => this.generateGraphData(x),
-                x => this.startDepthLoading());
+  get depthAvailable(): boolean {
+    return this.depthMax > 1;
   }
 
-  generateGraphData(assembly: Assembly): any {
+  generateGraphData(assembly: Assembly): Graph {
     const item = new Graph();
     item.nodes = assembly.referencedAssemblies.map(x => new Node({
       id: x.id,
@@ -82,6 +84,6 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
     item.nodes.push(new Node({ id: assembly.id, label: `${assembly.name} (${assembly.version})`, color: 'red' }));
 
     item.links = assembly.links.map(x => new Link({ source: x.sourceId, target: x.targetId }));
-    this.graph = item;
+    return item;
   }
 }

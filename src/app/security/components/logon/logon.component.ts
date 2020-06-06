@@ -1,5 +1,3 @@
-import '@app/core/extensions/form-group-touch';
-
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -20,7 +18,7 @@ export class LogonComponent {
 
   get hasErrors(): boolean { return !this.logonForm.valid; }
 
-  constructor(formBuilder: FormBuilder, private _authenService: AuthenticationService, public dialogRef: MatDialogRef<LogonComponent>) {
+  constructor(formBuilder: FormBuilder, private authenService: AuthenticationService, public dialogRef: MatDialogRef<LogonComponent>) {
     this.logonForm = formBuilder.group({
       userName: ['', Validators.required],
       password: ['', Validators.required],
@@ -28,13 +26,13 @@ export class LogonComponent {
   }
 
   logon() {
-    this.logonForm.touchAllControls();
+    this.logonForm.markAllAsTouched();
 
     if (!this.logonForm.valid) {
       return;
     }
 
-    this._authenService.logon(this.userName.value, this.password.value)
+    this.authenService.logon(this.userName.value, this.password.value)
                        .subscribe(x => {
                           this.errorDisplayed = !x;
 

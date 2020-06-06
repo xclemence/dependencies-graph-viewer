@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+
 import { AssemblyListComponent } from './assembly-list/assembly-list.component';
 
 const routes: Routes = [
