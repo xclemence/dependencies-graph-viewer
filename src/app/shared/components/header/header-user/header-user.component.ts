@@ -23,7 +23,7 @@ export class HeaderUserComponent implements OnInit, OnDestroy {
     return this.#user.name;
   }
 
-  constructor(private router: Router, private userService: UserSecurityService, private authSevice: AuthenticationService) { }
+  constructor(private router: Router, private userService: UserSecurityService, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     this.#userSubscription = this.userService.observe().subscribe(x => this.#user = x);
@@ -38,6 +38,6 @@ export class HeaderUserComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    this.authSevice.logout();
+    this.authenticationService.logout();
   }
 }
