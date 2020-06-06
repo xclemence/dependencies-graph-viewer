@@ -29,7 +29,7 @@ const getSoftwareAssemblies = gql`
         isNative,
         version,
       },
-      allReferencedAssemblIesLinks {source, target}
+      allReferencedAssembliesLinks {source, target}
     }
   }
 `;
@@ -39,10 +39,10 @@ const getSoftwareAssemblies = gql`
 })
 export class SoftwareService {
 
-  constructor(private appoloService: Apollo) { }
+  constructor(private apolloService: Apollo) { }
 
   names(): Observable<AssemblyBase[]> {
-    return this.appoloService.query({ query: getSoftwareNames }).pipe(
+    return this.apolloService.query({ query: getSoftwareNames }).pipe(
       flatMap((x: any) => x.data.Software),
       map((x: any) => AssemblyConverter.toAssemblyBase<AssemblyBase>(x)),
       toArray()
@@ -50,7 +50,7 @@ export class SoftwareService {
   }
 
   references(assemblyName: AssemblyBase): Observable<Assembly> {
-    return this.appoloService.query({ query: getSoftwareAssemblies, variables: { assemblyId: assemblyName.id } }).pipe(
+    return this.apolloService.query({ query: getSoftwareAssemblies, variables: { assemblyId: assemblyName.id } }).pipe(
       map((x: any) => x.data.Assembly[0]),
       map((x: any) => AssemblyConverter.toAssembly(x))
     );

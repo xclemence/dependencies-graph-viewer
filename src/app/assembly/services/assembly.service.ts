@@ -32,7 +32,7 @@ const getAssemblyDepth = gql`
         isNative,
         version,
       },
-      allReferencedAssemblIesLinks {source, target}
+      allReferencedAssembliesLinks {source, target}
     }
   }
 `;
@@ -42,12 +42,11 @@ const getAssemblyDepth = gql`
 })
 export class AssemblyService {
 
-  saveAssemvly = new Map<string, Assembly>();
 
-  constructor(private appoloService: Apollo) { }
+  constructor(private apolloService: Apollo) { }
 
   assemblyStatistics(take: number, page: number): Observable<AssemblyStat[]> {
-    return this.appoloService.query({ query: getAssemblies }).pipe(
+    return this.apolloService.query({ query: getAssemblies }).pipe(
       flatMap((x: any) => x.data.Assembly),
       map((x: any) => AssemblyConverter.toAssemblyStat(x)),
       toArray()
@@ -55,7 +54,7 @@ export class AssemblyService {
   }
 
   references(id: string, depth: number): Observable<Assembly> {
-    return this.appoloService.query({
+    return this.apolloService.query({
         query: getAssemblyDepth,
         variables: {
           assemblyId: id,

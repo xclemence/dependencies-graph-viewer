@@ -12,15 +12,15 @@ export class AssemblyConverter {
 
         assembly.referencedAssemblies = item.allReferencedAssemblies.map((x: any) => this.toAssemblyBase<AssemblyBase>(x));
 
-        const links = item.allReferencedAssemblIesLinks.map(x => ({ sourceId: x.source, targetId: x.target }));
+        const links = item.allReferencedAssembliesLinks.map(x => ({ sourceId: x.source, targetId: x.target }));
 
         assembly.links = AssemblyConverter.filterBadLinks(links, assembly.referencedAssemblies);
 
         return assembly;
     }
 
-    static filterBadLinks(assemblyLinks: AssemblyLink[], knowedAssemblies: AssemblyBase[]): AssemblyLink[] {
-        const assembliesIds = knowedAssemblies.map(x => x.id);
+    static filterBadLinks(assemblyLinks: AssemblyLink[], knownAssemblies: AssemblyBase[]): AssemblyLink[] {
+        const assembliesIds = knownAssemblies.map(x => x.id);
         return assemblyLinks.filter(x => assembliesIds.includes(x.targetId));
     }
 

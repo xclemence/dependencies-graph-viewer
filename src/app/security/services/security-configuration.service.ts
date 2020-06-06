@@ -23,8 +23,8 @@ export class SecurityConfigurationService {
   constructor(@Inject(ModuleSecurityToken) private moduleConfig: ModuleSecurityConfig,
               private logger: LoggerService) {}
 
-  addFeatureRights(rigths: FeatureRightsConfig[]) {
-    this.#featureConfig.push(...rigths);
+  addFeatureRights(rights: FeatureRightsConfig[]) {
+    this.#featureConfig.push(...rights);
   }
 
   getServer() {

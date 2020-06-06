@@ -12,7 +12,7 @@ import { UserSecurityService } from './user-security.service';
 export class AuthenticationService {
 
   constructor(private userService: UserSecurityService,
-              private featureRigthsService: FeatureRightsService,
+              private featureRightsService: FeatureRightsService,
               private router: Router) { }
 
   logon(userName: string, password: string): Observable<boolean> {
@@ -34,7 +34,7 @@ export class AuthenticationService {
   }
 
   private ensureCurrentLocation() {
-    if (!this.featureRigthsService.validateCurrentLocation(null)) {
+    if (!this.featureRightsService.validateCurrentLocation(null)) {
       this.router.navigateByUrl('/');
     }
   }
