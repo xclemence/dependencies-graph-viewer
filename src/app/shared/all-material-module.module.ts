@@ -12,11 +12,15 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 
 @NgModule({
-  imports: [ MatToolbarModule, MatListModule, MatCardModule, MatTabsModule, MatInputModule, MatIconModule,
-    MatTableModule, MatDialogModule, MatSliderModule, MatSortModule, MatButtonModule, MatMenuModule, MatTooltipModule ],
-  exports: [ MatToolbarModule, MatListModule, MatCardModule, MatTabsModule, MatInputModule, MatIconModule,
-    MatTableModule, MatDialogModule, MatSliderModule, MatSortModule, MatButtonModule, MatMenuModule, MatTooltipModule ],
+  imports: [MatToolbarModule, MatListModule, MatCardModule, MatTabsModule, MatInputModule, MatIconModule, MatSnackBarModule,
+    MatTableModule, MatDialogModule, MatSliderModule, MatSortModule, MatButtonModule, MatMenuModule, MatTooltipModule],
+  exports: [MatToolbarModule, MatListModule, MatCardModule, MatTabsModule, MatInputModule, MatIconModule, MatSnackBarModule,
+    MatTableModule, MatDialogModule, MatSliderModule, MatSortModule, MatButtonModule, MatMenuModule, MatTooltipModule],
+  providers: [
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 8000 } }
+  ]
 })
-export class AllMaterialModuleModule {}
+export class AllMaterialModuleModule { }

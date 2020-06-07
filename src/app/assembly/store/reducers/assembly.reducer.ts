@@ -13,14 +13,8 @@ export const assemblyReducer = createReducer(
   initialState,
 
   on(AssembliesAction.loadAssemblies, state => state),
-  on(AssembliesAction.loadAssembliesSuccess, (state, action) => {
-    return {...state, assemblies: action.data };
-  }),
-  on(AssembliesAction.loadAssembliesFailure, (state, action) => state),
+  on(AssembliesAction.loadAssembliesSuccess, (state, action) => ({...state, assemblies: action.data })),
 
   on(AssemblyDepth.loadAssemblyDepth, state => state),
-  on(AssemblyDepth.loadAssemblyDepthSuccess, (state, action) => {
-    return {...state, assemblyDepth: action.data };
-  }),
-  on(AssemblyDepth.loadAssemblyDepthFailure, (state, action) => state)
+  on(AssemblyDepth.loadAssemblyDepthSuccess, (state, action) => ({...state, assemblyDepth: action.data }))
 );

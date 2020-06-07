@@ -7,3 +7,4 @@ export const coreFeatureKey = 'core';
 export const coreStateSelector = createFeatureSelector<CoreState>(coreFeatureKey);
 
 export const busyStateSelector = createSelector(coreStateSelector, (state: CoreState) => state.busy);
+export const errorStateSelector = createSelector(coreStateSelector, (state: CoreState) => state.error);

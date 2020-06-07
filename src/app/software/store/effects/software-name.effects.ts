@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { operationFailure } from '@app/core/store/actions/error.actions';
 import { SoftwareService } from '@app/software/services/software.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
@@ -16,7 +17,7 @@ export class SoftwareNameEffects {
       ofType(SoftwareActions.loadSoftwareNames),
       switchMap(action => this.softwareService.names().pipe(
         map(data => SoftwareActions.loadSoftwareNamesSuccess({ data, origin: action })),
-        catchError(error => of(SoftwareActions.loadSoftwareNamesFailure({ error, origin: action })))
+        catchError(error => of(operationFailure({ error: error.message, origin: action })))
       )),
     );
   });

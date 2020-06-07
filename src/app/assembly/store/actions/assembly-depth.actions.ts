@@ -10,8 +10,3 @@ export const loadAssemblyDepthSuccess = createAction(
   '[Assembly Depth] Load Assembly Depth Success',
   props<{ data: Assembly, origin: Action }>()
 );
-
-export const loadAssemblyDepthFailure = createAction(
-  '[Assembly Depth] Load Assembly Depth Failure',
-  props<{ error: any, origin: Action }>()
-);

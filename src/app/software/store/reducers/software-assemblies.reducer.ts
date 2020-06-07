@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { loadSoftwareAssemblies, loadSoftwareAssembliesFailure, loadSoftwareAssembliesSuccess } from '../actions';
+import { loadSoftwareAssemblies, loadSoftwareAssembliesSuccess } from '../actions';
 import { SoftwareAssembliesState } from '../models';
 import { clearSoftwareAssemblies } from './../actions/software-assemblies.actions';
 
@@ -12,12 +12,7 @@ export const softwareAssembliesReducer = createReducer(
   initialState,
 
   on(loadSoftwareAssemblies, state => state),
-  on(loadSoftwareAssembliesSuccess, (state, action) => {
-    return {...state, software: action.data};
-  }),
-  on(loadSoftwareAssembliesFailure, (state, action) => state),
+  on(loadSoftwareAssembliesSuccess, (state, action) => ({...state, software: action.data})),
 
-  on(clearSoftwareAssemblies, (state, action) => {
-    return { ...state, software: undefined };
-  })
+  on(clearSoftwareAssemblies, (state, action) => ({ ...state, software: undefined }))
 );

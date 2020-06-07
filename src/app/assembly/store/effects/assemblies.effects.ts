@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AssemblyService } from '@app/assembly/services/assembly.service';
+import { operationFailure } from '@app/core/store/actions/error.actions';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
-import { loadAssemblies, loadAssembliesFailure, loadAssembliesSuccess } from './../actions';
+import { loadAssemblies, loadAssembliesSuccess } from './../actions';
 
 @Injectable()
 export class AssembliesEffects {
@@ -16,8 +17,8 @@ export class AssembliesEffects {
       ofType(loadAssemblies),
       switchMap(action => this.assemblyService.assemblyStatistics(1, 1).pipe(
         map(data => loadAssembliesSuccess({ data, origin: action })),
-        catchError(error => of(loadAssembliesFailure({ error, origin: action })))
-      )),
+        catchError(error => of(operationFailure({ error: error.message, origin: action })))
+        )),
     );
   });
 }
