@@ -11,7 +11,6 @@ import { HeaderPreviousComponent } from './components/header/header-previous/hea
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { NameFilterPipe } from './pipe/name-filter.pipe';
 
-
 @NgModule({
   declarations: [
     ForceGraphComponent,
