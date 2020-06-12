@@ -14,3 +14,8 @@ export const loadSoftwareAssembliesSuccess = createAction(
 export const clearSoftwareAssemblies = createAction(
   '[Software Assemblies] CLear Software Assemblies'
 );
+
+export const updateFilteredAssemblies = createAction(
+  '[Software Assemblies] Update Filtered Assemblies',
+  props<{ assemblyIds: string[] }>()
+);

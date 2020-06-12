@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, AfterViewChecked, ChangeDetectionStrategy, AfterViewInit, HostBinding } from '@angular/core';
 
 import * as d3 from 'd3';
 import { Simulation } from 'd3';
@@ -13,9 +13,10 @@ export enum GraphUpdateMode {
 @Component({
   selector: 'app-force-graph',
   templateUrl: './force-graph.component.html',
-  styleUrls: ['./force-graph.component.scss']
+  styleUrls: ['./force-graph.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ForceGraphComponent implements OnInit, AfterViewChecked {
+export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
 
   #isInitialized = false;
   #simulation: Simulation<{}, undefined>;
@@ -32,7 +33,7 @@ export class ForceGraphComponent implements OnInit, AfterViewChecked {
   #height: number;
   #width: number;
 
-  @ViewChild('container', { static: true }) private container: ElementRef;
+  // @ViewChild('containerTest', { static: true }) private container: ElementRef;
 
   @Input() public disableOpacity = 0.3;
   @Input() public markerSize = 12;
@@ -56,9 +57,9 @@ export class ForceGraphComponent implements OnInit, AfterViewChecked {
     return this.#svgGroup.select('.links').selectAll('line');
   }
 
-  constructor() { }
+  constructor(private container: ElementRef) { }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     console.log('D3.js version:', d3.version);
     this.initializeGraph();
   }
@@ -178,9 +179,9 @@ export class ForceGraphComponent implements OnInit, AfterViewChecked {
                               .on('end', d => this.dragended(d, this.#simulation)));
 
     this.#simulation.force<d3.ForceLink<any, any>>('link').links(this.#graph.links);
-    this.#simulation.alphaTarget(0.3).restart();
+    // this.#simulation.alpha(0).alphaTarget(0.3).restart();
+    this.#simulation.alpha(1).alphaTarget(0).restart();
 
-    const link = this.linkSelector;
     this.#nodes = this.nodeSelector;
   }
 
@@ -235,7 +236,7 @@ export class ForceGraphComponent implements OnInit, AfterViewChecked {
     d.fy = null;
   }
 
-  onResize() {
+  @HostBinding('window:resize') onResize() {
     const size = this.getControlSize();
 
     if (this.#height === size.height && this.#width === size.width) {
@@ -258,5 +259,4 @@ export class ForceGraphComponent implements OnInit, AfterViewChecked {
 
     return {width, height};
   }
-
 }

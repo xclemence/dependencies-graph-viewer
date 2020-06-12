@@ -2,6 +2,8 @@ export class Node {
   id: string;
   label: string;
   color: string;
+  x: number;
+  y: number;
 
   public constructor(init?: Partial<Node>) {
     Object.assign(this, init);

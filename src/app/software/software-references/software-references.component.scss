@@ -1,14 +1,36 @@
 @import '~styles/app-theme';
 
 :host {
-    flex-direction: column;
-    background-color: mat-color($primary, 300);
+  flex-direction: column;
+  // background-color: mat-color($primary, 300);
+}
+
+::ng-deep .mat-drawer-inner-container {
+  overflow: hidden !important;
+  display: flex;
 }
 
 .assembly-details {
-    flex-direction: column;
+  display: flex;
+  height: 100%;
 }
 
-.absolute-position{
-    position: absolute;
+.absolute-position {
+  position: absolute;
+}
+
+.dawer-container {
+  flex: 1;
+}
+
+
+.visibility-panel {
+  width: 450px;
+  display: flex;
+}
+
+.open-visibility-panel {
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
 }

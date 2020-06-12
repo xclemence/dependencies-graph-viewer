@@ -9,6 +9,7 @@ import { BusyComponent } from './components/busy/busy.component';
 import { ForceGraphComponent } from './components/force-graph/force-graph.component';
 import { HeaderPreviousComponent } from './components/header/header-previous/header-previous.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { NameFilterPipe } from './pipe/name-filter.pipe';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     BusyComponent,
     HeaderUserComponent,
     HeaderLinksComponent,
-    HeaderPreviousComponent
+    HeaderPreviousComponent,
+    NameFilterPipe
   ],
   imports: [
     CommonModule,
@@ -32,7 +34,8 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     BusyComponent,
     HeaderLinksComponent,
     HeaderUserComponent,
-    HeaderPreviousComponent
+    HeaderPreviousComponent,
+    NameFilterPipe
   ]
 })
 export class SharedModule { }

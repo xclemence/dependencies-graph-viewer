@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AllMaterialModuleModule, SharedModule } from '@app/shared';
 
+import { AssembliesVisibilityComponent } from './assemblies-visibility/assemblies-visibility.component';
 import { SoftwareListComponent } from './software-list/software-list.component';
 import { SoftwareMainComponent } from './software-main/software-main.component';
 import { SoftwareReferencesComponent } from './software-references/software-references.component';
@@ -16,7 +17,8 @@ import { SoftwareStoreModule } from './software-store.module';
     SoftwareMainComponent,
     SoftwareListComponent,
     SoftwareReferencesComponent,
-    SoftwareStatisticsComponent
+    SoftwareStatisticsComponent,
+    AssembliesVisibilityComponent
   ],
   imports: [
     CommonModule,
