@@ -4,7 +4,7 @@ import { filter, map } from 'rxjs/operators';
 
 import { updateFilteredAssemblies } from '../store/actions/software-assemblies.actions';
 import { SoftwareState } from '../store/models';
-import { testSelector } from '../store/software.selectors';
+import { softwareSelector } from '../store/software.selectors';
 
 export interface SelectableAssembly {
   isVisible: boolean;
@@ -28,7 +28,7 @@ export class AssembliesVisibilityComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.pipe(
-      select(testSelector),
+      select(softwareSelector),
       filter(x => x !== undefined),
       map(x => x.referencedAssemblies),
       map(x => x.map(y => ({ isVisible: true, name: y.name, id: y.id})))

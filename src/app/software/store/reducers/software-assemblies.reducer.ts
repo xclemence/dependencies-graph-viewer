@@ -13,9 +13,9 @@ export const softwareAssembliesReducer = createReducer(
   initialState,
 
   on(loadSoftwareAssemblies, state => state),
-  on(loadSoftwareAssembliesSuccess, (state, action) => ({...state, software: action.data})),
+  on(loadSoftwareAssembliesSuccess, (state, action) => ({...state, software: action.data, filteredAssemblies: []})),
 
-  on(clearSoftwareAssemblies, (state, _) => ({ ...state, software: undefined })),
+  on(clearSoftwareAssemblies, (state, _) => ({ ...state, software: undefined, filteredAssemblies: [] })),
 
   on(updateFilteredAssemblies, (state, action) => ({...state, filteredAssemblies: action.assemblyIds}))
 );

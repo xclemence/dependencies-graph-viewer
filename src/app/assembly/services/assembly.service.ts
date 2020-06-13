@@ -55,11 +55,12 @@ export class AssemblyService {
 
   references(id: string, depth: number): Observable<Assembly> {
     return this.apolloService.query({
-        query: getAssemblyDepth,
-        variables: {
-          assemblyId: id,
-          depth
-       } }).pipe(
+      query: getAssemblyDepth,
+      variables: {
+        assemblyId: id,
+        depth
+      }
+    }).pipe(
       map((x: any) => x.data.Assembly[0]),
       map((x: any) => AssemblyConverter.toAssembly(x))
     );
