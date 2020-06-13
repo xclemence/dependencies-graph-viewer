@@ -1,10 +1,11 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Assembly } from '@app/core/models';
 import { select, Store } from '@ngrx/store';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 
 import { updateFilteredAssemblies } from '../store/actions/software-assemblies.actions';
 import { SoftwareState } from '../store/models';
-import { softwareSelector } from '../store/software.selectors';
+import { softwareAssembliesStateSelector } from './../store/software.selectors';
 
 export interface SelectableAssembly {
   isVisible: boolean;
@@ -15,12 +16,12 @@ export interface SelectableAssembly {
 @Component({
   selector: 'app-assemblies-visibility',
   templateUrl: './assemblies-visibility.component.html',
-  styleUrls: ['./assemblies-visibility.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./assemblies-visibility.component.scss']
 })
 export class AssembliesVisibilityComponent implements OnInit {
 
   assemblies: SelectableAssembly[] = [];
+  #currentSoftware: Assembly;
 
   @Output() closed: EventEmitter<void> = new EventEmitter();
 
@@ -28,11 +29,18 @@ export class AssembliesVisibilityComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.pipe(
-      select(softwareSelector),
-      filter(x => x !== undefined),
-      map(x => x.referencedAssemblies),
+      select(softwareAssembliesStateSelector),
+      filter(x => x !== undefined && x.software !== this.#currentSoftware),
+      tap(x => this.#currentSoftware = x.software),
+      map(x => x.software.referencedAssemblies),
       map(x => x.map(y => ({ isVisible: true, name: y.name, id: y.id})))
-    ).subscribe(x => this.assemblies = x);
+    ).subscribe(x => {
+      this.assemblies = x;
+    });
+  }
+  
+  updateAssembliesVisibility() {
+        
   }
 
   toggleVisibility(assembly: SelectableAssembly) {
