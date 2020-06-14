@@ -1,3 +1,5 @@
+import '@app/core/extensions/observable-busy';
+
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -7,10 +9,13 @@ import { ActivatedRoute } from '@angular/router';
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { AssemblyColors, AssemblyStat } from '@app/core/models/assembly';
 import { UrlService } from '@app/core/services';
+import { CoreState } from '@app/core/store/models';
+import { ConfirmationDialogComponent } from '@app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { select, Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
+import { AssemblyService } from '../services/assembly.service';
 import { assembliesStateSelector } from '../store/assembly.selectors';
 import { AssemblyState } from '../store/models';
 import { AssemblyDetailsComponent } from './../assembly-details/assembly-details.component';
@@ -23,35 +28,29 @@ import { loadAssemblies } from './../store/actions/assemblies.actions';
 })
 export class AssemblyListComponent implements OnInit, OnDestroy {
 
-  displayedColumns = ['type', 'name', 'version', 'depth', 'links'];
+  displayedColumns = ['type', 'name', 'version', 'depth', 'links', 'remove'];
 
   dataSource: MatTableDataSource<AssemblyStat>;
   selection = new SelectionModel<AssemblyStat>(false, []);
 
-  #openDialogSubscription: Subscription;
-  #closeDialogSubscription: Subscription;
-  #routeSubscription: Subscription;
   #storeSubscription: Subscription;
 
   #idParameter: string;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(public dialog: MatDialog,
-              private store: Store<AssemblyState>,
-              private urlService: UrlService,
-              private route: ActivatedRoute) {
-
-    this.#openDialogSubscription = this.dialog.afterOpened.subscribe(x => {
-      this.urlService.replaceSegment(1, x.componentInstance.assemblyId.toString(), this.route);
-    });
-
-    this.#closeDialogSubscription = this.dialog.afterAllClosed.subscribe(x => this.urlService.removeAt(1, this.route));
+  constructor(
+    public dialog: MatDialog,
+    private store: Store<AssemblyState>,
+    private coreStore: Store<CoreState>,
+    private assemblyService: AssemblyService,
+    private urlService: UrlService,
+    private route: ActivatedRoute) {
   }
 
   ngOnInit() {
 
-    this.#routeSubscription = this.route.paramMap.pipe(
+    this.route.paramMap.pipe(
       filter(x => x.has('id')),
       map(x => x.get('id'))
     ).subscribe(x => {
@@ -71,13 +70,10 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
       this.tryOpenDetailsFromParameter();
     });
 
-    this.store.dispatch(ActionBusyAppender.executeWithMainBusy(loadAssemblies()));
+    this.updateAssemblies();
   }
 
   ngOnDestroy(): void {
-    this.#closeDialogSubscription?.unsubscribe();
-    this.#openDialogSubscription?.unsubscribe();
-    this.#routeSubscription?.unsubscribe();
     this.#storeSubscription?.unsubscribe();
   }
 
@@ -110,10 +106,38 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
   }
 
   openDetails(item: AssemblyStat) {
-    this.dialog.open(AssemblyDetailsComponent, {
+    const dialogRef = this.dialog.open(AssemblyDetailsComponent, {
       width: '80%',
       height: '80%',
       data: { name: `${item.name} (${item.version})`, id: item.id, depthMax: item.depthMax }
     });
+
+    dialogRef.afterOpened().subscribe(() => {
+      this.urlService.replaceSegment(1, item.id, this.route);
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.urlService.removeAt(1, this.route);
+    });
+  }
+
+  removeAssembly(assembly: AssemblyStat, event: any) {
+    event.stopPropagation();
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: `Do you confirm the deletion of ${assembly.name} ?`
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.assemblyService.remove(assembly.id).executeWithMainBusy(this.coreStore).subscribe(
+          (x) => this.updateAssemblies()
+        );
+      }
+    });
+  }
+
+  private updateAssemblies() {
+    this.store.dispatch(ActionBusyAppender.executeWithMainBusy(loadAssemblies()));
   }
 }
