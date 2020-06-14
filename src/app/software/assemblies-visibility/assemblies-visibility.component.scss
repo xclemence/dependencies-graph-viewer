@@ -25,7 +25,7 @@ mat-card-title {
 mat-card-header {
     justify-content: space-between;
     align-items: center;
-    display: flex;
+    margin-top: 2px !important;
 }
 
 mat-list {
