@@ -117,7 +117,7 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.urlService.removeAt(1, this.route)
+      this.urlService.removeAt(1, this.route);
     });
   }
 

@@ -26,10 +26,9 @@ export class HttpErrorInterceptor implements HttpInterceptor {
           errorMessage = `Error (${error.status}): ${error.message}`;
         }
 
-        console.log(`Error Message: ${errorMessage}`);
         this.store.dispatch(operationFailure({error: errorMessage, origin: undefined}));
         return throwError(errorMessage);
       })
-    )
+    );
   }
 }
