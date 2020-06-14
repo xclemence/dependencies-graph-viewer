@@ -35,8 +35,6 @@ export class SoftwareReferencesComponent implements OnInit {
       return null;
     }
 
-    console.log(`strange loding ${assembly.id}`);
-
     const item = new Graph();
     item.nodes = assembly.referencedAssemblies.filter(x => !filteredAssemblyIds.includes(x.id)).map(x => new Node({
       id: x.id,

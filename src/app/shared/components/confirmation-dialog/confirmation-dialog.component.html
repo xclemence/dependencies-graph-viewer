@@ -1,0 +1,9 @@
+<div class="flex-panel main-panel">
+  <section mat-dialog-content class="flex-one message-section">
+    {{message}}
+  </section>
+  <section mat-dialog-actions class="flex-panel button-actions">
+    <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Yes</button>
+    <button mat-button (click)="noClick()">No</button>
+  </section>
+</div>

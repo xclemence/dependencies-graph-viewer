@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import { Observable } from 'rxjs';
 import { flatMap, map, toArray } from 'rxjs/operators';
 
-const getAssemblies = gql`
+const getAssembliesQuery = gql`
   query assemblies {
     Assembly {
         name,
@@ -19,7 +19,7 @@ const getAssemblies = gql`
   }
 `;
 
-const getAssemblyDepth = gql`
+const getAssemblyDepthQuery = gql`
   query softwareAssemblies($assemblyId: String!, $depth: Int!) {
     Assembly(filter: { name: $assemblyId }){
       name,
@@ -37,6 +37,14 @@ const getAssemblyDepth = gql`
   }
 `;
 
+const removeAssemblyQuery = gql`
+  mutation RemoveAssembly($assemblyName: String!) {
+    removeAssembly(assemblyName: $assemblyName) {
+      name
+    }
+  }
+`;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -46,7 +54,7 @@ export class AssemblyService {
   constructor(private apolloService: Apollo) { }
 
   assemblyStatistics(take: number, page: number): Observable<AssemblyStat[]> {
-    return this.apolloService.query({ query: getAssemblies }).pipe(
+    return this.apolloService.query({ query: getAssembliesQuery }).pipe(
       flatMap((x: any) => x.data.Assembly),
       map((x: any) => AssemblyConverter.toAssemblyStat(x)),
       toArray()
@@ -55,7 +63,7 @@ export class AssemblyService {
 
   references(id: string, depth: number): Observable<Assembly> {
     return this.apolloService.query({
-      query: getAssemblyDepth,
+      query: getAssemblyDepthQuery,
       variables: {
         assemblyId: id,
         depth
@@ -63,6 +71,17 @@ export class AssemblyService {
     }).pipe(
       map((x: any) => x.data.Assembly[0]),
       map((x: any) => AssemblyConverter.toAssembly(x))
+    );
+  }
+
+  remove(id: string): Observable<string> {
+    return this.apolloService.mutate({
+      mutation: removeAssemblyQuery,
+      variables: {
+        assemblyName: id
+      }
+    }).pipe(
+      map((x: any) => x.name)
     );
   }
 }

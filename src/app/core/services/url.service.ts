@@ -2,12 +2,14 @@ import { Location } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router, UrlSegment, UrlSegmentGroup, UrlTree } from '@angular/router';
 
+import { LoggerService } from './logger.service';
+
 @Injectable({
   providedIn: 'root'
 })
 export class UrlService {
 
-  constructor(private router: Router, private location: Location) { }
+  constructor(private router: Router, private location: Location, private logService: LoggerService) { }
 
   replaceSegment(index: number, value: string, currentRoute: ActivatedRoute) {
 
@@ -20,7 +22,7 @@ export class UrlService {
     }
 
     const url = this.router.serializeUrl(treeUrl);
-    console.log(`move ${url}`);
+    this.logService.log(`move ${url}`);
     this.location.replaceState(url);
   }
 

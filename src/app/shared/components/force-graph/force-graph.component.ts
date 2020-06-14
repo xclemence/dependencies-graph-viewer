@@ -60,7 +60,6 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
   constructor(private container: ElementRef) { }
 
   ngAfterViewInit() {
-    console.log('D3.js version:', d3.version);
     this.initializeGraph();
   }
 
