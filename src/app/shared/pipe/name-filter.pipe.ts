@@ -10,7 +10,7 @@ export class NameFilterPipe implements PipeTransform {
       return value;
     }
 
-    const formatedNameCriteria = nameCriteria.toLowerCase();
-    return value.filter(x => x.name.toLowerCase().includes(formatedNameCriteria));
+    const formattedNameCriteria = nameCriteria.toLowerCase();
+    return value.filter(x => x.name.toLowerCase().includes(formattedNameCriteria));
   }
 }

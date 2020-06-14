@@ -179,8 +179,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
                               .on('end', d => this.dragended(d, this.#simulation)));
 
     this.#simulation.force<d3.ForceLink<any, any>>('link').links(this.#graph.links);
-    // this.#simulation.alpha(0).alphaTarget(0.3).restart();
-    this.#simulation.alpha(1).alphaTarget(0).restart();
+    this.#simulation.alpha(0).alphaTarget(0.3).restart();
 
     this.#nodes = this.nodeSelector;
   }
@@ -236,7 +235,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
     d.fy = null;
   }
 
-  @HostBinding('window:resize') onResize() {
+  onResize() {
     const size = this.getControlSize();
 
     if (this.#height === size.height && this.#width === size.width) {

@@ -13,6 +13,7 @@ excluded_words:
   - devcontainer
   - ngrx
   - Softwares
+  - iif
   
 # Would you like filenames to also be spellchecked?
 spellcheck_filenames: true
