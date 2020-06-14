@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Assembly } from '@app/core/models/assembly';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Assembly, AssemblyColors } from '@app/core/models/assembly';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -20,7 +20,8 @@ export class StatValue {
 @Component({
   selector: 'app-software-statistics',
   templateUrl: './software-statistics.component.html',
-  styleUrls: ['./software-statistics.component.scss']
+  styleUrls: ['./software-statistics.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SoftwareStatisticsComponent implements OnInit {
 
@@ -42,15 +43,15 @@ export class SoftwareStatisticsComponent implements OnInit {
     }
 
     return [
-      { label: 'Assemblies', value: assembly.referencedAssemblies.length + 1},
-      { label: 'Native', value: this.countAssemblies(assembly, x => x.isNative), color: 'lightGreen'},
-      { label: 'Managed', value: this.countAssemblies(assembly, x => !x.isNative), color: 'lightBlue'},
-      { label: 'All References', value: assembly.links.length},
-      { label: 'Direct references', value: assembly.links.filter(x => x.sourceId === assembly.id).length},
+      { label: 'Assemblies', value: assembly.referencedAssemblies.length + 1 },
+      { label: 'Native', value: this.countAssemblies(assembly, x => x.isNative), color: AssemblyColors.native },
+      { label: 'Managed', value: this.countAssemblies(assembly, x => !x.isNative), color: AssemblyColors.managed },
+      { label: 'All References', value: assembly.links.length },
+      { label: 'Direct references', value: assembly.links.filter(x => x.sourceId === assembly.id).length },
     ];
   }
 
-  countAssemblies(assembly: Assembly, predicate: (x: Assembly) => boolean): number  {
+  countAssemblies(assembly: Assembly, predicate: (x: Assembly) => boolean): number {
     let value = assembly.referencedAssemblies.filter(predicate).length;
     value += predicate(assembly) ? 1 : 0;
 

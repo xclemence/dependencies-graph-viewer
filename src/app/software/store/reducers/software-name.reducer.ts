@@ -13,4 +13,3 @@ export const softwareNameReducer = createReducer(
   on(SoftwareNameActions.loadSoftwareNames, state => state),
   on(SoftwareNameActions.loadSoftwareNamesSuccess, (state, action) => ({...state, softwareNames: action.data })),
 );
-

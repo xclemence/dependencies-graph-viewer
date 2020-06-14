@@ -48,3 +48,15 @@ html {
 .flex-panel {
   display: flex;
 }
+
+.flex-one {
+  flex: 1;
+}
+
+.no-pointer-events {
+  pointer-events: none;
+}
+
+.pointer-events {
+  pointer-events: auto;
+}

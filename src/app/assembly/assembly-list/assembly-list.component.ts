@@ -5,13 +5,13 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
-import { AssemblyStat } from '@app/core/models/assembly';
+import { AssemblyColors, AssemblyStat } from '@app/core/models/assembly';
 import { UrlService } from '@app/core/services';
 import { select, Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
-import { assembliesStateSelector as assembliesStateSelector } from '../store/assembly.selectors';
+import { assembliesStateSelector } from '../store/assembly.selectors';
 import { AssemblyState } from '../store/models';
 import { AssemblyDetailsComponent } from './../assembly-details/assembly-details.component';
 import { loadAssemblies } from './../store/actions/assemblies.actions';
@@ -90,7 +90,7 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
   }
 
   getTypeColor(assemblyStat: AssemblyStat): string {
-    return assemblyStat.isNative ? 'lightgreen' : 'lightblue';
+    return assemblyStat.isNative ? AssemblyColors.native : AssemblyColors.managed;
   }
 
   tryOpenDetailsFromParameter() {

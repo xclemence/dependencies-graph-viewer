@@ -8,3 +8,6 @@ export const softwareStateSelector = createFeatureSelector<SoftwareState>(softwa
 
 export const softwareNameStateSelector = createSelector(softwareStateSelector, (state: SoftwareState) => state.name);
 export const softwareAssembliesStateSelector = createSelector(softwareStateSelector, (state: SoftwareState) => state.assemblies);
+
+export const filteredAssembliesStateSelector = createSelector(softwareAssembliesStateSelector, (state) => state.filteredAssemblies);
+export const softwareSelector = createSelector(softwareAssembliesStateSelector, (state) => state.software);

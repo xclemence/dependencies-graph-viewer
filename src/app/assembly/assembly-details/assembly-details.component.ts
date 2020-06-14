@@ -1,7 +1,7 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
-import { Assembly } from '@app/core/models/assembly';
+import { Assembly, AssemblyColors } from '@app/core/models/assembly';
 import { Graph, Link, Node } from '@app/shared/models';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
@@ -40,7 +40,7 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
     return this.#selectedDepth;
   }
 
-  constructor(private store: Store<AssemblyState>, @Inject(MAT_DIALOG_DATA) data: {name: string, depthMax: number, id: string}) {
+  constructor(private store: Store<AssemblyState>, @Inject(MAT_DIALOG_DATA) data: { name: string, depthMax: number, id: string }) {
     this.assemblyName = data.name;
     this.assemblyId = data.id;
     this.depthMax = data.depthMax;
@@ -58,7 +58,7 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
     this.#subscription = this.#depthChanged.pipe(
       debounceTime(100),
       distinctUntilChanged(),
-    ).subscribe(x => this.store.dispatch(ActionBusyAppender.executeWithBusy(loadAssemblyDepth( { assemblyId: this.assemblyId, depth: x }), 'AssemblyDepth')));
+    ).subscribe(x => this.store.dispatch(ActionBusyAppender.executeWithBusy(loadAssemblyDepth({ assemblyId: this.assemblyId, depth: x }), 'AssemblyDepth')));
   }
 
   ngOnDestroy(): void {
@@ -78,10 +78,10 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
     item.nodes = assembly.referencedAssemblies.map(x => new Node({
       id: x.id,
       label: `${x.name} (${x.version})`,
-      color: x.isNative ? 'lightGreen' : 'lightBlue'
+      color: x.isNative ? AssemblyColors.native : AssemblyColors.managed
     }));
 
-    item.nodes.push(new Node({ id: assembly.id, label: `${assembly.name} (${assembly.version})`, color: 'red' }));
+    item.nodes.push(new Node({ id: assembly.id, label: `${assembly.name} (${assembly.version})`, color: AssemblyColors.main }));
 
     item.links = assembly.links.map(x => new Link({ source: x.sourceId, target: x.targetId }));
     return item;
