@@ -1,3 +1,5 @@
+import '@app/core/extensions/observable-busy';
+
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -7,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { AssemblyColors, AssemblyStat } from '@app/core/models/assembly';
 import { UrlService } from '@app/core/services';
+import { CoreState } from '@app/core/store/models';
 import { ConfirmationDialogComponent } from '@app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { select, Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
@@ -39,6 +42,7 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
   constructor(
     public dialog: MatDialog,
     private store: Store<AssemblyState>,
+    private coreStore: Store<CoreState>,
     private assemblyService: AssemblyService,
     private urlService: UrlService,
     private route: ActivatedRoute) {
@@ -126,7 +130,7 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.assemblyService.remove(assembly.id).subscribe(
+        this.assemblyService.remove(assembly.id).executeWithMainBusy(this.coreStore).subscribe(
           (x) => this.updateAssemblies()
         );
       }
