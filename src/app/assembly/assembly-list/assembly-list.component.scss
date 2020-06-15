@@ -3,18 +3,19 @@
 .assemblies-container {
   flex: 1;
   display: flex;
-  height: 1px; //only for firefox (good position of scroll bar)
+  height: 0px; //only for firefox (good position of scroll bar)
+  flex-direction: column;
 }
 
 :host {
   flex: 1;
   display: flex;
-  overflow: auto;
+  flex-direction: column;
 }
 
 .assemblies-table {
   flex: 1;
-  width: 100%; //only for firefox
+  width: 100%;
 }
 
 .mat-row:hover {
@@ -24,6 +25,11 @@
 
 .no-value {
   opacity: 40%;
+}
+
+.table-div {
+  overflow: auto;
+  flex: 1;
 }
 
 .dot {
