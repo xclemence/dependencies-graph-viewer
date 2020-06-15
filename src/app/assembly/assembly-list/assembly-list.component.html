@@ -1,5 +1,11 @@
 <div class="assemblies-container">
-  <div class="table-div">
+  <section class="flex-panel search-panel">
+    <mat-form-field class="flex-one">
+      <mat-label>Search</mat-label>
+      <input matInput #searchInput>
+    </mat-form-field>
+  </section>
+  <section class="table-div">
     <table mat-table [dataSource]="dataSource" matSort class="assemblies-table">
 
       <ng-container matColumnDef="type">
@@ -43,7 +49,7 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openDetails(row)"></tr>
     </table>
-  </div>
+  </section>
 
-  <!-- <mat-paginator  showFirstLastButtons></mat-paginator> -->
+  <mat-paginator></mat-paginator>
 </div>
