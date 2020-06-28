@@ -5,7 +5,7 @@ import { Apollo } from 'apollo-angular';
 import { ApolloQueryResult } from 'apollo-client';
 import gql from 'graphql-tag';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 const getAssembliesQuery = gql`
   query assemblies($first: Int!, $offset: Int!, $order: [_AssemblyOrdering]) {
@@ -69,11 +69,11 @@ export class AssemblyService {
 
   constructor(private apolloService: Apollo) { }
 
-  assemblyStatistics(pageSize: number, page: number, namefilte: string, order: string)
+  assemblyStatistics(pageSize: number, page: number, namefilter: string, order: string)
     : Observable<{ assemblies: AssemblyStat[], count: number }> {
 
-    const query = !namefilte ? this.assemblyStatisticsNoFilter(pageSize, page, order) :
-      this.assemblyStatisticsWithFilter(pageSize, page, namefilte, order);
+    const query = !namefilter ? this.assemblyStatisticsNoFilter(pageSize, page, order) :
+      this.assemblyStatisticsWithFilter(pageSize, page, namefilter, order);
 
     return query.pipe(
       map((x: any) => ({
