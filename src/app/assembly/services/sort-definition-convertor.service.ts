@@ -26,9 +26,7 @@ export class SortDefinitionConvertorService {
       currentField = 'name';
     }
 
-    const value = this.generateFinalOrder(this.#fieldMapping[currentField], this.#sortTypeMapping[currentOrder]);
-    console.log(order  + ' - ', value);
-    return value;
+    return this.generateFinalOrder(this.#fieldMapping[currentField], this.#sortTypeMapping[currentOrder]);
   }
 
   private generateFinalOrder(field: string, order: string): string {

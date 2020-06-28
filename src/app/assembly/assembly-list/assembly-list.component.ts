@@ -1,7 +1,7 @@
 import '@app/core/extensions/observable-busy';
 
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -13,8 +13,8 @@ import { UrlService } from '@app/core/services';
 import { CoreState } from '@app/core/store/models';
 import { ConfirmationDialogComponent } from '@app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { select, Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { fromEvent, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 
 import { AssemblyService } from '../services/assembly.service';
 import { SortDefinitionConvertorService } from '../services/sort-definition-convertor.service';
@@ -28,7 +28,7 @@ import { loadAssemblies } from './../store/actions/assemblies.actions';
   templateUrl: './assembly-list.component.html',
   styleUrls: ['./assembly-list.component.scss']
 })
-export class AssemblyListComponent implements OnInit, OnDestroy {
+export class AssemblyListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   displayedColumns = ['type', 'name', 'version', 'depth', 'links', 'remove'];
 
@@ -39,10 +39,12 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
   currentPage = 0;
 
   #storeSubscription: Subscription;
-
+  #filterSubscription: Subscription;
   #idParameter: string;
+  #currentFilter: string;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild('searchInput') searchInput: ElementRef;
 
   constructor(
     public dialog: MatDialog,
@@ -77,6 +79,20 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
     this.updateAssemblies();
   }
 
+  ngAfterViewInit() {
+    this.#filterSubscription = fromEvent(this.searchInput.nativeElement, 'keyup').pipe(
+      map((event: any) => event.target.value),
+      debounceTime(400),
+      distinctUntilChanged()
+    ).subscribe({
+      next: x => {
+        this.currentPage = 0;
+        this.#currentFilter = x;
+        this.updateAssemblies();
+      }
+    });
+  }
+
   createDataSource(assemblies: AssemblyStat[]): MatTableDataSource<AssemblyStat> {
     const source = new MatTableDataSource(assemblies);
     source.sort = this.sort;
@@ -85,6 +101,7 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.#storeSubscription?.unsubscribe();
+    this.#filterSubscription?.unsubscribe();
   }
 
   hasReferences(assemblyStat: AssemblyStat): boolean {
@@ -151,7 +168,7 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
     this.store.dispatch(ActionBusyAppender.executeWithMainBusy(loadAssemblies({
       take: this.pageSize,
       page: this.currentPage,
-      filter: undefined,
+      filter: this.#currentFilter,
       order: this.convertorService.getAssemblyServiceOrder(this.sort.active, this.sort.direction)
     })));
   }

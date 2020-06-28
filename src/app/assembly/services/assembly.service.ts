@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { AssemblyConverter } from '@app/core/converters';
 import { Assembly, AssemblyStat } from '@app/core/models/assembly';
 import { Apollo } from 'apollo-angular';
+import { ApolloQueryResult } from 'apollo-client';
 import gql from 'graphql-tag';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 
 const getAssembliesQuery = gql`
   query assemblies($first: Int!, $offset: Int!, $order: [_AssemblyOrdering]) {
@@ -21,8 +22,8 @@ const getAssembliesQuery = gql`
 `;
 
 const getAssembliesWithFilterQuery = gql`
-  query assemblies($filter: String!) {
-    Assembly(filter: {shortName_contains : $filter}) {
+  query assemblies($first: Int!, $offset: Int!, $order: [_AssemblyOrdering], $filter: String!) {
+    Assembly(first: $first, offset: $offset, orderBy: $order, filter: {shortName_contains : $filter}) {
         name,
         version,
         shortName,
@@ -69,21 +70,43 @@ export class AssemblyService {
   constructor(private apolloService: Apollo) { }
 
   assemblyStatistics(pageSize: number, page: number, namefilte: string, order: string)
-    : Observable<{ assemblies: AssemblyStat[], count: number}> {
+    : Observable<{ assemblies: AssemblyStat[], count: number }> {
 
-    return this.apolloService.query({
-        query: getAssembliesQuery,
-        variables: {
-          first: pageSize,
-          offset: pageSize * page,
-          order
-        }
-      }).pipe(
+    const query = !namefilte ? this.assemblyStatisticsNoFilter(pageSize, page, order) :
+      this.assemblyStatisticsWithFilter(pageSize, page, namefilte, order);
+
+    return query.pipe(
       map((x: any) => ({
         assemblies: x.data.Assembly.map((a: any) => AssemblyConverter.toAssemblyStat(a)),
         count: x.data.AssemblyCount
       }))
     );
+  }
+
+  private assemblyStatisticsWithFilter(pageSize: number, page: number, namefilter: string, order: string)
+    : Observable<ApolloQueryResult<unknown>> {
+
+    return this.apolloService.query({
+      query: getAssembliesWithFilterQuery,
+      variables: {
+        first: pageSize,
+        offset: pageSize * page,
+        order,
+        filter: namefilter
+      }
+    });
+  }
+
+  private assemblyStatisticsNoFilter(pageSize: number, page: number, order: string): Observable<ApolloQueryResult<unknown>> {
+
+    return this.apolloService.query({
+      query: getAssembliesQuery,
+      variables: {
+        first: pageSize,
+        offset: pageSize * page,
+        order
+      }
+    });
   }
 
   references(id: string, depth: number): Observable<Assembly> {
