@@ -33,8 +33,6 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
   #height: number;
   #width: number;
 
-  // @ViewChild('containerTest', { static: true }) private container: ElementRef;
-
   @Input() public disableOpacity = 0.3;
   @Input() public markerSize = 12;
   @Input() public linkStroke = 1.5;
@@ -75,7 +73,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
 
     this.#isInitialized = true;
 
-    this.#svg = d3.select('svg');
+    this.#svg = d3.select('.graph-svg');
     const size = this.getControlSize();
 
     this.#height = size.height;
@@ -116,7 +114,6 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
   }
 
   private generateGraphData() {
-
     if (!this.#isInitialized) {
       this.initializeGraph();
     }
@@ -235,6 +232,10 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
   }
 
   onResize() {
+    if (!this.#isInitialized) {
+      return;
+    }
+
     const size = this.getControlSize();
 
     if (this.#height === size.height && this.#width === size.width) {

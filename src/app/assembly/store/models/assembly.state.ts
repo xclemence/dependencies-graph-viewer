@@ -1,6 +1,11 @@
 import { Assembly, AssemblyStat } from '@app/core/models/assembly';
 
 export interface AssemblyState {
-  assemblies: AssemblyStat[];
+  assemblies: AssemblyFiltered;
   assemblyDepth: Assembly;
+}
+
+export interface AssemblyFiltered{
+  filtered: AssemblyStat[];
+  count: number;
 }

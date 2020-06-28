@@ -15,6 +15,7 @@ app-root {
   display: flex;
   flex-direction: column;
   height: 100%;
+  // overflow: hidden;
 }
 
 html {
@@ -50,7 +51,7 @@ html {
 }
 
 .flex-one {
-  flex: 1;
+  flex: 1 1 auto;
 }
 
 .no-pointer-events {

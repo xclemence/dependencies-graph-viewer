@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, AfterViewInit } from '@angular/core';
 import { Assembly, AssemblyColors } from '@app/core/models';
 import { Graph, Link, Node } from '@app/shared/models';
 import { select, Store } from '@ngrx/store';
