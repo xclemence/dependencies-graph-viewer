@@ -4,7 +4,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
@@ -17,6 +17,7 @@ import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { AssemblyService } from '../services/assembly.service';
+import { SortDefinitionConvertorService } from '../services/sort-definition-convertor.service';
 import { assembliesStateSelector } from '../store/assembly.selectors';
 import { AssemblyState } from '../store/models';
 import { AssemblyDetailsComponent } from './../assembly-details/assembly-details.component';
@@ -48,6 +49,7 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
     private store: Store<AssemblyState>,
     private coreStore: Store<CoreState>,
     private assemblyService: AssemblyService,
+    private convertorService: SortDefinitionConvertorService,
     private urlService: UrlService,
     private route: ActivatedRoute) {
   }
@@ -150,12 +152,16 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
       take: this.pageSize,
       page: this.currentPage,
       filter: undefined,
-      order: undefined
+      order: this.convertorService.getAssemblyServiceOrder(this.sort.active, this.sort.direction)
     })));
   }
 
   handlePageChanged(event: PageEvent) {
     this.currentPage = event.pageIndex;
+    this.updateAssemblies();
+  }
+
+  handleSortChanged(event: Sort) {
     this.updateAssemblies();
   }
 }

@@ -6,10 +6,10 @@
     </mat-form-field>
   </section>
   <section class="table-div">
-    <table mat-table [dataSource]="dataSource" matSort class="assemblies-table">
+    <table mat-table [dataSource]="dataSource" matSort class="assemblies-table" (matSortChange)="handleSortChanged($event)">
 
       <ng-container matColumnDef="type">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="type"> Type </th>
         <td mat-cell *matCellDef="let element">
           <span class="dot" [style.backgroundColor]="getTypeColor(element)" [matTooltip]="getAssemblyTypeName(element)"
             matTooltipPosition="above"></span>
@@ -17,22 +17,22 @@
       </ng-container>
 
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Name </th>
         <td mat-cell *matCellDef="let element"> {{element.name}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="version">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Version </th>
+      <ng-container matColumnDef="version" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="version"> Version </th>
         <td mat-cell *matCellDef="let element"> {{element.version}} </td>
       </ng-container>
 
       <ng-container matColumnDef="depth">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Depth Max </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="depth"> Depth Max </th>
         <td mat-cell *matCellDef="let element"> {{element.depthMax}} </td>
       </ng-container>
 
       <ng-container matColumnDef="links">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Assembly Link Count </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="links"> Assembly Link Count </th>
         <td mat-cell *matCellDef="let element">
           <span [class.no-value]="!hasReferences(element)"> {{element.assemblyLinkCount}}</span>
         </td>

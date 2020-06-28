@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 const getAssembliesQuery = gql`
-  query assemblies($first: Int!, $offset: Int!) {
-    Assembly(first: $first, offset: $offset) {
+  query assemblies($first: Int!, $offset: Int!, $order: [_AssemblyOrdering]) {
+    Assembly(first: $first, offset: $offset, orderBy: $order) {
         name,
         version,
         shortName,
@@ -75,7 +75,8 @@ export class AssemblyService {
         query: getAssembliesQuery,
         variables: {
           first: pageSize,
-          offset: pageSize * page
+          offset: pageSize * page,
+          order
         }
       }).pipe(
       map((x: any) => ({
