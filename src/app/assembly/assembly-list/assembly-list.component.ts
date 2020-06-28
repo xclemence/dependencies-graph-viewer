@@ -3,6 +3,7 @@ import '@app/core/extensions/observable-busy';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
@@ -32,6 +33,9 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
 
   dataSource: MatTableDataSource<AssemblyStat>;
   selection = new SelectionModel<AssemblyStat>(false, []);
+  pageSize = 20;
+  assemblyCount = 0;
+  currentPage = 0;
 
   #storeSubscription: Subscription;
 
@@ -59,18 +63,22 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
     });
 
     this.#storeSubscription = this.store.pipe(
-      select(assembliesStateSelector),
-      map(x => {
-        const source = new MatTableDataSource(x);
-        source.sort = this.sort;
-        return source;
-      }),
-    ).subscribe(x => {
-      this.dataSource = x;
-      this.tryOpenDetailsFromParameter();
+      select(assembliesStateSelector)
+    ).subscribe({
+      next: (x) => {
+        this.dataSource = this.createDataSource(x.filtered);
+        this.assemblyCount = x.count;
+        this.tryOpenDetailsFromParameter();
+      }
     });
 
     this.updateAssemblies();
+  }
+
+  createDataSource(assemblies: AssemblyStat[]): MatTableDataSource<AssemblyStat> {
+    const source = new MatTableDataSource(assemblies);
+    source.sort = this.sort;
+    return source;
   }
 
   ngOnDestroy(): void {
@@ -138,6 +146,16 @@ export class AssemblyListComponent implements OnInit, OnDestroy {
   }
 
   private updateAssemblies() {
-    this.store.dispatch(ActionBusyAppender.executeWithMainBusy(loadAssemblies()));
+    this.store.dispatch(ActionBusyAppender.executeWithMainBusy(loadAssemblies({
+      take: this.pageSize,
+      page: this.currentPage,
+      filter: undefined,
+      order: undefined
+    })));
+  }
+
+  handlePageChanged(event: PageEvent) {
+    this.currentPage = event.pageIndex;
+    this.updateAssemblies();
   }
 }

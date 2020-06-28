@@ -51,5 +51,5 @@
     </table>
   </section>
 
-  <mat-paginator></mat-paginator>
+  <mat-paginator [pageSize]="[pageSize]" [pageSizeOptions]="[20, 50, 100]" [length]="assemblyCount" [pageIndex]="currentPage" (page)="handlePageChanged($event)"></mat-paginator>
 </div>

@@ -6,14 +6,23 @@ import { AssemblyState } from '../models';
 
 const initialState: AssemblyState = {
   assemblyDepth: undefined,
-  assemblies: []
+  assemblies: {
+    filtered: [],
+    count: 0
+  },
 };
 
 export const assemblyReducer = createReducer(
   initialState,
 
   on(AssembliesAction.loadAssemblies, state => state),
-  on(AssembliesAction.loadAssembliesSuccess, (state, action) => ({...state, assemblies: action.data })),
+  on(AssembliesAction.loadAssembliesSuccess, (state, action) => ({
+    ...state,
+    assemblies: {
+      filtered: action.data,
+      count: action.assembliesCount
+    }
+  })),
 
   on(AssemblyDepth.loadAssemblyDepth, state => state),
   on(AssemblyDepth.loadAssemblyDepthSuccess, (state, action) => ({...state, assemblyDepth: action.data }))

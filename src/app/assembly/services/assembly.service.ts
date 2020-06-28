@@ -4,18 +4,33 @@ import { Assembly, AssemblyStat } from '@app/core/models/assembly';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { Observable } from 'rxjs';
-import { flatMap, map, toArray } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 const getAssembliesQuery = gql`
-  query assemblies {
-    Assembly {
+  query assemblies($first: Int!, $offset: Int!) {
+    Assembly(first: $first, offset: $offset) {
         name,
         version,
         shortName,
       	isNative,
       	maxDepth,
         directReferenceCount
-    }
+    },
+    AssemblyCount
+  }
+`;
+
+const getAssembliesWithFilterQuery = gql`
+  query assemblies($filter: String!) {
+    Assembly(filter: {shortName_contains : $filter}) {
+        name,
+        version,
+        shortName,
+      	isNative,
+      	maxDepth,
+        directReferenceCount
+    },
+    AssemblyCount(filter: {shortName_contains : $filter})
   }
 `;
 
@@ -53,11 +68,20 @@ export class AssemblyService {
 
   constructor(private apolloService: Apollo) { }
 
-  assemblyStatistics(take: number, page: number): Observable<AssemblyStat[]> {
-    return this.apolloService.query({ query: getAssembliesQuery }).pipe(
-      flatMap((x: any) => x.data.Assembly),
-      map((x: any) => AssemblyConverter.toAssemblyStat(x)),
-      toArray()
+  assemblyStatistics(pageSize: number, page: number, namefilte: string, order: string)
+    : Observable<{ assemblies: AssemblyStat[], count: number}> {
+
+    return this.apolloService.query({
+        query: getAssembliesQuery,
+        variables: {
+          first: pageSize,
+          offset: pageSize * page
+        }
+      }).pipe(
+      map((x: any) => ({
+        assemblies: x.data.Assembly.map((a: any) => AssemblyConverter.toAssemblyStat(a)),
+        count: x.data.AssemblyCount
+      }))
     );
   }
 
