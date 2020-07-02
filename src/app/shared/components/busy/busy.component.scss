@@ -1,4 +1,4 @@
-@import '~styles/app-theme';
+@import '~styles/app-colors';
 
 $foreground : map-get($app-theme, foreground);
 $text-color: mat-color($foreground, text);

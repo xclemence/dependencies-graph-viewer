@@ -1,8 +1,6 @@
-@import '~styles/app-theme';
 
 :host {
   flex-direction: column;
-  // background-color: mat-color($primary, 300);
 }
 
 ::ng-deep .mat-drawer-inner-container {
