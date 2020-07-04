@@ -15,10 +15,15 @@ FROM nginx:alpine
 
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 
+COPY src/assets/config.json /usr/share/template/config.json
+
 RUN rm -rf /usr/share/nginx/html/*
 
 COPY --from=builder /usr/angular-workdir/dist/DependenciesGraph /usr/share/nginx/html
 
 EXPOSE 80
+
+COPY docker/docker-entrypoint.sh /
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 CMD ["nginx", "-g", "daemon off;"]

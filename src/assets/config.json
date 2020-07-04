@@ -1,4 +1,4 @@
 {
-    "assemblyGraphqlUri": "${AssemblyGraphqlUri}"
+    "assemblyGraphqlUri": "${DEPENDENCIES_GRAPHQL_URI}"
 }
   
