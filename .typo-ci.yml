@@ -7,6 +7,9 @@ excluded_files:
   - ".typo-ci.yml"
   - ".devcontainer/*"
   - ".gitignore"
+  - ".github/*"
+  - "docker/*"
+
 
 # Any typos we should ignore?
 excluded_words:
