@@ -25,6 +25,9 @@ jobs:
       
     - name: Lint
       run: yarn ng lint
+    
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@v1.3
 
     - name: Build
       run: yarn ng build --prod --aot --no-progress
