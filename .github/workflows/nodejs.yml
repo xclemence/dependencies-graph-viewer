@@ -25,6 +25,9 @@ jobs:
       
     - name: Lint
       run: yarn ng lint
+
+    - name: Unit Tests
+      run: yarn ng test
     
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@v1.3
