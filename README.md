@@ -2,13 +2,12 @@
 
 [![License](https://img.shields.io/npm/l/@angular/cli.svg)](/LICENSE) 
 [![CircleCI](https://circleci.com/gh/xclemence/Dependencies.Graph.View.svg?style=svg)](https://circleci.com/gh/xclemence/Dependencies.Graph.View)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=xclemence_dependencies-graph-viewer&metric=alert_status)](https://sonarcloud.io/dashboard?id=xclemence_dependencies-graph-viewer)
 
 [![dependencies Status](https://david-dm.org/iceman63/Dependencies.Graph.View/status.svg)](https://david-dm.org/iceman63/Dependencies.Graph.View)
 [![devDependencies Status](https://david-dm.org/iceman63/Dependencies.Graph.View/dev-status.svg)](https://david-dm.org/iceman63/Dependencies.Graph.View?type=dev)
 
 This software provide a view to explore assemblies dependencies. This version is a pre-alpha version with no link to back end (only mock data are used).
-
-This project helps me to experiment some technical ideas (logon screen without change Angular route for example).
 
 ### Features available
 - View Software assemblies (with graph)
