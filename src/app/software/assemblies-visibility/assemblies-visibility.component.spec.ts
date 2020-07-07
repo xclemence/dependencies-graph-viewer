@@ -1,4 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NameFilterPipe } from '@app/shared/pipe/name-filter.pipe';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
 import { AssembliesVisibilityComponent } from './assemblies-visibility.component';
 
@@ -6,12 +8,16 @@ import { AssembliesVisibilityComponent } from './assemblies-visibility.component
 describe('SoftwareAssembliesComponent', () => {
   let component: AssembliesVisibilityComponent;
   let fixture: ComponentFixture<AssembliesVisibilityComponent>;
+  const initialState = { assemblies: [] };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AssembliesVisibilityComponent ]
+      declarations: [AssembliesVisibilityComponent, NameFilterPipe],
+      providers: [
+        provideMockStore({ initialState }),
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -20,7 +26,9 @@ describe('SoftwareAssembliesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  fit('should create', () => {
+    const store = TestBed.inject(MockStore);
+
     expect(component).toBeTruthy();
   });
 });

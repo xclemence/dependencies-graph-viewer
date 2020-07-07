@@ -15,7 +15,7 @@ import { HttpErrorInterceptor } from './core/interceptors/http-error.interceptor
 import { ConfigurationService } from './core/services/configuration.service';
 
 export function configurationInit(config: ConfigurationService) {
-  return () => config.load();
+  return () => config.load(environment.production);
 }
 
 @NgModule({
