@@ -8,7 +8,17 @@ import { AssembliesVisibilityComponent } from './assemblies-visibility.component
 describe('SoftwareAssembliesComponent', () => {
   let component: AssembliesVisibilityComponent;
   let fixture: ComponentFixture<AssembliesVisibilityComponent>;
-  const initialState = { assemblies: [] };
+  const initialState = {
+    software: {
+      assemblies: {
+        software: { },
+        filteredAssemblies: []
+      },
+      name: {
+        softwareNames: []
+      }
+    }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -26,7 +36,7 @@ describe('SoftwareAssembliesComponent', () => {
     fixture.detectChanges();
   });
 
-  fit('should create', () => {
+  it('should create', () => {
     const store = TestBed.inject(MockStore);
 
     expect(component).toBeTruthy();

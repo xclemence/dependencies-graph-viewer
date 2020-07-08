@@ -33,9 +33,7 @@ export class AssembliesVisibilityComponent implements OnInit {
       filter(x => x?.software?.referencedAssemblies !== undefined && x.software !== this.#currentSoftware),
       tap(x => this.#currentSoftware = x.software),
       map(x => x.software.referencedAssemblies.map(y => ({ isVisible: !x.filteredAssemblies.includes(y.id) , name: y.name, id: y.id})))
-    ).subscribe(x => {
-      this.assemblies = x;
-    });
+    ).subscribe(x => {});
   }
 
   toggleVisibility(assembly: SelectableAssembly) {
