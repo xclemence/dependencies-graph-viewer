@@ -28,10 +28,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 14.0
-
-    - name: Get yarn cache directory path
-      id: yarn-cache-dir-path
-      run: echo "::set-output name=dir::$(yarn cache dir)"
       
     - name: Install dependencies
       run: yarn --frozen-lockfile
@@ -40,7 +36,8 @@ jobs:
       run: yarn ng lint
 
     - name: Unit Tests
-      run: yarn ng test --watch=false --code-coverage --browsers=chromeNoSandbox
+      run: yarn ng test --watch=false --code-coverage
+      # run: yarn ng test --watch=false --code-coverage --browsers=chromeNoSandbox
     
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@v1.3
