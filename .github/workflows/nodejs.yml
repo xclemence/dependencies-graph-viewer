@@ -38,6 +38,9 @@ jobs:
     - name: Unit Tests
       run: yarn ng test --watch=false --code-coverage --browsers=chromeNoSandbox
     
+    - name: e2e Tests
+      run: npm run e2e --protractor-config=./e2e/protractor-ci.conf.js
+      
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@v1.3
       env:
