@@ -38,6 +38,9 @@ jobs:
     # - name: Unit Tests
     #   run: yarn ng test --watch=false --code-coverage --browsers=chromeNoSandbox
     
+    - name: postinstall
+      run: npm run postinstall
+
     - name: e2e Tests
       run: npm run e2e -c=ci
       
