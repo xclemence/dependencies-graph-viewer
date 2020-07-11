@@ -130,7 +130,7 @@
               "devServerTarget": "DependenciesGraph:serve:production"
             },
             "ci": {  
-              "devServerTarget": "project-name:serve:production",  
+              "devServerTarget": "DependenciesGraph:serve:production",  
               "protractorConfig": "e2e/protractor-ci.conf.js"  
             }
           }
