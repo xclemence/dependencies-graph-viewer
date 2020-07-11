@@ -9,6 +9,7 @@ excluded_files:
   - ".gitignore"
   - ".github/*"
   - "docker/*"
+  - "yarn.lock"
 
 
 # Any typos we should ignore?

@@ -23,14 +23,14 @@ describe('ConfigurationService', () => {
 
   it('update environement with configuration file', async () => {
 
-    const resultRromise = service.load(true);
+    const resultPromise = service.load(true);
     const mockReq = httpMock.expectOne('/assets/config.json');
 
     mockReq.flush({
       assemblyGraphqlUri: 'http://localhost:12345'
     });
 
-    const result = await resultRromise;
+    const result = await resultPromise;
     expect(result).toBeTrue();
 
     expect(environment.assemblyGraphqlUri).toBe('http://localhost:12345');

@@ -10,17 +10,17 @@ describe('SortDefinitionConvertorService', () => {
     service = TestBed.inject(SortDefinitionConvertorService);
   });
 
-  it('should retrive value', () => {
+  it('should retrieve value', () => {
     const order = service.getAssemblyServiceOrder('type', 'asc');
     expect(order).toBe('isNative_asc');
   });
 
-  it('should retrive default value from undefined', () => {
+  it('should retrieve default value from undefined', () => {
     const order = service.getAssemblyServiceOrder(undefined, undefined);
     expect(order).toBe('shortName_asc');
   });
 
-  it('should retrive default value from null', () => {
+  it('should retrieve default value from null', () => {
     const order = service.getAssemblyServiceOrder(null, null);
     expect(order).toBe('shortName_asc');
   });
