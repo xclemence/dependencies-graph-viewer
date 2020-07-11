@@ -9,6 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "e2e:ci": "ng e2e -c=ci",
     "postinstall": "webdriver-manager update --standalone false --gecko false"
   },
   "private": true,
