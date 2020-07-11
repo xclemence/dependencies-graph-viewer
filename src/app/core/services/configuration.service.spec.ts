@@ -38,12 +38,12 @@ describe('ConfigurationService', () => {
 
   it('generate an error return false value', async () => {
 
-    const resultRromise = service.load(true);
+    const resultPromise = service.load(true);
     const mockReq = httpMock.expectOne('/assets/config.json');
 
     mockReq.error(new ErrorEvent('one error'));
 
-    const result = await resultRromise;
+    const result = await resultPromise;
     expect(result).toBeFalse();
   });
 
