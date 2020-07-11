@@ -9,10 +9,10 @@ export class ConfigurationService {
 
   constructor(private http: HttpClient) { }
 
-  load(): Promise<boolean> | boolean {
+  load(productionMode: boolean): Promise<boolean> | boolean {
 
-    if (environment.production) {
-      return this.http.get('./assets/config.json')
+    if (productionMode) {
+      return this.http.get('/assets/config.json')
         .toPromise()
         .then((config: any) => {
           environment.assemblyGraphqlUri = config.assemblyGraphqlUri;

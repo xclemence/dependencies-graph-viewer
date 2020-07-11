@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "DependenciesGraph": {
+    "dependencies-graph": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -18,7 +18,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "aot": true,
-            "outputPath": "dist/DependenciesGraph",
+            "outputPath": "dist/dependencies-graph",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -67,18 +67,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "DependenciesGraph:build"
+            "browserTarget": "dependencies-graph:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "DependenciesGraph:build:production"
+              "browserTarget": "dependencies-graph:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "DependenciesGraph:build"
+            "browserTarget": "dependencies-graph:build"
           }
         },
         "test": {
@@ -112,7 +112,7 @@
         }
       }
     },
-    "DependenciesGraph-e2e": {
+    "dependencies-graph-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -121,11 +121,17 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "DependenciesGraph:serve"
+            "devServerTarget": "dependencies-graph:serve",  
+            "webdriverUpdate": false
+            
           },
           "configurations": {
             "production": {
-              "devServerTarget": "DependenciesGraph:serve:production"
+              "devServerTarget": "dependencies-graph:serve:production"
+            },
+            "ci": {  
+              "devServerTarget": "dependencies-graph:serve:production",  
+              "protractorConfig": "e2e/protractor-ci.conf.js"  
             }
           }
         },
@@ -141,7 +147,7 @@
       }
     }
   },
-  "defaultProject": "DependenciesGraph",
+  "defaultProject": "dependencies-graph",
   "cli": {
     "defaultCollection": "@ngrx/schematics"
   }
