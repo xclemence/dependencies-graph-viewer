@@ -32,11 +32,11 @@ jobs:
     - name: Install dependencies
       run: yarn --frozen-lockfile
       
-    - name: Lint
-      run: yarn ng lint
+    # - name: Lint
+    #   run: yarn ng lint
 
-    - name: Unit Tests
-      run: yarn ng test --watch=false --code-coverage --browsers=chromeNoSandbox
+    # - name: Unit Tests
+    #   run: yarn ng test --watch=false --code-coverage --browsers=chromeNoSandbox
     
     - name: e2e Tests
       run: npm run e2e --protractor-config=./e2e/protractor-ci.conf.js
