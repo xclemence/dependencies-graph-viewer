@@ -21,7 +21,7 @@ describe('ConfigurationService', () => {
     httpMock.verify();
   });
 
-  it('update environement with configuration file', async () => {
+  it('update environment with configuration file', async () => {
 
     const resultPromise = service.load(true);
     const mockReq = httpMock.expectOne('/assets/config.json');
