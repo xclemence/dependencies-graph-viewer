@@ -3,8 +3,7 @@ import { HeaderLink } from '@app/shared/components';
 
 @Component({
   selector: 'app-test',
-  templateUrl: './test.component.html',
-  styleUrls: ['./test.component.scss']
+  templateUrl: './test.component.html'
 })
 export class TestComponent implements OnInit {
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, AfterViewChecked, ChangeDetectionStrategy, AfterViewInit, HostBinding } from '@angular/core';
+import { Component, ElementRef, Input, AfterViewChecked, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
 
 import * as d3 from 'd3';
 import { Simulation } from 'd3';

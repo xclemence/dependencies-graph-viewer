@@ -3,8 +3,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-header-previous',
-  templateUrl: './header-previous.component.html',
-  styleUrls: ['./header-previous.component.scss']
+  templateUrl: './header-previous.component.html'
 })
 export class HeaderPreviousComponent {
 

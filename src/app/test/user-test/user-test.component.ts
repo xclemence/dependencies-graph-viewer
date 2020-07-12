@@ -3,8 +3,7 @@ import { SecurityConfigurationService } from '@app/security/services/security-co
 
 @Component({
   selector: 'app-user-test',
-  templateUrl: './user-test.component.html',
-  styleUrls: ['./user-test.component.scss']
+  templateUrl: './user-test.component.html'
 })
 export class UserTestComponent implements OnInit {
 

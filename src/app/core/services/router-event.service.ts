@@ -3,7 +3,6 @@ import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Rout
 import { addBusyIndicatorAction, removeBusyIndicatorAction } from '@app/core/store/actions/busy-indicator.actions';
 import { CoreState } from '@app/core/store/models';
 import { Store } from '@ngrx/store';
-import { Guid } from 'guid-typescript';
 
 import { UrlService } from './url.service';
 
