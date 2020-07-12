@@ -8,7 +8,7 @@ import { CoreState } from '../store/models';
 
 declare module 'rxjs' {
   export interface Observable<T> {
-    executeWithMainBusy(tore: Store<CoreState>): Observable<T>;
+    executeWithMainBusy(store: Store<CoreState>): Observable<T>;
   }
 }
 function executeWithMainBusy<T>(operation: Observable<T>, store: Store<CoreState>): Observable<T>  {

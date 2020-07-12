@@ -4,7 +4,6 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
 import { AssembliesVisibilityComponent } from './assemblies-visibility.component';
 
-
 describe('SoftwareAssembliesComponent', () => {
   let component: AssembliesVisibilityComponent;
   let fixture: ComponentFixture<AssembliesVisibilityComponent>;
