@@ -10,7 +10,7 @@
       <caption>filtered assemblies</caption>
       <ng-container matColumnDef="type">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="type" scope="col"> Type </th>
-        <td mat-cell *matCellDef="let element" scope="row">
+        <td mat-cell *matCellDef="let element">
           <span class="dot" [style.backgroundColor]="getTypeColor(element)" [matTooltip]="getAssemblyTypeName(element)"
             matTooltipPosition="above"></span>
         </td>
