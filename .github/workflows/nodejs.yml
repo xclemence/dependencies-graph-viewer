@@ -41,8 +41,8 @@ jobs:
     - name: Unit Tests
       run: yarn ng test --watch=false --code-coverage --browsers=chromeNoSandbox
     
-    - name: postinstall
-      run: yarn postinstall
+    - name: update web driver
+      run: yarn updateWebDriver
 
     - name: e2e Tests
       run: yarn e2e --configuration=ci
