@@ -16,7 +16,7 @@ describe('HttpErrorInterceptor with ErrorEvent', () => {
     storeSpy = jasmine.createSpyObj<Store<CoreState>>('store', ['dispatch']);
   });
 
-  fit('should dispatch error message from Error', () => {
+  it('should dispatch error message from Error', () => {
 
     const expectedActionOnError = operationFailure({ error: 'Error (404): test-error', origin: undefined });
 
@@ -40,7 +40,7 @@ describe('HttpErrorInterceptor with ErrorEvent', () => {
 
   });
 
-  fit('should dispatch error message from ErrorEvent', () => {
+  it('should dispatch error message from ErrorEvent', () => {
     const expectedErrorMessage = 'Error: test-error';
     const expectedActionOnError = operationFailure({ error: expectedErrorMessage, origin: undefined });
 

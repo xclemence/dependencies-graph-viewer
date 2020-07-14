@@ -11,15 +11,15 @@ export class AssemblyMockProvider {
 
   public getMockDataRand(maxNumber: number): Assembly {
     const startNumber = this.currentIndexNumber;
-    const assembly = <Assembly> { id: `${this.currentIndexNumber}`, name: 'test', version: '1', isSoftware: true};
+    const assembly = { id: `${this.currentIndexNumber}`, name: 'test', version: '1', isSoftware: true} as Assembly;
     this.currentIndexNumber++;
 
     const refNumber = this.randomInt(10, maxNumber);
 
     assembly.referencedAssemblies = new Array<Assembly>();
     for (let i = 2; i <= refNumber; ++i ) {
-      assembly.referencedAssemblies.push(<Assembly> { id: `${this.currentIndexNumber}`, name: `Assembly ${i}`, version: `v.1.0.${i}`,
-                                         isSoftware: false, isNative : this.randomInt(0, 4) === 3});
+      assembly.referencedAssemblies.push({ id: `${this.currentIndexNumber}`, name: `Assembly ${i}`, version: `v.1.0.${i}`,
+                                         isSoftware: false, isNative : this.randomInt(0, 4) === 3} as Assembly);
 
       this.currentIndexNumber++;
     }
@@ -36,7 +36,7 @@ export class AssemblyMockProvider {
         targetId = this.randomInt(startNumber, this.currentIndexNumber - 1);
       }
 
-      assembly.links.push(<AssemblyLink> { sourceId: `${sourceId}`, targetId: `${targetId}`});
+      assembly.links.push({ sourceId: `${sourceId}`, targetId: `${targetId}`} as AssemblyLink);
     }
 
     return assembly;
@@ -67,7 +67,7 @@ export class AssemblyMockProvider {
         { sourceId: '6', targetId: '7'},
       ]
     };
-    return <Assembly> jsonData;
+    return jsonData as Assembly;
   }
 
   randomInt(min: number, max: number): number {
