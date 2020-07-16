@@ -44,8 +44,8 @@ jobs:
     - name: update web driver
       run: yarn updateWebDriver
 
-    - name: e2e Tests
-      run: yarn e2e --configuration=ci
+    # - name: e2e Tests
+      # run: yarn e2e --configuration=ci
       
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@v1.3
