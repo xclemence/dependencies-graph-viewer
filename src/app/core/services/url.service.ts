@@ -49,7 +49,6 @@ export class UrlService {
     const currentOutlet = currentRoute.outlet;
     const treeUrl = this.router.parseUrl(this.router.url);
 
-    console.log(JSON.stringify(Object.keys(treeUrl.root.children)));
     return { group: treeUrl.root.children[currentOutlet], tree: treeUrl };
   }
 }
