@@ -25,6 +25,10 @@ export const busyIndicatorReducer = createReducer(
 
   on(removeBusyIndicatorAction, (state, action) => {
     const index = state.actionsInProgress.indexOf(action.key);
+    if (index === -1) {
+      return state;
+    }
+
     return {
       ...state,
       actionsInProgress: [
