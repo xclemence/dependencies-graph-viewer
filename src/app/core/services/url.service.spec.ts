@@ -95,4 +95,15 @@ describe('UrlService', () => {
     expect(path).toBe('/page1');
   }));
 
+  it('not remove url element, index to big', fakeAsync(() => {
+    router.navigate(['test', 'page1']);
+    tick();
+    const activatedRoute = TestBed.inject(ActivatedRoute);
+
+    service.removeAt(10, activatedRoute);
+
+    const path = service.getCurrentPath();
+    expect(path).toBe('/test/page1');
+  }));
+
 });
