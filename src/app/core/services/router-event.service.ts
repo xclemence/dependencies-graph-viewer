@@ -15,13 +15,15 @@ export class RouterEventService {
 
   private map = new Map<string, () => void>([
     [NavigationStart.name, () => this.proceedNavigationStart()],
-    [NavigationEnd.name, () => this.startBusy()],
+    [NavigationEnd.name, () => this.stopBusy()],
     [NavigationCancel.name, () => this.proceedNavigationCancel()],
     [NavigationError.name, () => this.stopBusy()]
   ]);
 
   constructor(private router: Router, private store: Store<CoreState>, private urlService: UrlService) {
     this.router.events.subscribe(x => {
+
+      console.log(`on event ${x.constructor.name}`);
       const action = this.map.get(x.constructor.name);
 
       if (action !== undefined) {
