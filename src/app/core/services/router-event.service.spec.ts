@@ -28,7 +28,7 @@ const routes: Routes = [
   ] },
 ];
 
-describe('ConfigurationService', () => {
+describe('RouterEventService', () => {
   let service: RouterEventService;
   let router: Router;
   let storeSpy: any;
@@ -83,7 +83,7 @@ describe('ConfigurationService', () => {
 
   }));
 
-  fit('update busy state on navigate cancel', fakeAsync(() => {
+  it('update busy state on navigate cancel', fakeAsync(() => {
 
     router.navigate(['test', 'page2']);
     tick();

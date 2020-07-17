@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Assembly, AssemblyBase } from '@app/core/models/assembly';
-import { AssemblyMockProvider } from '@app/core/services/assembly.mock-provider';
+import { AssemblyMockProvider } from '@app/test/assembly.mock-provider';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
@@ -28,7 +28,7 @@ export class SoftwareMockService {
       {id: '15', name: 'Assembly3', version: '1.0.3'},
     ];
 
-    return of(<AssemblyBase[]> jsonData).pipe(delay(1000));
+    return of(jsonData as AssemblyBase[] ).pipe(delay(1000));
   }
 
   references(assemblyName: AssemblyBase): Observable<Assembly> {

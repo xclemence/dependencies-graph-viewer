@@ -16,7 +16,7 @@ const routes: Routes = [
   ] },
 ];
 
-describe('ConfigurationService', () => {
+describe('UrlService', () => {
   let service: UrlService;
   let router: Router;
 

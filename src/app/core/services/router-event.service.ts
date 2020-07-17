@@ -23,7 +23,6 @@ export class RouterEventService {
   constructor(private router: Router, private store: Store<CoreState>, private urlService: UrlService) {
     this.router.events.subscribe(x => {
 
-      console.log(`on event ${x.constructor.name}`);
       const action = this.map.get(x.constructor.name);
 
       if (action !== undefined) {
