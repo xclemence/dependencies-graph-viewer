@@ -153,4 +153,55 @@ describe('ForceGraphComponent', () => {
     expect(fixture.debugElement.queryAll(By.css('line')).length).toBe(0);
   });
 
+  it('should trigger onResize method when window is resized', () => {
+    const spyOnResize = spyOn(component, 'onResize');
+    window.dispatchEvent(new Event('resize'));
+    expect(spyOnResize).toHaveBeenCalled();
+  });
+
+  it('should resize control window is resized', () => {
+
+    viewport.set(320, 480);
+
+    fixture.detectChanges();
+
+    const svgElement = fixture.debugElement.query(By.css('.graph-svg')).nativeElement;
+
+    const resultWidth = svgElement.width.baseVal.value;
+    const resultHeight = svgElement.height.baseVal.value;
+
+    const referenceWith = fixture.nativeElement.offsetWidth;
+    const referenceHeight = fixture.nativeElement.offsetHeight;
+
+    viewport.reset();
+
+    expect(resultWidth).toBe(referenceWith);
+    expect(resultHeight).toBe(referenceHeight);
+
+  });
+
+  fit('should update circle state on move over', () => {
+    const baseGraph = {
+      nodes: [
+        new GraphNode({ id: '2', label: 'node1', color: 'red' }),
+        new GraphNode({ id: '1', label: 'node1', color: 'red' }),
+      ],
+      links: [ ]
+    };
+
+    component.graph = baseGraph;
+    fixture.detectChanges();
+
+    const element = fixture.debugElement.query(By.css('circle'));
+
+    element.triggerEventHandler('mouseover', {});
+    fixture.detectChanges();
+
+    const nodeContentElements = fixture.debugElement.queryAll(By.css('.nodes>g'));
+
+    // console.log(nodeContentElements[0].nativeElement.constructor);
+    // expect(nodeContentElements[0].nativeElement.style.opacity).toBe(1);
+    // expect(nodeContentElements[1].nativeElement.style.opacity).toBe(component.disableOpacity);
+  });
+
 });
