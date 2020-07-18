@@ -180,7 +180,7 @@ describe('ForceGraphComponent', () => {
 
   });
 
-  fit('should update circle state on move over', () => {
+  it('should update circle state on move over', () => {
     const baseGraph = {
       nodes: [
         new GraphNode({ id: '2', label: 'node1', color: 'red' }),
