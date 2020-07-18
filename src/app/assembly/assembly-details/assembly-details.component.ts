@@ -2,7 +2,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { Assembly, AssemblyColors } from '@app/core/models/assembly';
-import { Graph, Link, Node } from '@app/shared/models';
+import { Graph, GraphLink, GraphNode } from '@app/shared/models';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
@@ -75,15 +75,15 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
 
   generateGraphData(assembly: Assembly): Graph {
     const item = new Graph();
-    item.nodes = assembly.referencedAssemblies.map(x => new Node({
+    item.nodes = assembly.referencedAssemblies.map(x => new GraphNode({
       id: x.id,
       label: `${x.name} (${x.version})`,
       color: x.isNative ? AssemblyColors.native : AssemblyColors.managed
     }));
 
-    item.nodes.push(new Node({ id: assembly.id, label: `${assembly.name} (${assembly.version})`, color: AssemblyColors.main }));
+    item.nodes.push(new GraphNode({ id: assembly.id, label: `${assembly.name} (${assembly.version})`, color: AssemblyColors.main }));
 
-    item.links = assembly.links.map(x => new Link({ source: x.sourceId, target: x.targetId }));
+    item.links = assembly.links.map(x => new GraphLink({ source: x.sourceId, target: x.targetId }));
     return item;
   }
 }

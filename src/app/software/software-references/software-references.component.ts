@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Assembly, AssemblyColors } from '@app/core/models';
-import { Graph, Link, Node } from '@app/shared/models';
+import { Graph, GraphLink, GraphNode } from '@app/shared/models';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -36,16 +36,16 @@ export class SoftwareReferencesComponent implements OnInit {
     }
 
     const item = new Graph();
-    item.nodes = assembly.referencedAssemblies.filter(x => !filteredAssemblyIds.includes(x.id)).map(x => new Node({
+    item.nodes = assembly.referencedAssemblies.filter(x => !filteredAssemblyIds.includes(x.id)).map(x => new GraphNode({
       id: x.id,
       label: `${x.name} (${x.version})`,
       color: x.isNative ? AssemblyColors.native : AssemblyColors.managed
     }));
 
-    item.nodes.push(new Node({ id: assembly.id, label: `${assembly.name} (${assembly.version})`, color: AssemblyColors.main }));
+    item.nodes.push(new GraphNode({ id: assembly.id, label: `${assembly.name} (${assembly.version})`, color: AssemblyColors.main }));
 
     item.links = assembly.links.filter(x => !filteredAssemblyIds.includes(x.targetId) && !filteredAssemblyIds.includes(x.sourceId))
-      .map(x => new Link({ source: x.sourceId, target: x.targetId }));
+      .map(x => new GraphLink({ source: x.sourceId, target: x.targetId }));
 
     return item;
   }

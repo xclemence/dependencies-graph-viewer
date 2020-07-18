@@ -3,7 +3,7 @@ import { Component, ElementRef, Input, AfterViewChecked, ChangeDetectionStrategy
 import * as d3 from 'd3';
 import { Simulation } from 'd3';
 
-import { Graph, Node, Link } from '@app/shared/models';
+import { Graph, GraphNode, GraphLink } from '@app/shared/models';
 
 export enum GraphUpdateMode {
   Update = 'Update',
@@ -133,7 +133,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
       this.#linkedByIndex[`${d.source},${d.target}`] = true;
     });
 
-    const linkData = this.linkSelector.data(this.#graph.links, (x: Link) => `${x.source}|${x.target}`);
+    const linkData = this.linkSelector.data(this.#graph.links, (x: GraphLink) => `${x.source}|${x.target}`);
 
     linkData.exit().remove();
 
@@ -143,20 +143,20 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
                           .style('stroke-width', this.linkStroke)
                           .style('stroke', 'DimGray');
 
-    let nodes = this.nodeSelector.data(this.#graph.nodes, (x: Node) => x.id);
+    let nodes = this.nodeSelector.data(this.#graph.nodes, (x: GraphNode) => x.id);
 
     nodes.exit().remove();
 
     nodes = nodes.enter().append('g');
 
     nodes.append('circle')
-         .attr('stroke', (d: Node) => d.color)
+         .attr('stroke', (d: GraphNode) => d.color)
          .attr('stroke-width', this.circleSize / 2.0)
-         .attr('fill', (d: Node) => d.color)
+         .attr('fill', (d: GraphNode) => d.color)
          .attr('r', this.circleSize);
 
     nodes.append('text')
-         .text((d: Node) => d.label)
+         .text((d: GraphNode) => d.label)
          .attr('font-size', 15)
          .attr('fill', 'white')
          .attr('dx', 15)
@@ -180,14 +180,14 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
     this.#nodes = this.nodeSelector;
   }
 
-  clearData() {
+  private clearData() {
     if (this.nodeSelector != null) {
       this.nodeSelector.data({}).exit().remove();
       this.linkSelector.data({}).exit().remove();
     }
   }
 
-  ticked() {
+  private ticked() {
     this.#links
       .attr('x1', (d: any) => d.source.x)
       .attr('y1', (d: any) => d.source.y)
@@ -197,18 +197,18 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
     this.#nodes.attr('transform', (d: any) => `translate(${d.x}, ${d.y})`);
   }
 
-  isConnected(a: Node, b: Node) {
+  private isConnected(a: GraphNode, b: GraphNode) {
     return this.#linkedByIndex[`${a.id},${b.id}`] || a.id === b.id;
   }
 
-  fade(opacity: number) {
+  private fade(opacity: number) {
     return (d: any) => {
       this.#nodes.style('opacity', (o: any) => this.isConnected(d, o) ? 1 : opacity);
       this.#links.style('opacity', (o: any) => (o.source === d ? 1 : opacity));
     };
   }
 
-  dragstarted(d: any, simulation: any) {
+  private dragstarted(d: any, simulation: any) {
     if (!d3.event.active) {
       simulation.alphaTarget(0.3).restart();
     }
@@ -217,12 +217,12 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
     d.fy = d.y;
   }
 
-  dragged(d: any) {
+  private dragged(d: any) {
     d.fx = d3.event.x;
     d.fy = d3.event.y;
   }
 
-  dragended(d: any, simulation: any) {
+  private dragended(d: any, simulation: any) {
     if (!d3.event.active) {
       simulation.alphaTarget(0);
     }
@@ -252,7 +252,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
     this.#simulation.restart();
   }
 
-  getControlSize(): {width: number, height: number} {
+  private getControlSize(): {width: number, height: number} {
     const width = (+this.container.nativeElement.offsetWidth);
     const height = (+this.container.nativeElement.offsetHeight);
 
