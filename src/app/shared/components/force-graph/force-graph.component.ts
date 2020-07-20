@@ -170,9 +170,9 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
 
     this.#simulation.nodes(this.#graph.nodes).on('tick', () => this.ticked());
 
-    this.#nodes.call(d3.drag().on('start', d => this.dragstarted(d, this.#simulation))
+    this.#nodes.call(d3.drag().on('start', d => this.dragStarted(d, this.#simulation))
                               .on('drag', this.dragged)
-                              .on('end', d => this.dragended(d, this.#simulation)));
+                              .on('end', d => this.dragEnded(d, this.#simulation)));
 
     this.#simulation.force<d3.ForceLink<any, any>>('link').links(this.#graph.links);
     this.#simulation.alpha(0).alphaTarget(0.3).restart();
@@ -208,7 +208,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
     };
   }
 
-  private dragstarted(d: any, simulation: any) {
+  private dragStarted(d: any, simulation: any): void {
     if (!d3.event?.active) {
       simulation.alphaTarget(0.3).restart();
     }
@@ -217,13 +217,13 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
     d.fy = d.y;
   }
 
-  private dragged(d: any) {
+  private dragged(d: any): void {
     d.fx = d3.event.x;
     d.fy = d3.event.y;
   }
 
-  private dragended(d: any, simulation: any) {
-    if (!d3.event.active) {
+  private dragEnded(d: any, simulation: any): void {
+    if (!d3.event?.active) {
       simulation.alphaTarget(0);
     }
 
