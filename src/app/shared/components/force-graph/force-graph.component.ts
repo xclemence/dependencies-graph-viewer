@@ -165,8 +165,8 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
     this.#nodes = this.nodeSelector;
 
     // Here we need the real item
-    this.#nodes.on('mouseover.fade', this.fade(this.disableOpacity))
-               .on('mouseout.fade', this.fade(1));
+    this.#nodes.on('mouseover', this.fade(this.disableOpacity))
+               .on('mouseout', this.fade(1));
 
     this.#simulation.nodes(this.#graph.nodes).on('tick', () => this.ticked());
 
@@ -209,7 +209,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
   }
 
   private dragstarted(d: any, simulation: any) {
-    if (!d3.event.active) {
+    if (!d3.event?.active) {
       simulation.alphaTarget(0.3).restart();
     }
 

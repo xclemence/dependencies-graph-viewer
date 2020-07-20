@@ -176,11 +176,12 @@ describe('ForceGraphComponent', () => {
     viewport.reset();
 
     expect(resultWidth).toBe(referenceWith);
+
     expect(resultHeight).toBe(referenceHeight);
 
   });
 
-  it('should update circle state on move over', () => {
+  it('should highlight selected node', () => {
     const baseGraph = {
       nodes: [
         new GraphNode({ id: '2', label: 'node1', color: 'red' }),
@@ -192,16 +193,69 @@ describe('ForceGraphComponent', () => {
     component.graph = baseGraph;
     fixture.detectChanges();
 
-    const element = fixture.debugElement.query(By.css('circle'));
+    const selectedNode = fixture.debugElement.queryAll(By.css('.nodes>g'))[0];
 
-    element.triggerEventHandler('mouseover', {});
+    selectedNode.nativeElement.dispatchEvent(new MouseEvent('mouseover'));
+
+    const allNodeElements = fixture.debugElement.queryAll(By.css('.nodes>g'));
+
+    expect(allNodeElements[0].nativeElement.style.opacity).toBe('1');
+    expect(allNodeElements[1].nativeElement.style.opacity).toBe(`${component.disableOpacity}`);
+  });
+
+  it('should reset selection on mouse out', () => {
+    const baseGraph = {
+      nodes: [
+        new GraphNode({ id: '2', label: 'node1', color: 'red' }),
+        new GraphNode({ id: '1', label: 'node1', color: 'red' }),
+      ],
+      links: [ ]
+    };
+
+    component.graph = baseGraph;
     fixture.detectChanges();
 
-    const nodeContentElements = fixture.debugElement.queryAll(By.css('.nodes>g'));
+    const selectedNode = fixture.debugElement.queryAll(By.css('.nodes>g'))[0];
 
-    // console.log(nodeContentElements[0].nativeElement.constructor);
-    // expect(nodeContentElements[0].nativeElement.style.opacity).toBe(1);
-    // expect(nodeContentElements[1].nativeElement.style.opacity).toBe(component.disableOpacity);
+    selectedNode.nativeElement.dispatchEvent(new MouseEvent('mouseover'));
+    selectedNode.nativeElement.dispatchEvent(new MouseEvent('mouseout'));
+
+    const allNodeElements = fixture.debugElement.queryAll(By.css('.nodes>g'));
+
+    expect(allNodeElements[0].nativeElement.style.opacity).toBe('1');
+    expect(allNodeElements[1].nativeElement.style.opacity).toBe(`1`);
+  });
+
+  it('should highlight selected node and referenced nodes', () => {
+    const baseGraph = {
+      nodes: [
+        new GraphNode({ id: '1', label: 'node1', color: 'red' }),
+        new GraphNode({ id: '2', label: 'node2', color: 'red' }),
+        new GraphNode({ id: '3', label: 'node3', color: 'red' }),
+      ],
+      links: [
+        new GraphLink({source: '1', target: '2'}),
+        new GraphLink({source: '2', target: '3'})
+      ]
+    };
+
+    component.graph = baseGraph;
+    fixture.detectChanges();
+
+    const selectedNode = fixture.debugElement.queryAll(By.css('.nodes>g'))[0];
+
+    selectedNode.nativeElement.dispatchEvent(new MouseEvent('mouseover'));
+
+    const allNodeElements = fixture.debugElement.queryAll(By.css('.nodes>g'));
+
+    expect(allNodeElements[0].nativeElement.style.opacity).toBe('1');
+    expect(allNodeElements[1].nativeElement.style.opacity).toBe(`1`);
+    expect(allNodeElements[2].nativeElement.style.opacity).toBe(`${component.disableOpacity}`);
+
+    const allLinkElements = fixture.debugElement.queryAll(By.css('g.links>line'));
+
+    expect(allLinkElements[0].nativeElement.style.opacity).toBe('1');
+    expect(allLinkElements[1].nativeElement.style.opacity).toBe(`${component.disableOpacity}`);
   });
 
 });
