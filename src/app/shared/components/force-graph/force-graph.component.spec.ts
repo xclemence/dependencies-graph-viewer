@@ -258,7 +258,7 @@ describe('ForceGraphComponent', () => {
     expect(allLinkElements[1].nativeElement.style.opacity).toBe(`${component.disableOpacity}`);
   });
 
-  fit('should call drag and drop methods', () => {
+  it('should call drag and drop methods', () => {
     const baseGraph = {
       nodes: [
         new GraphNode({ id: '1', label: 'node1', color: 'red' }),
