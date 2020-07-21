@@ -18,7 +18,7 @@ export class AssemblyDepthEffects {
       switchMap(action => this.assemblyService.references(action.assemblyId, action.depth).pipe(
         map(data => loadAssemblyDepthSuccess( { data, origin: action} )),
         catchError(error => of(operationFailure({ error: error.message, origin: action })))
-        )),
+      )),
     );
   });
 }
