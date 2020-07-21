@@ -40,6 +40,10 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
     return this.#selectedDepth;
   }
 
+  public get depthAvailable(): boolean {
+    return this.depthMax > 1;
+  }
+
   constructor(private store: Store<AssemblyState>, @Inject(MAT_DIALOG_DATA) data: { name: string, depthMax: number, id: string }) {
     this.assemblyName = data.name;
     this.assemblyId = data.id;
@@ -65,25 +69,22 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
     this.#subscription.unsubscribe();
   }
 
-  loadDepth(value: number) {
+  private loadDepth(value: number) {
     this.#depthChanged.next(value);
   }
 
-  get depthAvailable(): boolean {
-    return this.depthMax > 1;
-  }
-
   generateGraphData(assembly: Assembly): Graph {
-    const item = new Graph();
-    item.nodes = assembly.referencedAssemblies.map(x => new GraphNode({
+    const nodes = assembly.referencedAssemblies.map(x => new GraphNode({
       id: x.id,
       label: `${x.name} (${x.version})`,
       color: x.isNative ? AssemblyColors.native : AssemblyColors.managed
     }));
 
-    item.nodes.push(new GraphNode({ id: assembly.id, label: `${assembly.name} (${assembly.version})`, color: AssemblyColors.main }));
+    nodes.push(new GraphNode({ id: assembly.id, label: `${assembly.name} (${assembly.version})`, color: AssemblyColors.main }));
 
-    item.links = assembly.links.map(x => new GraphLink({ source: x.sourceId, target: x.targetId }));
-    return item;
+    return {
+      nodes,
+      links: assembly.links.map(x => new GraphLink({ source: x.sourceId, target: x.targetId }))
+    };
   }
 }

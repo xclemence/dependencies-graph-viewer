@@ -35,19 +35,18 @@ export class SoftwareReferencesComponent implements OnInit {
       return null;
     }
 
-    const item = new Graph();
-    item.nodes = assembly.referencedAssemblies.filter(x => !filteredAssemblyIds.includes(x.id)).map(x => new GraphNode({
+    const nodes = assembly.referencedAssemblies.filter(x => !filteredAssemblyIds.includes(x.id)).map(x => new GraphNode({
       id: x.id,
       label: `${x.name} (${x.version})`,
       color: x.isNative ? AssemblyColors.native : AssemblyColors.managed
     }));
 
-    item.nodes.push(new GraphNode({ id: assembly.id, label: `${assembly.name} (${assembly.version})`, color: AssemblyColors.main }));
+    nodes.push(new GraphNode({ id: assembly.id, label: `${assembly.name} (${assembly.version})`, color: AssemblyColors.main }));
 
-    item.links = assembly.links.filter(x => !filteredAssemblyIds.includes(x.targetId) && !filteredAssemblyIds.includes(x.sourceId))
+    const links = assembly.links.filter(x => !filteredAssemblyIds.includes(x.targetId) && !filteredAssemblyIds.includes(x.sourceId))
       .map(x => new GraphLink({ source: x.sourceId, target: x.targetId }));
 
-    return item;
+    return { nodes, links };
   }
 
   openVisibilityPanel() {

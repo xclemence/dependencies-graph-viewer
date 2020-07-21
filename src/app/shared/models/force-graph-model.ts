@@ -20,7 +20,7 @@ export class GraphLink {
   }
 }
 
-export class Graph {
+export interface Graph {
   nodes: GraphNode[];
   links: GraphLink[];
 }

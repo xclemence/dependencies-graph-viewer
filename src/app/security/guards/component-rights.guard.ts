@@ -9,16 +9,16 @@ import { FeatureRightsService } from '../services/feature-rights.service';
 })
 export class ComponentRightsGuard implements CanActivate {
 
-  constructor(private _securityService: UserSecurityService, private _featureRightsService: FeatureRightsService,
-    private _router: Router) { }
+  constructor(private securityService: UserSecurityService, private featureRightsService: FeatureRightsService,
+    private router: Router) { }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
 
-    const redirect = next.data['redirect'] as string;
+    const redirect = next.data.redirect as string;
 
     const component = next.component.toString();
 
-    if (this._featureRightsService.validateComponentRight(component, this._securityService.user)) {
+    if (this.featureRightsService.validateComponentRight(component, this.securityService.user)) {
       return true;
     }
 
@@ -26,6 +26,6 @@ export class ComponentRightsGuard implements CanActivate {
       return false;
     }
 
-    return this._router.parseUrl(redirect);
+    return this.router.parseUrl(redirect);
   }
 }
