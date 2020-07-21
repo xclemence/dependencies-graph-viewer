@@ -25,7 +25,7 @@ describe('AssemblyDepthEffects', () => {
         depth: '2'
       };
 
-      const inputAssembly = {
+      const resultAssembly = {
         id: '1',
         name: 'name1',
         version: '1.0',
@@ -39,13 +39,13 @@ describe('AssemblyDepthEffects', () => {
 
       const serviceSpy = jasmine.createSpyObj<AssemblyService>('service', [ 'references']);
 
-      serviceSpy.references.and.returnValue(of(inputAssembly));
+      serviceSpy.references.and.returnValue(of(resultAssembly));
 
       const actions = new Actions(actionProvider);
       const effects = new AssemblyDepthEffects(actions, serviceSpy);
 
       expectObservable(effects.loadAssemblyDepth).toBe('-a', {
-        a: loadAssemblyDepthSuccess({ data: inputAssembly,  origin: originAction })
+        a: loadAssemblyDepthSuccess({ data: resultAssembly,  origin: originAction })
       });
     });
   });

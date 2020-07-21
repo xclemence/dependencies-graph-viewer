@@ -1,7 +1,7 @@
 import { busyStateSelector, coreFeatureKey, coreStateSelector, errorStateSelector } from './core.selectors';
 import { BusyState, CoreState, ErrorState } from './models';
 
-describe('errorReducer', () => {
+describe('core selector', () => {
 
   it('should extract core state', () => {
     const coreState: CoreState = {
