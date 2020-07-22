@@ -58,10 +58,12 @@ describe('AssemblyListComponent', () => {
         { provide: AssemblyService, useValue: assemblyServiceSpy },
         { provide: SortDefinitionConvertorService, useValue: convertorServiceSpy },
         { provide: UrlService, useValue: urlServiceSpy },
-        { provide: ActivatedRoute, useValue: { 
-          paramMap: of(convertToParamMap({id: 123})),
+        {
+          provide: ActivatedRoute, useValue: {
+            paramMap: of(convertToParamMap({ id: 123 })),
 
-        } },
+          }
+        },
         provideMockStore({ initialState })
       ]
     })
