@@ -80,7 +80,7 @@ describe('AssemblyListComponent', () => {
     mockAssemblyDepthSelector = mockStore.overrideSelector(assemblyDepthStateSelector, undefined);
   });
 
-  fit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });
