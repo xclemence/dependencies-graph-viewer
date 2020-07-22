@@ -55,9 +55,8 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
     private urlService: UrlService,
     private route: ActivatedRoute) {
   }
+
   ngAfterViewInit(): void {
-
-
     this.#filterSubscription = fromEvent(this.searchInput.nativeElement, 'keyup').pipe(
       map((event: any) => event.target.value),
       debounceTime(400),
@@ -71,8 +70,7 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
     });
   }
 
-  ngAfterContentInit() {
-
+  ngAfterContentInit(): void {
     this.route.paramMap.pipe(
       filter(x => x.has('id')),
       map(x => x.get('id'))
@@ -82,11 +80,11 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
     });
 
     this.#storeSubscription = this.store.pipe(
-      select(assembliesStateSelector)
+      select(assembliesStateSelector),
     ).subscribe({
       next: (x) => {
-        this.dataSource = this.createDataSource(x.filtered);
-        this.assemblyCount = x.count;
+        this.dataSource = this.createDataSource(x?.filtered);
+        this.assemblyCount = x?.count ?? 0;
         this.tryOpenDetailsFromParameter();
       }
     });
@@ -95,7 +93,7 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
   }
 
   createDataSource(assemblies: AssemblyStat[]): MatTableDataSource<AssemblyStat> {
-    const source = new MatTableDataSource(assemblies);
+    const source = new MatTableDataSource(assemblies ?? []);
     source.sort = this.sort;
     return source;
   }
@@ -150,7 +148,7 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
   }
 
   removeAssembly(assembly: AssemblyStat, event: any) {
-    event.stopPropagation();
+    event?.stopPropagation();
 
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: `Do you confirm the deletion of ${assembly.name} ?`
@@ -158,9 +156,9 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.assemblyService.remove(assembly.id).executeWithMainBusy(this.coreStore).subscribe(
-          (x) => this.updateAssemblies()
-        );
+        this.assemblyService.remove(assembly.id).executeWithMainBusy(this.coreStore).subscribe({
+          next: (x) => this.updateAssemblies()
+        });
       }
     });
   }
