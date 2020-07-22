@@ -1,19 +1,20 @@
-import { AssemblyState } from './../store/models';
-import { BusyComponent } from '@app/shared/components/busy/busy.component';
-import { MatSliderModule } from '@angular/material/slider';
-import { loadAssemblyDepth } from './../store/actions';
-import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
-import { By } from '@angular/platform-browser';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { AssemblyDetailsComponent } from './assembly-details.component';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { AssemblyColors, Assembly } from '@app/core/models';
-import { GraphNode, GraphLink } from '@app/shared/models';
-import { ForceGraphComponent } from '@app/shared/components';
-import { MemoizedSelector } from '@ngrx/store';
-import { assemblyDepthStateSelector } from '../store/assembly.selectors';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatSliderModule } from '@angular/material/slider';
+import { By } from '@angular/platform-browser';
+import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
+import { Assembly, AssemblyColors } from '@app/core/models';
+import { ForceGraphComponent } from '@app/shared/components';
+import { BusyComponent } from '@app/shared/components/busy/busy.component';
+import { GraphLink, GraphNode } from '@app/shared/models';
+import { MemoizedSelector } from '@ngrx/store';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+
+import { assemblyDepthStateSelector } from '../store/assembly.selectors';
+import { loadAssemblyDepth } from './../store/actions';
+import { AssemblyState } from './../store/models';
+import { AssemblyDetailsComponent } from './assembly-details.component';
 
 const initialState = {
   assembly: {

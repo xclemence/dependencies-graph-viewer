@@ -1,7 +1,7 @@
 import '@app/core/extensions/observable-busy';
 
 import { SelectionModel } from '@angular/cdk/collections';
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -28,7 +28,7 @@ import { loadAssemblies } from './../store/actions/assemblies.actions';
   templateUrl: './assembly-list.component.html',
   styleUrls: ['./assembly-list.component.scss']
 })
-export class AssemblyListComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AssemblyListComponent implements AfterContentInit, AfterViewInit, OnDestroy {
 
   displayedColumns = ['type', 'name', 'version', 'depth', 'links', 'remove'];
 
@@ -55,8 +55,23 @@ export class AssemblyListComponent implements OnInit, AfterViewInit, OnDestroy {
     private urlService: UrlService,
     private route: ActivatedRoute) {
   }
+  ngAfterViewInit(): void {
+    
 
-  ngOnInit() {
+    this.#filterSubscription = fromEvent(this.searchInput.nativeElement, 'keyup').pipe(
+      map((event: any) => event.target.value),
+      debounceTime(400),
+      distinctUntilChanged()
+    ).subscribe({
+      next: x => {
+        this.currentPage = 0;
+        this.#currentFilter = x;
+        this.updateAssemblies();
+      }
+    });
+  }
+
+  ngAfterContentInit() {
 
     this.route.paramMap.pipe(
       filter(x => x.has('id')),
@@ -77,20 +92,6 @@ export class AssemblyListComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     this.updateAssemblies();
-  }
-
-  ngAfterViewInit() {
-    this.#filterSubscription = fromEvent(this.searchInput.nativeElement, 'keyup').pipe(
-      map((event: any) => event.target.value),
-      debounceTime(400),
-      distinctUntilChanged()
-    ).subscribe({
-      next: x => {
-        this.currentPage = 0;
-        this.#currentFilter = x;
-        this.updateAssemblies();
-      }
-    });
   }
 
   createDataSource(assemblies: AssemblyStat[]): MatTableDataSource<AssemblyStat> {
