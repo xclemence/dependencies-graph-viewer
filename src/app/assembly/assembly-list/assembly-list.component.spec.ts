@@ -70,7 +70,7 @@ describe('AssemblyListComponent', () => {
 
   beforeEach(async(() => {
     paramMap = new Subject<ParamMap>();
-    assemblyServiceSpy = jasmine.createSpyObj<AssemblyService>('service', [ 'remove' ]);
+    assemblyServiceSpy = jasmine.createSpyObj<AssemblyService>('service', ['remove']);
     convertorServiceSpy = jasmine.createSpyObj<SortDefinitionConvertorService>('serviceConvertor', ['getAssemblyServiceOrder']);
     urlServiceSpy = jasmine.createSpyObj<UrlService>('urlService', ['replaceSegment', 'removeAt']);
     matDialogSpy = jasmine.createSpyObj<MatDialog>('matDialog', ['open']);
@@ -192,7 +192,7 @@ describe('AssemblyListComponent', () => {
 
   it('should delete item', fakeAsync(() => {
 
-    const dialogRefSpyObj = jasmine.createSpyObj({ afterClosed : of(true) });
+    const dialogRefSpyObj = jasmine.createSpyObj({ afterClosed: of(true) });
 
     assemblyServiceSpy.remove.and.returnValue(of('test'));
     matDialogSpy.open.and.returnValue(dialogRefSpyObj);
@@ -209,7 +209,7 @@ describe('AssemblyListComponent', () => {
 
   it('should not delete item', fakeAsync(() => {
 
-    const dialogRefSpyObj = jasmine.createSpyObj({ afterClosed : of(false) });
+    const dialogRefSpyObj = jasmine.createSpyObj({ afterClosed: of(false) });
 
     assemblyServiceSpy.remove.and.returnValue(of('test'));
     matDialogSpy.open.and.returnValue(dialogRefSpyObj);
@@ -228,7 +228,7 @@ describe('AssemblyListComponent', () => {
 
     const route = TestBed.inject(ActivatedRoute);
 
-    const dialogRefSpyObj = jasmine.createSpyObj({ afterClosed : of(true), afterOpened: of(true) });
+    const dialogRefSpyObj = jasmine.createSpyObj({ afterClosed: of(true), afterOpened: of(true) });
     matDialogSpy.open.and.returnValue(dialogRefSpyObj);
 
     const updateAssemblySpy = spyOn<any>(component, 'updateAssemblies');
@@ -247,7 +247,7 @@ describe('AssemblyListComponent', () => {
     const tryOpenSpy = spyOn(component, 'tryOpenDetailsFromParameter').and.callThrough();
     const openSpy = spyOn(component, 'openDetails').and.callThrough();
 
-    paramMap.next(convertToParamMap({id: '1'}));
+    paramMap.next(convertToParamMap({ id: '1' }));
 
     tick();
 
@@ -258,7 +258,7 @@ describe('AssemblyListComponent', () => {
   it('should try open details screen from parameter with id not found', fakeAsync(() => {
 
     const tryOpenSpy = spyOn(component, 'tryOpenDetailsFromParameter').and.callThrough();
-    const openSpy = spyOn(component, 'openDetails').and.callFake(x => {});
+    const openSpy = spyOn(component, 'openDetails').and.callFake(x => { });
 
     assembliesStateSelectorMock.setResult({
       filtered: [
@@ -269,7 +269,7 @@ describe('AssemblyListComponent', () => {
 
     mockStore.refreshState();
 
-    paramMap.next(convertToParamMap({id: 'bad id'}));
+    paramMap.next(convertToParamMap({ id: 'bad id' }));
 
     tick();
 
@@ -280,7 +280,7 @@ describe('AssemblyListComponent', () => {
   it('should open details screen from parameter', fakeAsync(() => {
 
     const tryOpenSpy = spyOn(component, 'tryOpenDetailsFromParameter').and.callThrough();
-    const openSpy = spyOn(component, 'openDetails').and.callFake(x => {});
+    const openSpy = spyOn(component, 'openDetails').and.callFake(x => { });
 
     assembliesStateSelectorMock.setResult({
       filtered: [
@@ -291,7 +291,7 @@ describe('AssemblyListComponent', () => {
 
     mockStore.refreshState();
 
-    paramMap.next(convertToParamMap({id: '1'}));
+    paramMap.next(convertToParamMap({ id: '1' }));
 
     tick();
 
