@@ -56,7 +56,7 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
     private route: ActivatedRoute) {
   }
   ngAfterViewInit(): void {
-    
+
 
     this.#filterSubscription = fromEvent(this.searchInput.nativeElement, 'keyup').pipe(
       map((event: any) => event.target.value),
