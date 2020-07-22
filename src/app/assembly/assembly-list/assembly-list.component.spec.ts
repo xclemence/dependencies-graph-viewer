@@ -10,6 +10,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, convertToParamMap, ParamMap } from '@angular/router';
+import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { AssemblyColors } from '@app/core/models';
 import { UrlService } from '@app/core/services';
 import { MemoizedSelector } from '@ngrx/store';
@@ -18,6 +19,7 @@ import { of, Subject } from 'rxjs';
 
 import { AssemblyService } from '../services/assembly.service';
 import { SortDefinitionConvertorService } from '../services/sort-definition-convertor.service';
+import { loadAssemblies } from '../store/actions';
 import { assembliesStateSelector } from '../store/assembly.selectors';
 import { AssemblyFiltered, AssemblyState } from '../store/models';
 import { AssemblyListComponent } from './assembly-list.component';
@@ -297,5 +299,27 @@ describe('AssemblyListComponent', () => {
 
     expect(tryOpenSpy).toHaveBeenCalled();
     expect(openSpy).toHaveBeenCalled();
+  }));
+
+  it('should refresh view with filter', fakeAsync(() => {
+
+    const dispatchSpy = spyOn(mockStore, 'dispatch');
+
+    const searchElements = fixture.debugElement.query(By.css('#searchInput'));
+
+    const expectedAction = ActionBusyAppender.executeWithMainBusy(loadAssemblies({
+      take: component.pageSize,
+      page: component.currentPage,
+      filter: 'test',
+      order: undefined
+    }));
+
+    searchElements.nativeElement.value = 'test';
+    searchElements.nativeElement.dispatchEvent(new MouseEvent('keyup'));
+    searchElements.nativeElement.dispatchEvent(new MouseEvent('keyup'));
+
+    tick(500);
+
+    expect(dispatchSpy).toHaveBeenCalledWith(expectedAction);
   }));
 });
