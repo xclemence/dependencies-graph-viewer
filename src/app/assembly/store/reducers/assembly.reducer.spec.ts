@@ -17,18 +17,6 @@ describe('assemblyReducer', () => {
     expect(assemblyReducer(undefined, action)).toEqual(initialValue);
   });
 
-  it('should have some value after loadAssemblies', () => {
-
-    const action = loadAssemblies({
-      filter: '',
-      order: '',
-      page: 3,
-      take: 10
-    });
-
-    expect(assemblyReducer(initialValue, action)).toEqual(initialValue);
-  });
-
   it('should have same value after loadAssemblies', () => {
 
     const action = loadAssemblies({
