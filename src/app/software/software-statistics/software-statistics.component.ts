@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { SoftwareState } from '../store/models';
-import { softwareAssembliesStateSelector } from '../store/software.selectors';
+import { softwareSelector } from '../store/software.selectors';
 
 export class StatValue {
   label: string;
@@ -31,12 +31,12 @@ export class SoftwareStatisticsComponent implements OnInit {
 
   ngOnInit() {
     this.values = this.store.pipe(
-      select(softwareAssembliesStateSelector),
-      map(x => this.updateStatistics(x.software)),
+      select(softwareSelector),
+      map(x => this.calculateStatistics(x)),
     );
   }
 
-  updateStatistics(assembly: Assembly): StatValue[] {
+  calculateStatistics(assembly: Assembly): StatValue[] {
 
     if (assembly == null) {
       return [];
@@ -51,7 +51,7 @@ export class SoftwareStatisticsComponent implements OnInit {
     ];
   }
 
-  countAssemblies(assembly: Assembly, predicate: (x: Assembly) => boolean): number {
+  private countAssemblies(assembly: Assembly, predicate: (x: Assembly) => boolean): number {
     let value = assembly.referencedAssemblies.filter(predicate).length;
     value += predicate(assembly) ? 1 : 0;
 

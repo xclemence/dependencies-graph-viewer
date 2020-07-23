@@ -1,4 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NameFilterPipe } from '@app/shared/pipe/name-filter.pipe';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
@@ -21,7 +28,19 @@ describe('SoftwareAssembliesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AssembliesVisibilityComponent, NameFilterPipe],
+      imports: [
+        MatCheckboxModule,
+        MatDividerModule,
+        MatListModule,
+        MatIconModule,
+        MatInputModule,
+        NoopAnimationsModule,
+        MatCardModule
+      ],
+      declarations: [
+        AssembliesVisibilityComponent,
+        NameFilterPipe
+      ],
       providers: [
         provideMockStore({ initialState }),
       ]
