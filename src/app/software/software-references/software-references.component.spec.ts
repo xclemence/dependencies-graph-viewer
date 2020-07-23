@@ -9,8 +9,8 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
 import { SoftwareReferencesComponent } from './software-references.component';
 
-@Component({selector: 'app-assemblies-visibility', template: ''})
-class AssembliesVisibilityStubComponent { 
+@Component({ selector: 'app-assemblies-visibility', template: '' })
+class AssembliesVisibilityStubComponent {
   @Output() closed: EventEmitter<void> = new EventEmitter();
 }
 
