@@ -39,7 +39,7 @@ describe('SoftwareAssembliesEffects', () => {
   let serviceSpy: jasmine.SpyObj<SoftwareService>;
 
   beforeEach(async(() => {
-    serviceSpy = jasmine.createSpyObj<SoftwareService>('service', ['references']);
+    serviceSpy = jasmine.createSpyObj<SoftwareService>('service', ['software']);
 
     TestBed.configureTestingModule({
       providers: [
@@ -71,7 +71,7 @@ describe('SoftwareAssembliesEffects', () => {
 
       const actionProvider = hot('-a', { a: originAction });
 
-      serviceSpy.references.and.returnValue(of(resultAssembly));
+      serviceSpy.software.and.returnValue(of(resultAssembly));
 
       TestBed.configureTestingModule({
         providers: [
@@ -123,7 +123,7 @@ describe('SoftwareAssembliesEffects', () => {
         ]
       });
 
-      serviceSpy.references.and.returnValue(cold('#', null, new Error('new error')));
+      serviceSpy.software.and.returnValue(cold('#', null, new Error('new error')));
 
       const effects = TestBed.inject(SoftwareAssembliesEffects);
 
@@ -149,7 +149,7 @@ describe('SoftwareAssembliesEffects', () => {
         ]
       });
 
-      serviceSpy.references.and.returnValue(cold('#', null, new Error('new error')));
+      serviceSpy.software.and.returnValue(cold('#', null, new Error('new error')));
 
       const effects = TestBed.inject(SoftwareAssembliesEffects);
 

@@ -9,7 +9,7 @@ import { SoftwareState } from '../store/models';
 import { softwareSelector } from '../store/software.selectors';
 import { SoftwareStatisticsComponent, StatValue } from './software-statistics.component';
 
-describe('SoftwareAssembliesComponent', () => {
+describe('SoftwareStatisticsComponent', () => {
   let component: SoftwareStatisticsComponent;
   let fixture: ComponentFixture<SoftwareStatisticsComponent>;
   let mockStore: MockStore;

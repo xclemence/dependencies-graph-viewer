@@ -29,7 +29,7 @@ export class SoftwareReferencesComponent implements OnInit {
     );
   }
 
-  generateGraphData(assembly: Assembly, filteredAssemblyIds: string[]): Graph {
+  private generateGraphData(assembly: Assembly, filteredAssemblyIds: string[]): Graph {
 
     if (assembly == null) {
       return null;
