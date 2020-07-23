@@ -31,7 +31,7 @@ export class SoftwareReferencesComponent implements OnInit {
 
   private generateGraphData(assembly: Assembly, filteredAssemblyIds: string[]): Graph {
 
-    if (assembly == null) {
+    if (!assembly) {
       return null;
     }
 
