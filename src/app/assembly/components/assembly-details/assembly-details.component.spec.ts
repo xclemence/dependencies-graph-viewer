@@ -11,9 +11,9 @@ import { GraphLink, GraphNode } from '@app/shared/models';
 import { MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
-import { assemblyDepthStateSelector } from '../store/assembly.selectors';
-import { loadAssemblyDepth } from './../store/actions';
-import { AssemblyState } from './../store/models';
+import { loadAssemblyDepth } from '../../store/actions';
+import { assemblyDepthStateSelector } from '../../store/assembly.selectors';
+import { AssemblyState } from '../../store/models';
 import { AssemblyDetailsComponent } from './assembly-details.component';
 
 const initialState = {

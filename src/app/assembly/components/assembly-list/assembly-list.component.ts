@@ -16,12 +16,12 @@ import { select, Store } from '@ngrx/store';
 import { fromEvent, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 
-import { AssemblyService } from '../services/assembly.service';
-import { SortDefinitionConvertorService } from '../services/sort-definition-convertor.service';
-import { assembliesStateSelector } from '../store/assembly.selectors';
-import { AssemblyState } from '../store/models';
+import { AssemblyService } from '../../services/assembly.service';
+import { SortDefinitionConvertorService } from '../../services/sort-definition-convertor.service';
+import { assembliesStateSelector } from '../../store/assembly.selectors';
+import { AssemblyState } from '../../store/models';
+import { loadAssemblies } from './../../store/actions/assemblies.actions';
 import { AssemblyDetailsComponent } from './../assembly-details/assembly-details.component';
-import { loadAssemblies } from './../store/actions/assemblies.actions';
 
 @Component({
   selector: 'app-assembly-list',

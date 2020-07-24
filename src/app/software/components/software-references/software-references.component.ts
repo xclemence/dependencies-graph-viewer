@@ -5,8 +5,8 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { SoftwareState } from '../store/models';
-import { softwareAssembliesStateSelector } from '../store/software.selectors';
+import { SoftwareState } from '../../store/models';
+import { softwareAssembliesStateSelector } from '../../store/software.selectors';
 
 @Component({
   selector: 'app-software-references',

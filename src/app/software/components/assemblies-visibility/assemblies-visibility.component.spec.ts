@@ -10,8 +10,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NameFilterPipe } from '@app/shared/pipe/name-filter.pipe';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
-import { updateFilteredAssemblies } from '../store/actions';
-import { softwareAssembliesStateSelector } from '../store/software.selectors';
+import { updateFilteredAssemblies } from '../../store/actions';
+import { softwareAssembliesStateSelector } from '../../store/software.selectors';
 import { AssembliesVisibilityComponent } from './assemblies-visibility.component';
 
 describe('SoftwareAssembliesComponent', () => {

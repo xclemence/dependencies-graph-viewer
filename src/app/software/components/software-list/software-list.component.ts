@@ -4,8 +4,8 @@ import { select, Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { SoftwareState } from '../store/models';
-import { softwareNameStateSelector } from '../store/software.selectors';
+import { SoftwareState } from '../../store/models';
+import { softwareNameStateSelector } from '../../store/software.selectors';
 
 @Component({
   selector: 'app-software-list',

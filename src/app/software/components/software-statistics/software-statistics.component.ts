@@ -4,8 +4,8 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { SoftwareState } from '../store/models';
-import { softwareSelector } from '../store/software.selectors';
+import { SoftwareState } from '../../store/models';
+import { softwareSelector } from '../../store/software.selectors';
 
 export class StatValue {
   label: string;

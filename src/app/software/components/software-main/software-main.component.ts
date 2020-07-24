@@ -5,9 +5,9 @@ import { AssemblyBase } from '@app/core/models/assembly';
 import { UrlService } from '@app/core/services';
 import { Store } from '@ngrx/store';
 
-import { loadSoftwareAssemblies, loadSoftwareNames } from '../store/actions';
-import { SoftwareState } from '../store/models';
-import { clearSoftwareAssemblies } from './../store/actions/software-assemblies.actions';
+import { loadSoftwareAssemblies, loadSoftwareNames } from '../../store/actions';
+import { clearSoftwareAssemblies } from '../../store/actions/software-assemblies.actions';
+import { SoftwareState } from '../../store/models';
 
 @Component({
   selector: 'app-software-main',

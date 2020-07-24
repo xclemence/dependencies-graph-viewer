@@ -3,9 +3,9 @@ import { Assembly } from '@app/core/models';
 import { select, Store } from '@ngrx/store';
 import { filter, map, tap } from 'rxjs/operators';
 
-import { updateFilteredAssemblies } from '../store/actions/software-assemblies.actions';
-import { SoftwareState } from '../store/models';
-import { softwareAssembliesStateSelector } from './../store/software.selectors';
+import { updateFilteredAssemblies } from '../../store/actions/software-assemblies.actions';
+import { SoftwareState } from '../../store/models';
+import { softwareAssembliesStateSelector } from '../../store/software.selectors';
 
 export interface SelectableAssembly {
   isVisible: boolean;
