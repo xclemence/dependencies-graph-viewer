@@ -11,7 +11,7 @@ export enum GraphUpdateMode {
 }
 
 @Component({
-  selector: 'app-force-graph',
+  selector: 'dgv-force-graph',
   templateUrl: './force-graph.component.html',
   styleUrls: ['./force-graph.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -17,21 +17,21 @@ import { TestScheduler } from 'rxjs/testing';
 import { softwareAssembliesStateSelector } from '../../store/software.selectors';
 import { SoftwareReferencesComponent } from './software-references.component';
 
-@Component({ selector: 'app-assemblies-visibility', template: '' })
+@Component({ selector: 'sft-assemblies-visibility', template: '' })
 class AssembliesVisibilityStubComponent {
   @Output() closed: EventEmitter<void> = new EventEmitter();
 }
 
-@Component({ selector: 'app-software-statistics', template: '' })
+@Component({ selector: 'sft-software-statistics', template: '' })
 class SoftwareStatisticsStubComponent { }
 
-@Component({ selector: 'app-busy', template: '' })
+@Component({ selector: 'dgv-busy', template: '' })
 class BusyStubComponent {
   @Input() opacity: number;
   @Input() busyKey: string;
 }
 
-@Component({ selector: 'app-force-graph', template: '' })
+@Component({ selector: 'dgv-force-graph', template: '' })
 class ForceGraphStubComponent {
   @Input() graph: Graph;
   @Input() updateMode: GraphUpdateMode;

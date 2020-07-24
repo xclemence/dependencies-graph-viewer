@@ -24,7 +24,7 @@ import { loadAssemblies } from './../../store/actions/assemblies.actions';
 import { AssemblyDetailsComponent } from './../assembly-details/assembly-details.component';
 
 @Component({
-  selector: 'app-assembly-list',
+  selector: 'asm-assembly-list',
   templateUrl: './assembly-list.component.html',
   styleUrls: ['./assembly-list.component.scss']
 })

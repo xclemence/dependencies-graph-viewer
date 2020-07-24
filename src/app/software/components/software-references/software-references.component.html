@@ -2,13 +2,13 @@
   <mat-drawer-container class="flex-one overlap-item" hasBackdrop="false">
     <mat-drawer position="end" [(opened)]="visibilityPanelOpened">
       <div class="visibility-panel">
-        <app-assemblies-visibility (closed)="closeVisibilityPanel()"></app-assemblies-visibility>
+        <sft-assemblies-visibility (closed)="closeVisibilityPanel()"></sft-assemblies-visibility>
       </div>
     </mat-drawer>
     <mat-drawer-content>
       <div class="assembly-details overlap-container">
-        <app-force-graph class="overlap-item" [graph]="graph | async" updateMode="ClearAndAdd"></app-force-graph>
-        <app-software-statistics class="absolute-position no-pointer-events"></app-software-statistics>
+        <dgv-force-graph class="overlap-item" [graph]="graph | async" updateMode="ClearAndAdd"></dgv-force-graph>
+        <sft-software-statistics class="absolute-position no-pointer-events"></sft-software-statistics>
         <div class="overlap-item open-visibility-panel no-pointer-events">
           <button mat-fab aria-label="Open visibility panel" (click)="openVisibilityPanel()" class="pointer-events">
             <mat-icon>visibility</mat-icon>
@@ -17,5 +17,5 @@
       </div>
     </mat-drawer-content>
   </mat-drawer-container>
-  <app-busy opacity="0.7" busyKey="SelectedSoftware"></app-busy>
+  <dgv-busy opacity="0.7" busyKey="SelectedSoftware"></dgv-busy>
 </div>

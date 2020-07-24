@@ -10,7 +10,7 @@ import { clearSoftwareAssemblies } from '../../store/actions/software-assemblies
 import { SoftwareState } from '../../store/models';
 
 @Component({
-  selector: 'app-software-main',
+  selector: 'sft-software-main',
   templateUrl: './software-main.component.html',
   styleUrls: ['./software-main.component.scss']
 })

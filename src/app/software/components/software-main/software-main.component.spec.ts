@@ -14,7 +14,7 @@ import { Subject } from 'rxjs';
 import { clearSoftwareAssemblies, loadSoftwareAssemblies, loadSoftwareNames } from '../../store/actions';
 import { SoftwareMainComponent } from './software-main.component';
 
-@Component({ selector: 'app-software-list', template: '' })
+@Component({ selector: 'sft-software-list', template: '' })
 class SoftwareListStubComponent {
   @Output() selectionChange: EventEmitter<AssemblyBase> = new EventEmitter();
   @Output() refreshSoftwaresRequest = new EventEmitter();

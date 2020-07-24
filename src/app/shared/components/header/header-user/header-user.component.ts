@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 
 
 @Component({
-  selector: 'app-header-user',
+  selector: 'dgv-header-user',
   templateUrl: './header-user.component.html'
 })
 export class HeaderUserComponent implements OnInit, OnDestroy {

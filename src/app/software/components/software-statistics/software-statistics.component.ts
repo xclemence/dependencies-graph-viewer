@@ -18,7 +18,7 @@ export class StatValue {
 }
 
 @Component({
-  selector: 'app-software-statistics',
+  selector: 'sft-software-statistics',
   templateUrl: './software-statistics.component.html',
   styleUrls: ['./software-statistics.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -8,7 +8,7 @@ import { SoftwareState } from '../../store/models';
 import { softwareNameStateSelector } from '../../store/software.selectors';
 
 @Component({
-  selector: 'app-software-list',
+  selector: 'sft-software-list',
   templateUrl: './software-list.component.html',
   styleUrls: ['./software-list.component.scss']
 })

@@ -14,7 +14,7 @@ export interface SelectableAssembly {
 }
 
 @Component({
-  selector: 'app-assemblies-visibility',
+  selector: 'sft-assemblies-visibility',
   templateUrl: './assemblies-visibility.component.html',
   styleUrls: ['./assemblies-visibility.component.scss']
 })

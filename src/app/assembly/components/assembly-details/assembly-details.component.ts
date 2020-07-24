@@ -12,7 +12,7 @@ import { assemblyDepthStateSelector } from '../../store/assembly.selectors';
 import { AssemblyState } from '../../store/models';
 
 @Component({
-  selector: 'app-assembly-details',
+  selector: 'asm-assembly-details',
   templateUrl: './assembly-details.component.html',
   styleUrls: ['./assembly-details.component.scss']
 })
