@@ -30,10 +30,10 @@ export class AssembliesVisibilityComponent implements OnInit {
   ngOnInit(): void {
     this.store.pipe(
       select(softwareAssembliesStateSelector),
-      filter(x => x?.software?.referencedAssemblies !== undefined && x.software !== this.#currentSoftware),
+      filter(x => (x?.software?.referencedAssemblies) && x.software !== this.#currentSoftware),
       tap(x => this.#currentSoftware = x.software),
       map(x => x.software.referencedAssemblies.map(y => ({ isVisible: !x.filteredAssemblies.includes(y.id) , name: y.name, id: y.id})))
-    ).subscribe(x => {});
+    ).subscribe(x => this.assemblies = x);
   }
 
   toggleVisibility(assembly: SelectableAssembly) {
@@ -62,7 +62,7 @@ export class AssembliesVisibilityComponent implements OnInit {
   }
 
   changeVisibility(collection: SelectableAssembly[], newValue: boolean) {
-    collection?.forEach(x => x.isVisible = newValue);
+    collection.forEach(x => x.isVisible = newValue);
 
     const filteredAssemblyIds = this.assemblies.filter(x => !x.isVisible).map(x => x.id);
     this.store.dispatch(updateFilteredAssemblies({ assemblyIds: filteredAssemblyIds }));

@@ -19,8 +19,7 @@ export class SoftwareReferencesComponent implements OnInit {
   graph: Observable<Graph>;
   visibilityPanelOpened = false;
 
-  constructor(private store: Store<SoftwareState>) {
-  }
+  constructor(private store: Store<SoftwareState>) { }
 
   ngOnInit() {
     this.graph = this.store.pipe(
@@ -30,7 +29,6 @@ export class SoftwareReferencesComponent implements OnInit {
   }
 
   private generateGraphData(assembly: Assembly, filteredAssemblyIds: string[]): Graph {
-
     if (!assembly) {
       return null;
     }
@@ -43,7 +41,8 @@ export class SoftwareReferencesComponent implements OnInit {
 
     nodes.push(new GraphNode({ id: assembly.id, label: `${assembly.name} (${assembly.version})`, color: AssemblyColors.main }));
 
-    const links = assembly.links.filter(x => !filteredAssemblyIds.includes(x.targetId) && !filteredAssemblyIds.includes(x.sourceId))
+    const links = assembly.links
+      .filter(x => !filteredAssemblyIds.includes(x.targetId) && !filteredAssemblyIds.includes(x.sourceId))
       .map(x => new GraphLink({ source: x.sourceId, target: x.targetId }));
 
     return { nodes, links };

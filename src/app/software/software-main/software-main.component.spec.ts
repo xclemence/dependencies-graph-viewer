@@ -1,18 +1,20 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, convertToParamMap, ParamMap } from '@angular/router';
+import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { AssemblyBase } from '@app/core/models';
 import { UrlService } from '@app/core/services';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { Subject } from 'rxjs';
 
+import { clearSoftwareAssemblies, loadSoftwareAssemblies, loadSoftwareNames } from '../store/actions';
 import { SoftwareMainComponent } from './software-main.component';
 
-@Component({selector: 'app-software-list', template: ''})
+@Component({ selector: 'app-software-list', template: '' })
 class SoftwareListStubComponent {
   @Output() selectionChange: EventEmitter<AssemblyBase> = new EventEmitter();
   @Output() refreshSoftwaresRequest = new EventEmitter();
@@ -20,7 +22,7 @@ class SoftwareListStubComponent {
   @Input() selectedId: string;
 }
 
-@Component({selector: 'app-software-references', template: ''})
+@Component({ selector: 'app-software-references', template: '' })
 class SoftwareReferencesStubComponent { }
 
 describe('SoftwareMainComponent', () => {
@@ -77,4 +79,48 @@ describe('SoftwareMainComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should ask for refresh software list', () => {
+    const dispatchSpy = spyOn(mockStore, 'dispatch').and.callThrough();
+    const expectedAction = ActionBusyAppender.executeWithMainBusy(loadSoftwareNames());
+
+    component.refreshSoftwares();
+
+    expect(dispatchSpy).toHaveBeenCalledWith(expectedAction);
+  });
+
+  it('should set selected id when url parameter changed', fakeAsync(() => {
+    paramMap.next(convertToParamMap({ id: '1' }));
+
+    expect(component.selectedSoftwareId).toBe('1');
+  }));
+
+  it('should clear store if no url parameter', fakeAsync(() => {
+    const dispatchSpy = spyOn(mockStore, 'dispatch').and.callThrough();
+
+    paramMap.next(convertToParamMap({}));
+
+    expect(dispatchSpy).toHaveBeenCalledWith(clearSoftwareAssemblies());
+  }));
+
+  it('should do nothting on undefine selection', fakeAsync(() => {
+    const dispatchSpy = spyOn(mockStore, 'dispatch').and.callThrough();
+
+    component.selectedSoftwareChanged(undefined);
+
+    expect(dispatchSpy).not.toHaveBeenCalled();
+  }));
+
+  it('should ask to load selected item', fakeAsync(() => {
+    const dispatchSpy = spyOn(mockStore, 'dispatch').and.callThrough();
+
+    const software = { id: '1', name: 'name1', version: '1.0', isNative: false, isSoftware: false };
+    const expectedAction = ActionBusyAppender.executeWithBusy(loadSoftwareAssemblies({ assemblyName: software }), 'SelectedSoftware');
+
+
+    component.selectedSoftwareChanged(software);
+
+    expect(urlServiceSpy.replaceSegment).toHaveBeenCalledWith(1, software.id, TestBed.inject(ActivatedRoute));
+    expect(dispatchSpy).toHaveBeenCalledWith(expectedAction);
+  }));
 });

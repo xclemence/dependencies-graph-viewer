@@ -18,9 +18,10 @@ export class SoftwareMainComponent implements OnInit {
 
   selectedSoftwareId: string;
 
-  constructor(private urlService: UrlService,
-              private route: ActivatedRoute,
-              private store: Store<SoftwareState>) { }
+  constructor(
+    private urlService: UrlService,
+    private route: ActivatedRoute,
+    private store: Store<SoftwareState>) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => this.onParameterChanged(params));
@@ -41,9 +42,11 @@ export class SoftwareMainComponent implements OnInit {
   }
 
   selectedSoftwareChanged(software: AssemblyBase) {
-    if (software !== undefined) {
-      this.urlService.replaceSegment(1, software.id.toString(), this.route);
-      this.store.dispatch(ActionBusyAppender.executeWithBusy(loadSoftwareAssemblies({ assemblyName: software }), 'SelectedSoftware'));
+    if (!software) {
+      return;
     }
+
+    this.urlService.replaceSegment(1, software.id, this.route);
+    this.store.dispatch(ActionBusyAppender.executeWithBusy(loadSoftwareAssemblies({ assemblyName: software }), 'SelectedSoftware'));
   }
 }

@@ -52,12 +52,8 @@ export class SoftwareListComponent implements OnInit, OnDestroy {
     this.#storeSubscription?.unsubscribe();
   }
 
-  selectSoftwareById() {
+  private selectSoftwareById() {
     if (!this.softwareNames) {
-      return;
-    }
-
-    if (!this.selectedId) {
       return;
     }
 
