@@ -92,7 +92,7 @@ describe('SoftwareAssembliesComponent', () => {
     expect(component.isIndeterminateResult(assemblies)).toBeTrue();
   });
 
-  it('should all visisible', () => {
+  it('should all visible', () => {
     const assemblies = [
       { name: 'name1', id: '1', isVisible: true },
       { name: 'name2', id: '2', isVisible: true },
@@ -101,7 +101,7 @@ describe('SoftwareAssembliesComponent', () => {
     expect(component.isAllVisibleFilterResult(assemblies)).toBeTrue();
   });
 
-  it('should not all visisible', () => {
+  it('should not all visible', () => {
     const assemblies = [
       { name: 'name1', id: '1', isVisible: false },
       { name: 'name2', id: '2', isVisible: true },
@@ -110,7 +110,7 @@ describe('SoftwareAssembliesComponent', () => {
     expect(component.isAllVisibleFilterResult(assemblies)).toBeFalse();
   });
 
-  it('should not all visisible when undefined', () => {
+  it('should not all visible when undefined', () => {
     expect(component.isAllVisibleFilterResult(undefined)).toBeFalse();
   });
 

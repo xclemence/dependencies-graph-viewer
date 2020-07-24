@@ -141,7 +141,7 @@ describe('AssemblyListComponent', () => {
     expect(component.getTypeColor(assembly)).toBe(AssemblyColors.managed);
   });
 
-  it('should load assemblise data', fakeAsync(() => {
+  it('should load assemblies data', fakeAsync(() => {
     assembliesStateSelectorMock.setResult({
       filtered: [
         { ...viewAssembly },

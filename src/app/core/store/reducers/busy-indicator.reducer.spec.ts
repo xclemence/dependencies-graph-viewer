@@ -33,7 +33,7 @@ describe('busyIndicatorReducer', () => {
     expect(busyIndicatorReducer(state, action)).toEqual(expected);
   });
 
-  it('should not duplicate exesiting key', () => {
+  it('should not duplicate existing key', () => {
     const state: BusyState = {
       actionsInProgress: [
         'busy1',

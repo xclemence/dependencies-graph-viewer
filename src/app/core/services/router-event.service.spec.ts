@@ -74,7 +74,7 @@ describe('RouterEventService', () => {
       tick();
     }
     catch {
-      // Do notinh for test
+      // Do nothing for test
     }
 
     expect(storeSpy.dispatch).toHaveBeenCalledWith(addBusyAction);

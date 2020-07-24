@@ -37,8 +37,8 @@ describe('software selector', () => {
     expect(extractState).toEqual(softwareState);
   });
 
-  it('should extract sotware name state', () => {
-    const sotwareName: SoftwareNameState = {
+  it('should extract software name state', () => {
+    const softwareName: SoftwareNameState = {
       softwareNames: [
         {
           id: '1',
@@ -52,15 +52,15 @@ describe('software selector', () => {
 
     const result = softwareNameStateSelector({
       [softwareFeatureKey]: {
-        name: sotwareName
+        name: softwareName
       }
     });
 
-    expect(result).toEqual(sotwareName);
+    expect(result).toEqual(softwareName);
   });
 
   it('should extract software assemblies state', () => {
-    const sotwareAssemblies = {
+    const softwareAssemblies = {
       software: {
         id: '1',
         name: 'test',
@@ -75,11 +75,11 @@ describe('software selector', () => {
 
     const result = softwareAssembliesStateSelector({
       [softwareFeatureKey]: {
-        assemblies: sotwareAssemblies
+        assemblies: softwareAssemblies
       }
     });
 
-    expect(result).toEqual(sotwareAssemblies);
+    expect(result).toEqual(softwareAssemblies);
   });
 
   it('should extract filtered assemblies state', () => {

@@ -103,7 +103,7 @@ describe('SoftwareMainComponent', () => {
     expect(dispatchSpy).toHaveBeenCalledWith(clearSoftwareAssemblies());
   }));
 
-  it('should do nothting on undefine selection', fakeAsync(() => {
+  it('should do nothing on undefine selection', fakeAsync(() => {
     const dispatchSpy = spyOn(mockStore, 'dispatch').and.callThrough();
 
     component.selectedSoftwareChanged(undefined);

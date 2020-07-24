@@ -107,7 +107,7 @@ describe('ForceGraphComponent', () => {
     expect(fixture.debugElement.queryAll(By.css('line')).length).toBe(1);
   });
 
-  it('should update graph whith clean mode', () => {
+  it('should update graph with clean mode', () => {
     const baseGraph = {
       nodes: [
         new GraphNode({ id: '1', label: 'node1', color: 'red' }),

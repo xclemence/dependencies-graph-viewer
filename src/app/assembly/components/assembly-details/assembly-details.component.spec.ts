@@ -72,7 +72,7 @@ describe('NotFoundComponent', () => {
     expect(element.nativeElement.textContent.trim()).toBe('Depth View : test1');
   });
 
-  it('should load new detpth', fakeAsync(() => {
+  it('should load new depth', fakeAsync(() => {
 
     const dispatchSpy = spyOn(mockStore, 'dispatch').and.callThrough();
     component.selectedDepth = 3;
@@ -81,7 +81,7 @@ describe('NotFoundComponent', () => {
     expect(dispatchSpy).toHaveBeenCalled();
   }));
 
-  it('should load one time new detpth', fakeAsync(() => {
+  it('should load one time new depth', fakeAsync(() => {
 
     const dispatchSpy = spyOn(mockStore, 'dispatch').and.callThrough();
     component.selectedDepth = 3;

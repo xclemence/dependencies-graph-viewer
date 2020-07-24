@@ -116,6 +116,23 @@ describe('SoftwareListComponent', () => {
     expect(listItems.length).toBe(2);
   });
 
+  it('should update selection from component', async () => {
+
+    component.softwareNames = [
+      { id: '1', name: 'name1', version: '1.0', isNative: false, isSoftware: false },
+      { id: '2', name: 'name2', version: '1.0', isNative: false, isSoftware: false }
+    ];
+    fixture.detectChanges();
+
+    component.selectedSoftwares = [component.softwareNames[0]];
+
+    fixture.detectChanges();
+
+    const firstItem = await loader.getHarness(MatListOptionHarness);
+    expect(await firstItem.isSelected()).toBeTrue();
+  });
+
+
   it('should update selection from template', async () => {
 
     const emitSpy = spyOn(component.selectionChange, 'emit');
