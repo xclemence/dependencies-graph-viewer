@@ -148,7 +148,7 @@ describe('SoftwareAssembliesComponent', () => {
     const displayedItems = [
       component.assemblies[0],
       component.assemblies[2]
-    ]
+    ];
 
     component.changeVisibility(displayedItems, false);
 

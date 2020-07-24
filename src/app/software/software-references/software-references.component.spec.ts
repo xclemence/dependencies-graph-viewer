@@ -188,7 +188,7 @@ describe('SoftwareReferencesComponent', () => {
         new GraphLink({ source: '1', target: '2' }),
         new GraphLink({ source: '1', target: '3' })
       ]
-    }
+    };
 
     softwareAssembliesStateSelectorMock.setResult(inputStore);
     mockStore.refreshState();
@@ -232,7 +232,7 @@ describe('SoftwareReferencesComponent', () => {
       links: [
         new GraphLink({ source: '1', target: '3' })
       ]
-    }
+    };
 
     softwareAssembliesStateSelectorMock.setResult(inputStore);
     mockStore.refreshState();
