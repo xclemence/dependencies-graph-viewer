@@ -9,7 +9,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatListOptionHarness } from '@angular/material/list/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
-import { softwareNameStateSelector } from '../store/software.selectors';
+import { softwareNameStateSelector } from '../../store/software.selectors';
 import { SoftwareListComponent } from './software-list.component';
 
 describe('SoftwareListComponent', () => {

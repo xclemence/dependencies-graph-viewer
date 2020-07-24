@@ -5,8 +5,8 @@ import { Assembly, AssemblyColors } from '@app/core/models';
 import { MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
-import { SoftwareState } from '../store/models';
-import { softwareSelector } from '../store/software.selectors';
+import { SoftwareState } from '../../store/models';
+import { softwareSelector } from '../../store/software.selectors';
 import { SoftwareStatisticsComponent, StatValue } from './software-statistics.component';
 
 describe('SoftwareStatisticsComponent', () => {

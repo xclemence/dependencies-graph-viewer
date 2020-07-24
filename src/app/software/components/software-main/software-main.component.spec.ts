@@ -11,7 +11,7 @@ import { UrlService } from '@app/core/services';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { Subject } from 'rxjs';
 
-import { clearSoftwareAssemblies, loadSoftwareAssemblies, loadSoftwareNames } from '../store/actions';
+import { clearSoftwareAssemblies, loadSoftwareAssemblies, loadSoftwareNames } from '../../store/actions';
 import { SoftwareMainComponent } from './software-main.component';
 
 @Component({ selector: 'app-software-list', template: '' })

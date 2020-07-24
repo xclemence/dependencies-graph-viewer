@@ -17,11 +17,11 @@ import { MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { of, Subject } from 'rxjs';
 
-import { AssemblyService } from '../services/assembly.service';
-import { SortDefinitionConvertorService } from '../services/sort-definition-convertor.service';
-import { loadAssemblies } from '../store/actions';
-import { assembliesStateSelector } from '../store/assembly.selectors';
-import { AssemblyFiltered, AssemblyState } from '../store/models';
+import { AssemblyService } from '../../services/assembly.service';
+import { SortDefinitionConvertorService } from '../../services/sort-definition-convertor.service';
+import { loadAssemblies } from '../../store/actions';
+import { assembliesStateSelector } from '../../store/assembly.selectors';
+import { AssemblyFiltered, AssemblyState } from '../../store/models';
 import { AssemblyListComponent } from './assembly-list.component';
 
 describe('AssemblyListComponent', () => {

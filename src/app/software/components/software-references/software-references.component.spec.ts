@@ -14,7 +14,7 @@ import { Graph, GraphLink, GraphNode } from '@app/shared/models';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TestScheduler } from 'rxjs/testing';
 
-import { softwareAssembliesStateSelector } from '../store/software.selectors';
+import { softwareAssembliesStateSelector } from '../../store/software.selectors';
 import { SoftwareReferencesComponent } from './software-references.component';
 
 @Component({ selector: 'app-assemblies-visibility', template: '' })
