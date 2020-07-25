@@ -22,8 +22,5 @@ jobs:
           name: Angular cli verion
           command: yarn ng version
       - run:
-          name: Linting
-          command: yarn ng lint
-      - run:
           name: angular-build
           command: yarn ng build --prod --aot --no-progress

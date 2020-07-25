@@ -1,3 +1,5 @@
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -6,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { MatRowHarness } from '@angular/material/table/testing';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -34,6 +37,7 @@ describe('AssemblyListComponent', () => {
   let urlServiceSpy: jasmine.SpyObj<UrlService>;
   let matDialogSpy: jasmine.SpyObj<MatDialog>;
   let paramMap: Subject<ParamMap>;
+  let loader: HarnessLoader;
 
   const initialState = {
     assembly: {
@@ -104,6 +108,8 @@ describe('AssemblyListComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AssemblyListComponent);
+    loader = TestbedHarnessEnvironment.loader(fixture);
+
     component = fixture.componentInstance;
     fixture.detectChanges();
 
@@ -141,7 +147,7 @@ describe('AssemblyListComponent', () => {
     expect(component.getTypeColor(assembly)).toBe(AssemblyColors.managed);
   });
 
-  it('should load assemblies data', fakeAsync(() => {
+  it('should load assemblies data', async () => {
     assembliesStateSelectorMock.setResult({
       filtered: [
         { ...viewAssembly },
@@ -153,9 +159,10 @@ describe('AssemblyListComponent', () => {
     mockStore.refreshState();
     fixture.detectChanges();
 
-    const rowElements = fixture.debugElement.queryAll(By.css('.cdk-row'));
-    expect(rowElements.length).toBe(2);
-  }));
+    const rows = await loader.getAllHarnesses(MatRowHarness);
+
+    expect(rows.length).toBe(2);
+  });
 
   it('should update paginator label', fakeAsync(() => {
     assembliesStateSelectorMock.setResult({

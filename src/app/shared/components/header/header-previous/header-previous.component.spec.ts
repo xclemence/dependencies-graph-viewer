@@ -1,12 +1,16 @@
-import { MatIconModule } from '@angular/material/icon';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { HeaderPreviousComponent } from './header-previous.component';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Location } from '@angular/common';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatButtonHarness } from '@angular/material/button/testing';
+import { MatIconModule } from '@angular/material/icon';
+
+import { HeaderPreviousComponent } from './header-previous.component';
 
 describe('HeaderPreviousComponent', () => {
   let component: HeaderPreviousComponent;
   let fixture: ComponentFixture<HeaderPreviousComponent>;
+  let loader: HarnessLoader;
   const locationSpy = jasmine.createSpyObj<Location>('location', ['back']);
 
   beforeEach(async(() => {
@@ -23,6 +27,8 @@ describe('HeaderPreviousComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderPreviousComponent);
+    loader = TestbedHarnessEnvironment.loader(fixture);
+
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -31,9 +37,9 @@ describe('HeaderPreviousComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call location back method on back', () => {
-    const button = fixture.debugElement.query(By.css('#backButton'));
-    button.nativeElement.click();
+  it('should call location back method on back', async () => {
+    const button = await loader.getHarness(MatButtonHarness);
+    await button.click();
 
     expect(locationSpy.back).toHaveBeenCalled();
   });

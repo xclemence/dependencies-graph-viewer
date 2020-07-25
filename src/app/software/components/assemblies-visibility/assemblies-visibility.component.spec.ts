@@ -1,3 +1,5 @@
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -5,7 +7,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
-import { By } from '@angular/platform-browser';
+import { MatListItemHarness } from '@angular/material/list/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NameFilterPipe } from '@app/shared/pipe/name-filter.pipe';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -17,6 +19,7 @@ import { AssembliesVisibilityComponent } from './assemblies-visibility.component
 describe('SoftwareAssembliesComponent', () => {
   let component: AssembliesVisibilityComponent;
   let fixture: ComponentFixture<AssembliesVisibilityComponent>;
+  let loader: HarnessLoader;
   let mockStore: MockStore;
 
   const initialState = {
@@ -56,6 +59,8 @@ describe('SoftwareAssembliesComponent', () => {
   beforeEach(() => {
     mockStore = TestBed.inject(MockStore);
     fixture = TestBed.createComponent(AssembliesVisibilityComponent);
+    loader = TestbedHarnessEnvironment.loader(fixture);
+
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -189,7 +194,7 @@ describe('SoftwareAssembliesComponent', () => {
   }));
 
 
-  it('should load data on template', () => {
+  it('should load data on template', async () => {
 
     const softwareAssembliesStateSelectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, undefined);
 
@@ -213,7 +218,8 @@ describe('SoftwareAssembliesComponent', () => {
     mockStore.refreshState();
     fixture.detectChanges();
 
-    const listItems = fixture.debugElement.queryAll(By.css('mat-list-item'));
+    const listItems = await loader.getAllHarnesses(MatListItemHarness);
+
     expect(listItems.length).toBe(2);
   });
 
