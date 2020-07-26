@@ -20,6 +20,8 @@ excluded_words:
   - iif
   - MemoizedSelector
   - tst
+  - dgv
+  - sft
   
 # Would you like filenames to also be spellchecked?
 spellcheck_filenames: true
