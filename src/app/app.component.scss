@@ -10,11 +10,11 @@
     background: map-get($backgrounds, card);
 }
 
-router-outlet {
+.main-router {
     position: absolute;
 }
 
-router-outlet + * { 
+.main-router + * { 
     width: 100%;
     height: 100%;
 }

@@ -11,11 +11,10 @@ html {
   color: mat-color($foreground, text);
 }
 
-app-root {
+.main-root {
   display: flex;
   flex-direction: column;
   height: 100%;
-  // overflow: hidden;
 }
 
 html {
