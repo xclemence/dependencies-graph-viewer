@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AssemblyListComponent } from './assembly-list/assembly-list.component';
+import { AssemblyListComponent } from './components/assembly-list/assembly-list.component';
+
 
 const routes: Routes = [
   { path: '', component: AssemblyListComponent },

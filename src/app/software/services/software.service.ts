@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import { Observable } from 'rxjs';
 import { flatMap, map, toArray } from 'rxjs/operators';
 
-const getSoftwareNames = gql`
+export const getSoftwareNames = gql`
   query softwareNames {
     Software {
         name,
@@ -16,7 +16,7 @@ const getSoftwareNames = gql`
   }
 `;
 
-const getSoftwareAssemblies = gql`
+export const getSoftwareAssemblies = gql`
   query softwareAssemblies($assemblyId: String!) {
     Assembly(filter: { name: $assemblyId }){
       name,
@@ -49,7 +49,7 @@ export class SoftwareService {
     );
   }
 
-  references(assemblyName: AssemblyBase): Observable<Assembly> {
+  software(assemblyName: AssemblyBase): Observable<Assembly> {
     return this.apolloService.query({ query: getSoftwareAssemblies, variables: { assemblyId: assemblyName.id } }).pipe(
       map((x: any) => x.data.Assembly[0]),
       map((x: any) => AssemblyConverter.toAssembly(x))

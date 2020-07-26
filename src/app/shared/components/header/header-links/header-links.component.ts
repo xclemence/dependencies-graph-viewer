@@ -9,7 +9,7 @@ export class HeaderLink {
 }
 
 @Component({
-  selector: 'app-header-links',
+  selector: 'dgv-header-links',
   templateUrl: './header-links.component.html',
   styleUrls: ['./header-links.component.scss']
 })

@@ -7,7 +7,7 @@ import gql from 'graphql-tag';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-const getAssembliesQuery = gql`
+export const getAssembliesQuery = gql`
   query assemblies($first: Int!, $offset: Int!, $order: [_AssemblyOrdering]) {
     Assembly(first: $first, offset: $offset, orderBy: $order) {
         name,
@@ -21,7 +21,7 @@ const getAssembliesQuery = gql`
   }
 `;
 
-const getAssembliesWithFilterQuery = gql`
+export const getAssembliesWithFilterQuery = gql`
   query assemblies($first: Int!, $offset: Int!, $order: [_AssemblyOrdering], $filter: String!) {
     Assembly(first: $first, offset: $offset, orderBy: $order, filter: {shortName_contains : $filter}) {
         name,
@@ -35,7 +35,7 @@ const getAssembliesWithFilterQuery = gql`
   }
 `;
 
-const getAssemblyDepthQuery = gql`
+export const getAssemblyDepthQuery = gql`
   query softwareAssemblies($assemblyId: String!, $depth: Int!) {
     Assembly(filter: { name: $assemblyId }){
       name,
@@ -53,7 +53,7 @@ const getAssemblyDepthQuery = gql`
   }
 `;
 
-const removeAssemblyQuery = gql`
+export const removeAssemblyQuery = gql`
   mutation RemoveAssembly($assemblyName: String!) {
     removeAssembly(assemblyName: $assemblyName) {
       name
@@ -65,7 +65,6 @@ const removeAssemblyQuery = gql`
   providedIn: 'root'
 })
 export class AssemblyService {
-
 
   constructor(private apolloService: Apollo) { }
 
@@ -129,7 +128,7 @@ export class AssemblyService {
         assemblyName: id
       }
     }).pipe(
-      map((x: any) => x.name)
+      map((x: any) => x.data.removeAssembly.name)
     );
   }
 }

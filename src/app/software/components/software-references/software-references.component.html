@@ -1,0 +1,21 @@
+<div class="overlap-container">
+  <mat-drawer-container class="flex-one overlap-item" hasBackdrop="false">
+    <mat-drawer position="end" [(opened)]="visibilityPanelOpened">
+      <div class="visibility-panel">
+        <sft-assemblies-visibility (closed)="closeVisibilityPanel()"></sft-assemblies-visibility>
+      </div>
+    </mat-drawer>
+    <mat-drawer-content>
+      <div class="assembly-details overlap-container">
+        <dgv-force-graph class="overlap-item" [graph]="graph | async" updateMode="ClearAndAdd"></dgv-force-graph>
+        <sft-software-statistics class="absolute-position no-pointer-events"></sft-software-statistics>
+        <div class="overlap-item open-visibility-panel no-pointer-events">
+          <button mat-fab aria-label="Open visibility panel" (click)="openVisibilityPanel()" class="pointer-events">
+            <mat-icon>visibility</mat-icon>
+          </button>
+        </div>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+  <dgv-busy opacity="0.7" busyKey="SelectedSoftware"></dgv-busy>
+</div>

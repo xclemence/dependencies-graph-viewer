@@ -1,7 +1,7 @@
 <div class="mat-elevation-z6 header">
   <div class="flex-panel left-panel">
-    <app-header-previous></app-header-previous>
-    <app-header-links [allLinks]="links"></app-header-links>
+    <dgv-header-previous></dgv-header-previous>
+    <dgv-header-links [allLinks]="links"></dgv-header-links>
   </div>
   <div class="right-panel">
     <h3 class="header-title flex-panel">Dependencies Graph Viewer</h3>
@@ -10,5 +10,5 @@
 
 <div class="main-view mat-typography">
   <router-outlet class="absolute" appSecureOutlet></router-outlet>
-  <app-busy busyKey="Main"></app-busy>
+  <dgv-busy busyKey="Main"></dgv-busy>
 </div>

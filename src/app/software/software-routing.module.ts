@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { SoftwareMainComponent } from './software-main/software-main.component';
+import { SoftwareMainComponent } from './components/software-main/software-main.component';
 
 const routes: Routes = [
   { path: ':id', component: SoftwareMainComponent },

@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-busy',
+  selector: 'dgv-busy',
   templateUrl: './busy.component.html',
   styleUrls: ['./busy.component.scss']
 })

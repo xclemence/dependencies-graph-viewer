@@ -1,19 +1,19 @@
-export class AssemblyBase {
-    public id: string;
-    public name: string;
-    public version: string;
-    public isNative: boolean;
-    public isSoftware: boolean;
+export interface AssemblyBase {
+    id: string;
+    name: string;
+    version: string;
+    isNative: boolean;
+    isSoftware: boolean;
 }
 
-export class AssemblyLink {
-    public sourceId: string;
-    public targetId: string;
+export interface AssemblyLink {
+    sourceId: string;
+    targetId: string;
 }
 
-export class Assembly extends AssemblyBase {
-    public links: AssemblyLink[];
-    public referencedAssemblies: AssemblyBase[];
+export interface Assembly extends AssemblyBase {
+    links: AssemblyLink[];
+    referencedAssemblies: AssemblyBase[];
 }
 
 export interface AssemblyStat extends AssemblyBase {

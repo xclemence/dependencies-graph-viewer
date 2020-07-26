@@ -23,7 +23,7 @@ export class SoftwareAssembliesEffects {
       switchMap(([action, state]) => iif(
         () => action.assemblyName.id === state?.software?.id,
         of(operationCanceled({ origin: action })),
-        this.softwareService.references(action.assemblyName).pipe(
+        this.softwareService.software(action.assemblyName).pipe(
           map(data => loadSoftwareAssembliesSuccess({ data, origin: action })),
           catchError(error => of(operationFailure({ error: error.message, origin: action })))
         )),

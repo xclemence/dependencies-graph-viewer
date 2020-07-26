@@ -13,7 +13,7 @@ export class UrlService {
 
   replaceSegment(index: number, value: string, currentRoute: ActivatedRoute) {
 
-    const { group : segmentGroup , tree : treeUrl } = this.getUrlSegments(currentRoute);
+    const { group: segmentGroup, tree: treeUrl } = this.getUrlSegments(currentRoute);
 
     if (segmentGroup.segments.length <= index) {
       segmentGroup.segments.push(new UrlSegment(value, {}));
@@ -31,7 +31,7 @@ export class UrlService {
   }
 
   removeAt(index: number, currentRoute: ActivatedRoute) {
-    const { group : segmentGroup , tree : treeUrl } = this.getUrlSegments(currentRoute);
+    const { group: segmentGroup, tree: treeUrl } = this.getUrlSegments(currentRoute);
 
     if (segmentGroup.segments.length >= index) {
       segmentGroup.segments.splice(index, 1);
@@ -45,10 +45,10 @@ export class UrlService {
     return this.location.path();
   }
 
-  getUrlSegments(currentRoute: ActivatedRoute): {group: UrlSegmentGroup, tree: UrlTree}  {
+  private getUrlSegments(currentRoute: ActivatedRoute): { group: UrlSegmentGroup, tree: UrlTree } {
     const currentOutlet = currentRoute.outlet;
     const treeUrl = this.router.parseUrl(this.router.url);
 
-    return {  group: treeUrl.root.children[currentOutlet], tree: treeUrl};
+    return { group: treeUrl.root.children[currentOutlet], tree: treeUrl };
   }
 }

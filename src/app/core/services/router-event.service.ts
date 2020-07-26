@@ -3,7 +3,6 @@ import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Rout
 import { addBusyIndicatorAction, removeBusyIndicatorAction } from '@app/core/store/actions/busy-indicator.actions';
 import { CoreState } from '@app/core/store/models';
 import { Store } from '@ngrx/store';
-import { Guid } from 'guid-typescript';
 
 import { UrlService } from './url.service';
 
@@ -16,13 +15,14 @@ export class RouterEventService {
 
   private map = new Map<string, () => void>([
     [NavigationStart.name, () => this.proceedNavigationStart()],
-    [NavigationEnd.name, () => this.startBusy()],
+    [NavigationEnd.name, () => this.stopBusy()],
     [NavigationCancel.name, () => this.proceedNavigationCancel()],
     [NavigationError.name, () => this.stopBusy()]
   ]);
 
   constructor(private router: Router, private store: Store<CoreState>, private urlService: UrlService) {
     this.router.events.subscribe(x => {
+
       const action = this.map.get(x.constructor.name);
 
       if (action !== undefined) {
