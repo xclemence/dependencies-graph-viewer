@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](/LICENSE)
 [![Build][github-actions-badge]][github-actions]
-[![Quality Gate Status][sonar-project]][sonar-project-badge]
+[![Quality Gate Status][sonar-project-badge]][sonar-project]
 
 
 [![dependencies Status](https://david-dm.org/iceman63/Dependencies.Graph.View/status.svg)](https://david-dm.org/iceman63/Dependencies.Graph.View)
