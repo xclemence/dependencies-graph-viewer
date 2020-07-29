@@ -1,13 +1,14 @@
-# Dependencies Graph View (Angular)
+# Dependencies Graph View 
 
-[![License](https://img.shields.io/npm/l/@angular/cli.svg)](/LICENSE) 
-[![CircleCI](https://circleci.com/gh/xclemence/Dependencies.Graph.View.svg?style=svg)](https://circleci.com/gh/xclemence/Dependencies.Graph.View)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=xclemence_dependencies-graph-viewer&metric=alert_status)](https://sonarcloud.io/dashboard?id=xclemence_dependencies-graph-viewer)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](/LICENSE)
+[![Build][github-actions-badge]][github-actions]
+[![Quality Gate Status][sonar-project]][sonar-project-badge]
+
 
 [![dependencies Status](https://david-dm.org/iceman63/Dependencies.Graph.View/status.svg)](https://david-dm.org/iceman63/Dependencies.Graph.View)
 [![devDependencies Status](https://david-dm.org/iceman63/Dependencies.Graph.View/dev-status.svg)](https://david-dm.org/iceman63/Dependencies.Graph.View?type=dev)
 
-This software provide a view to explore assemblies dependencies. This version is a pre-alpha version with no link to back end (only mock data are used).
+This software provide a view to explore assemblies dependencies.
 
 ### Features available
 - View Software assemblies (with graph)
@@ -26,3 +27,9 @@ This software provide a view to explore assemblies dependencies. This version is
 - `ng serve` for development. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 - `ng build` to build the project.
 - more options available on angular CLI web site.
+
+[github-actions]:                   https://github.com/xclemence/Dependencies-graph-viewer/actions
+[github-actions-badge]:             https://github.com/xclemence/dependencies-graph-viewer/workflows/CI/badge.svg?branch=master
+
+[sonar-project]:                    https://sonarcloud.io/dashboard?id=xclemence_dependencies-graph-viewer
+[sonar-project-badge]:              https://sonarcloud.io/api/project_badges/measure?project=xclemence_dependencies-graph-viewer&metric=alert_status
