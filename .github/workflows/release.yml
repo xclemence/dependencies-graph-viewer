@@ -46,11 +46,11 @@ jobs:
       uses: martinbeentjes/npm-get-version-action@v1.1.0
 
     - name: Build the Docker image
-      run: ddocker build . --tag dependencies-graph-view:${{ steps.package-version.outputs.current-version }}
+      run: docker build . --tag dependencies-graph-view:${{ steps.package-version.outputs.current-version }}
       working-directory: src
 
-    #- name: Docker login
-    #  run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+    - name: Docker login
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
 #
     #- name: Docker push
     #  run: | 
