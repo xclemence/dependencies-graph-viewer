@@ -1,12 +1,9 @@
 name: Release
 
-#on:
-#  push:
-#    tags:
-#    - 'v*'
-
 on:
-  push
+  push:
+    tags:
+    - 'v*'
 
 jobs:
   build:
@@ -58,23 +55,23 @@ jobs:
         docker push docker.pkg.github.com/xclemence/dependencies-graph-viewer/dependencies-graph-viewer:${{ steps.package-version.outputs.current-version }}
     
     # Release Creation
-    #- uses: olegtarasov/get-tag@v2
-    #  id: tagName
-#
-    #- name: Read Release Notes
-    #  id: release_notes
-    #  uses: juliangruber/read-file-action@v1
-    #  with:
-    #    path: ./doc/releases/${{ steps.tagName.outputs.tag }}.md
-#
-    #- name: Create Release
-    #  id: create_release
-    #  uses: actions/create-release@v1
-    #  env:
-    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #  with:
-    #    tag_name: ${{ github.ref }}
-    #    release_name: Release ${{ github.ref }}
-    #    body: ${{ steps.release_notes.outputs.content }}
-    #    draft: false
-    #    prerelease: false
+    - uses: olegtarasov/get-tag@v2
+      id: tagName
+
+    - name: Read Release Notes
+      id: release_notes
+      uses: juliangruber/read-file-action@v1
+      with:
+        path: ./doc/releases/${{ steps.tagName.outputs.tag }}.md
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: ${{ steps.release_notes.outputs.content }}
+        draft: false
+        prerelease: false
