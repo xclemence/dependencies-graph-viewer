@@ -32,12 +32,12 @@ A Docker image with this software is available from the [packages][github-packag
 # Linked project
 |        Project                         |                Build State                              | 
 | -------------------------------------- | :-----------------------------------------------------: | 
-| [**Gprahql services**][graphql-url]       |      [![Build][graphql-badge]][graphql-url]   | 
+| [**Graphql services**][graphql-url]       |      [![Build][graphql-badge]][graphql-url]   | 
 
 
 # Main externals packages
 - [Angular](https://angular.io/)
-- [Angular Mateiral](https://material.angular.io/)
+- [Angular Material](https://material.angular.io/)
 - [D3](https://d3js.org/)
 - [NgRx](https://ngrx.io/)
 - [Apollo](https://www.apollographql.com/docs/angular/)
