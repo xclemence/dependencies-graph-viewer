@@ -27,6 +27,8 @@ This software provides a view to explore assemblies dependencies store by [Depen
 
 ## Docker image
 
+A Docker image with this software is available from the [packages][github-package] page.
+
 # Linked project
 |        Project                         |                Build State                              | 
 | -------------------------------------- | :-----------------------------------------------------: | 
@@ -58,3 +60,5 @@ This software provides a view to explore assemblies dependencies store by [Depen
 [graphql-url]:                     https://github.com/xclemence/dependencies-graph-graphql
 
 [remote-development-plugin-url]:    https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack 
+
+[github-package]:                   https://github.com/xclemence/dependencies-graph-services/packages
