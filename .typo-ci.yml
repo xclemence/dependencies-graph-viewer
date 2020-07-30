@@ -22,6 +22,7 @@ excluded_words:
   - tst
   - dgv
   - sft
+  - graphql
   
 # Would you like filenames to also be spellchecked?
 spellcheck_filenames: true
