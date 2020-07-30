@@ -46,6 +46,8 @@ export class SoftwareMainComponent implements OnInit {
       return;
     }
 
+    this.selectedSoftwareId = software.id;
+
     this.urlService.replaceSegment(1, software.id, this.route);
     this.store.dispatch(ActionBusyAppender.executeWithBusy(loadSoftwareAssemblies({ assemblyName: software }), 'SelectedSoftware'));
   }
