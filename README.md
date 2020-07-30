@@ -45,7 +45,7 @@ A Docker image with this software is available from the [packages][github-packag
 
 
 [github-actions]:                   https://github.com/xclemence/Dependencies-graph-viewer/actions
-[github-actions-badge]:             https://github.com/xclemence/dependencies-graph-viewer/workflows/CI/badge.svg?branch=master
+[github-actions-badge]:             https://github.com/xclemence/dependencies-graph-viewer/workflows/Build/badge.svg?branch=master
 
 [sonar-project]:                    https://sonarcloud.io/dashboard?id=xclemence_dependencies-graph-viewer
 [sonar-project-badge]:              https://sonarcloud.io/api/project_badges/measure?project=xclemence_dependencies-graph-viewer&metric=alert_status

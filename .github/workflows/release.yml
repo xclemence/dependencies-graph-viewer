@@ -1,12 +1,10 @@
 name: Release
 
-# on:
-#   push:
-#     tags:
-#     - 'v*'
-
 on:
-  push
+  push:
+    tags:
+    - 'v*'
+
 jobs:
   build:
 
@@ -50,11 +48,11 @@ jobs:
 
     - name: Docker login
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-#
-    #- name: Docker push
-    #  run: | 
-    #    docker tag dependencies-graph-view:${{ steps.package-version.outputs.current-version }} docker.pkg.github.com/xclemence/dependencies-graph-view/dependencies-graph-view:${{ steps.package-version.outputs.current-version }}
-    #    docker push docker.pkg.github.com/xclemence/dependencies-graph-view/dependencies-graph-view:${{ steps.package-version.outputs.current-version }}
+
+    - name: Docker push
+      run: | 
+        docker tag dependencies-graph-view:${{ steps.package-version.outputs.current-version }} docker.pkg.github.com/xclemence/dependencies-graph-view/dependencies-graph-view:${{ steps.package-version.outputs.current-version }}
+        docker push docker.pkg.github.com/xclemence/dependencies-graph-view/dependencies-graph-view:${{ steps.package-version.outputs.current-version }}
     
     # Release Creation
     - uses: olegtarasov/get-tag@v2
@@ -66,14 +64,14 @@ jobs:
       with:
         path: ./doc/releases/${{ steps.tagName.outputs.tag }}.md
 
-    #- name: Create Release
-    #  id: create_release
-    #  uses: actions/create-release@v1
-    #  env:
-    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #  with:
-    #    tag_name: ${{ github.ref }}
-    #    release_name: Release ${{ github.ref }}
-    #    body: ${{ steps.release_notes.outputs.content }}
-    #    draft: false
-    #    prerelease: false
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: ${{ steps.release_notes.outputs.content }}
+        draft: false
+        prerelease: false
