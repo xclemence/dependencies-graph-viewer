@@ -29,7 +29,30 @@ This software provides a view to explore assemblies dependencies store by [Depen
 
 A Docker image with this software is available from the [packages][github-package] page.
 
+This image is base on **Linux**. 
+
+You can configure container by setting environment variables.
+
+| Environment variable     |          Comment           |   default value     |
+|------------------------- | :--------------------------|-------------------- |
+| DEPENDENCIES_GRAPHQL_URI | Graphql services uri       |                     |
+
+Port exposed by Container:
+
+|        Name        |       Description        |
+| -------------------|------------------------- |
+| 80                 | HTTP port for web site   |
+
+You can start a Dependencies Graph Viewer container like this:
+
+```
+docker run \
+    --publish=4200:80 \
+    dependencies-graph-viewer:tag
+```
+
 # Linked project
+
 |        Project                         |                Build State                              | 
 | -------------------------------------- | :-----------------------------------------------------: | 
 | [**Graphql services**][graphql-url]       |      [![Build][graphql-badge]][graphql-url]   | 
@@ -41,7 +64,6 @@ A Docker image with this software is available from the [packages][github-packag
 - [D3](https://d3js.org/)
 - [NgRx](https://ngrx.io/)
 - [Apollo](https://www.apollographql.com/docs/angular/)
-
 
 
 [github-actions]:                   https://github.com/xclemence/Dependencies-graph-viewer/actions
