@@ -6,7 +6,7 @@ COPY src/assets/config.json /usr/share/template/config.json
 
 RUN rm -rf /usr/share/nginx/html/*
 
-COPY dist/dependencies-graph /usr/share/nginx/html
+COPY dist/dependencies-graph/ /usr/share/nginx/html/
 
 EXPOSE 80
 
