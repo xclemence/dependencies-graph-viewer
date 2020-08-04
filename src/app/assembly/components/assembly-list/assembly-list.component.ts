@@ -174,6 +174,7 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
 
   handlePageChanged(event: PageEvent) {
     this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
     this.updateAssemblies();
   }
 
