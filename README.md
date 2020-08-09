@@ -41,13 +41,13 @@ Port exposed by Container:
 
 |        Name        |       Description        |
 | -------------------|------------------------- |
-| 80                 | HTTP port for web site   |
+| 4200               | HTTP port for web site   |
 
 You can start a Dependencies Graph Viewer container like this:
 
 ```
 docker run \
-    --publish=4200:80 \
+    --publish=4200:4200 \
     dependencies-graph-viewer:tag
 ```
 

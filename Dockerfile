@@ -8,7 +8,7 @@ RUN rm -rf /usr/share/nginx/html/*
 
 COPY dist/dependencies-graph/ /usr/share/nginx/html/
 
-EXPOSE 80
+EXPOSE 4200
 
 COPY docker/docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
