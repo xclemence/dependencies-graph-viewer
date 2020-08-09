@@ -1,0 +1,30 @@
+name: Test
+
+on:
+  push
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    # Docker Image
+
+    - name: get-npm-version
+      id: package-version
+      uses: martinbeentjes/npm-get-version-action@v1.1.0
+
+    - name: Build the Docker image
+      run: docker build . --tag dependencies-graph-viewer:1.0.5-beta
+
+    - name: Docker login
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+
+    - name: Docker push
+      run: | 
+        docker tag dependencies-graph-viewer:1.0.5-beta docker.pkg.github.com/xclemence/dependencies-graph-viewer/dependencies-graph-viewer:1.0.5-beta
+        docker push docker.pkg.github.com/xclemence/dependencies-graph-viewer/dependencies-graph-viewer:1.0.5-beta
