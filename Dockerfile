@@ -7,7 +7,8 @@ WORKDIR /usr/angular-workdir
 COPY . /usr/angular-workdir
 RUN yarn --frozen-lockfile && \
     node node_modules/@angular/cli/bin/ng build --prod && \
-    chmod -R 755 docker/docker-entrypoint.sh
+    chmod -R 755 docker/docker-entrypoint.sh && \
+    chmod -R 666 dist/dependencies-graph/assets/config.json
 
 ### STAGE 2: Setup ###
 
