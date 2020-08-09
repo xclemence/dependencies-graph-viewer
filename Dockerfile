@@ -22,6 +22,9 @@ RUN rm -rf /usr/share/nginx/html/*
 
 COPY --from=builder /usr/angular-workdir/dist/dependencies-graph/ /usr/share/nginx/html/
 
+RUN chgrp -R root /var/cache/nginx /var/run /var/log/nginx && \
+    chmod -R 770 /var/cache/nginx /var/run /var/log/nginx
+
 EXPOSE 4200
 
 COPY --from=builder /usr/angular-workdir/docker/docker-entrypoint.sh / 
