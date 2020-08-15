@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
+import { ApolloQueryResult } from '@apollo/client/core';
 import { AssemblyConverter } from '@app/core/converters';
 import { Assembly, AssemblyStat } from '@app/core/models/assembly';
-import { Apollo } from 'apollo-angular';
-import { ApolloQueryResult } from 'apollo-client';
-import gql from 'graphql-tag';
+import { Apollo, gql } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
