@@ -10,6 +10,7 @@ excluded_files:
   - ".github/*"
   - "docker/*"
   - "yarn.lock"
+  - "tsconfig.base.json"
 
 
 # Any typos we should ignore?
