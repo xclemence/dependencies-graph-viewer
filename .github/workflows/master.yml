@@ -54,7 +54,7 @@ jobs:
       run: yarn ng test --watch=false --code-coverage --browsers=chromeNoSandbox
     
     - name: update web driver
-      run: yarn updateWebDriver --versions.chrome=85.0.4182.0
+      run: yarn updateWebDriver --versions.chrome=85.0.4183.38
 
     - name: e2e Tests
       run: yarn e2e --configuration=ci
