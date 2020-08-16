@@ -1,5 +1,3 @@
-import { browser } from 'protractor';
-
 import { AssemblyPage } from '../pages/assembly.po';
 
 describe('workspace-project App', () => {
@@ -14,7 +12,7 @@ describe('workspace-project App', () => {
 
     expect(await page.getAssemblyCount()).toEqual(5);
 
-    browser.waitForAngularEnabled(false);
+    // browser.waitForAngularEnabled(false);
     await page.openAssemblyDetails(0);
 
     expect(await page.getDetailsHeader()).toEqual('Depth View : Software 1 (2.0.0.0)');
