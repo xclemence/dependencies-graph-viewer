@@ -1,3 +1,5 @@
+import { browser } from 'protractor';
+
 import { AssemblyPage } from '../pages/assembly.po';
 
 describe('workspace-project App', () => {
@@ -12,15 +14,16 @@ describe('workspace-project App', () => {
 
     expect(await page.getAssemblyCount()).toEqual(5);
 
-    // browser.waitForAngularEnabled(false);
+    browser.waitForAngularEnabled(false);
     await page.openAssemblyDetails(0);
 
+    browser.sleep(50);
     expect(await page.getDetailsHeader()).toEqual('Depth View : Software 1 (2.0.0.0)');
 
     await page.closeAssemblyDetails();
     await page.openAssemblyDetails(2);
 
+    browser.sleep(50);
     expect(await page.getDetailsHeader()).toEqual('Depth View : dll1 name (1.0.0.0)');
-
   });
 });
