@@ -1,6 +1,6 @@
 import { Assembly, AssemblyBase } from '@app/core/models';
 
-import { assemblyData } from './asssembly-data';
+import { assemblyData } from './assembly-data';
 
 export const defaultDelay = 10;
 

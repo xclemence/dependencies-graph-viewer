@@ -3,8 +3,8 @@ import { Assembly, AssemblyBase } from '@app/core/models/assembly';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
+import { assemblyData } from './assembly-data';
 import { appendAssemblyReference, defaultDelay } from './assembly-mock';
-import { assemblyData } from './asssembly-data';
 
 @Injectable()
 export class SoftwareMockService {

@@ -16,12 +16,12 @@ describe('workspace-project App', () => {
 
     await page.waitAssemblyNamesLoaded();
 
-    await page.selectSofware(0);
+    await page.selectSoftware(0);
     await page.waitAssemblyLoaded();
 
     expect(await page.getGraphAssemblyCount()).toEqual(4);
 
-    await page.selectSofware(1);
+    await page.selectSoftware(1);
     await page.waitAssemblyLoaded();
 
     expect(await page.getGraphAssemblyCount()).toEqual(1);
@@ -34,7 +34,7 @@ describe('workspace-project App', () => {
 
     await page.waitAssemblyNamesLoaded();
 
-    await page.selectSofware(0);
+    await page.selectSoftware(0);
     await page.waitAssemblyLoaded();
 
     await page.openVisibilityPanel();

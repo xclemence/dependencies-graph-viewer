@@ -5,7 +5,7 @@ export class SoftwarePage {
     return browser.get('/software');
   }
 
-  selectSofware(index: number) {
+  selectSoftware(index: number) {
     return $$('mat-list-option').get(index).click();
   }
 
