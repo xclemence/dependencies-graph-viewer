@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  assemblyGraphqlUri: 'http://localhost:4001/graphql'
+  assemblyGraphqlUri: 'http://localhost:4001/graphql',
+  modules: [ ],
 };
 
 /*

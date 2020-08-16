@@ -69,6 +69,7 @@ export class SoftwareListComponent implements OnInit, OnDestroy {
   }
 
   selectionChanged() {
+    this.#selectedId = this.selectedSoftwares[0]?.id;
     this.selectionChange.emit(this.selectedSoftwares[0]);
   }
 }

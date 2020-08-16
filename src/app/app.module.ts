@@ -31,7 +31,8 @@ export function configurationInit(config: ConfigurationService) {
     AppSecurityModule,
     AppStoreModule,
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    HttpClientModule
+    HttpClientModule,
+    ...environment.modules
   ],
   providers: [
     {

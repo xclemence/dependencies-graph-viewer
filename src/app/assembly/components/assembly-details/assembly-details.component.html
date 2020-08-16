@@ -1,6 +1,6 @@
 <div class="main-div">
   <div class="header">
-    <h3>Depth View : {{assemblyName}}</h3>
+    <h3 class="assembly-details-header">Depth View : {{assemblyName}}</h3>
   </div>
   <mat-slider min="0" step=1 [max]="depthMax" [(ngModel)]="selectedDepth" thumbLabel="true" class="depth-slider"
     [disabled]="!depthAvailable"></mat-slider>
