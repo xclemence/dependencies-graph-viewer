@@ -29,7 +29,7 @@ describe('softwareAssembliesReducer', () => {
 
   it('should have same value after load software assemblies', () => {
 
-    const action = loadSoftwareAssemblies({ assemblyName: assemblyTest });
+    const action = loadSoftwareAssemblies({ assemblyId: assemblyTest.id });
     expect(softwareAssembliesReducer(initialState, action)).toEqual(initialState);
   });
 

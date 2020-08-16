@@ -114,13 +114,13 @@ describe('SoftwareMainComponent', () => {
   it('should ask to load selected item', fakeAsync(() => {
     const dispatchSpy = spyOn(mockStore, 'dispatch').and.callThrough();
 
-    const software = { id: '1', name: 'name1', version: '1.0', isNative: false, isSoftware: false };
-    const expectedAction = ActionBusyAppender.executeWithBusy(loadSoftwareAssemblies({ assemblyName: software }), 'SelectedSoftware');
+    const softwareId = '1';
+    const expectedAction = ActionBusyAppender.executeWithBusy(loadSoftwareAssemblies({ assemblyId: softwareId }), 'SelectedSoftware');
 
 
-    component.selectedSoftwareChanged(software);
+    component.selectedSoftwareChanged(softwareId);
 
-    expect(urlServiceSpy.replaceSegment).toHaveBeenCalledWith(1, software.id, TestBed.inject(ActivatedRoute));
+    expect(urlServiceSpy.replaceSegment).toHaveBeenCalledWith(1, softwareId, TestBed.inject(ActivatedRoute));
     expect(dispatchSpy).toHaveBeenCalledWith(expectedAction);
   }));
 });

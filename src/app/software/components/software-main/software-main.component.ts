@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
-import { AssemblyBase } from '@app/core/models/assembly';
 import { UrlService } from '@app/core/services';
 import { Store } from '@ngrx/store';
 
@@ -32,6 +31,7 @@ export class SoftwareMainComponent implements OnInit {
   private onParameterChanged(params: ParamMap) {
     if (params.has('id')) {
       this.selectedSoftwareId = params.get('id');
+      this.selectedSoftwareChanged(this.selectedSoftwareId);
     } else {
       this.store.dispatch(clearSoftwareAssemblies());
     }
@@ -41,14 +41,14 @@ export class SoftwareMainComponent implements OnInit {
     this.store.dispatch(ActionBusyAppender.executeWithMainBusy(loadSoftwareNames()));
   }
 
-  selectedSoftwareChanged(software: AssemblyBase) {
-    if (!software) {
+  selectedSoftwareChanged(softwareId: string) {
+    if (!softwareId) {
       return;
     }
 
-    this.selectedSoftwareId = software.id;
+    // this.selectedSoftwareId = softwareId;
 
-    this.urlService.replaceSegment(1, software.id, this.route);
-    this.store.dispatch(ActionBusyAppender.executeWithBusy(loadSoftwareAssemblies({ assemblyName: software }), 'SelectedSoftware'));
+    this.urlService.replaceSegment(1, softwareId, this.route);
+    this.store.dispatch(ActionBusyAppender.executeWithBusy(loadSoftwareAssemblies({ assemblyId: softwareId }), 'SelectedSoftware'));
   }
 }

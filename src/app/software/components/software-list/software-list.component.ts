@@ -17,7 +17,7 @@ export class SoftwareListComponent implements OnInit, OnDestroy {
   #selectedId: string;
   #storeSubscription: Subscription;
 
-  @Output() selectionChange: EventEmitter<AssemblyBase> = new EventEmitter();
+  @Output() selectionChange: EventEmitter<string> = new EventEmitter();
   @Output() refreshSoftwaresRequest = new EventEmitter();
 
   softwareNames: AssemblyBase[];
@@ -32,6 +32,7 @@ export class SoftwareListComponent implements OnInit, OnDestroy {
     if (value === this.#selectedId) {
       return;
     }
+
     this.#selectedId = value;
     this.selectSoftwareById();
   }
@@ -58,10 +59,6 @@ export class SoftwareListComponent implements OnInit, OnDestroy {
     }
 
     this.selectedSoftwares = this.softwareNames.filter(s => s.id === this.selectedId);
-
-    if (this.selectedSoftwares) {
-      this.selectionChanged();
-    }
   }
 
   refreshSoftwares() {
@@ -69,7 +66,6 @@ export class SoftwareListComponent implements OnInit, OnDestroy {
   }
 
   selectionChanged() {
-    this.#selectedId = this.selectedSoftwares[0]?.id;
-    this.selectionChange.emit(this.selectedSoftwares[0]);
+    this.selectionChange.emit(this.selectedSoftwares[0]?.id);
   }
 }

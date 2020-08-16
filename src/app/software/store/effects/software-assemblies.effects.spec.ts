@@ -138,7 +138,7 @@ describe('SoftwareAssembliesEffects', () => {
     testScheduler.run(({ hot, cold, expectObservable }) => {
       const originAction = {
         type: '[Software Assemblies] Load Software Assemblies',
-        assemblyName: { ...assemblyTest, id: '123' }
+        assemblyId: '123'
       };
 
       const actionProvider = hot('-a', { a: originAction });

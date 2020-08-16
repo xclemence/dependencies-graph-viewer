@@ -48,8 +48,8 @@ export class SoftwareService {
     );
   }
 
-  software(assemblyName: AssemblyBase): Observable<Assembly> {
-    return this.apolloService.query({ query: getSoftwareAssemblies, variables: { assemblyId: assemblyName.id } }).pipe(
+  software(assemblyId: string): Observable<Assembly> {
+    return this.apolloService.query({ query: getSoftwareAssemblies, variables: { assemblyId } }).pipe(
       map((x: any) => x.data.Assembly[0]),
       map((x: any) => AssemblyConverter.toAssembly(x))
     );

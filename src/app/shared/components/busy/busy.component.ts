@@ -1,4 +1,4 @@
-import { Component, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
 import { busyStateSelector } from '@app/core/store/core.selectors';
 import { CoreState } from '@app/core/store/models/core.state';
 import { select, Store } from '@ngrx/store';
@@ -23,13 +23,16 @@ export class BusyComponent implements OnInit, OnDestroy {
     return !this.displayed;
   }
 
-  constructor(private store: Store<CoreState>) {}
+  constructor(private store: Store<CoreState>, private changeDetector: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.subscription = this.store.pipe(
       select(busyStateSelector),
       map(x => x.actionsInProgress.includes(this.busyKey)),
-    ).subscribe(x => this.displayed = x);
+    ).subscribe(x => {
+      this.displayed = x;
+      this.changeDetector.markForCheck();
+    });
   }
 
   ngOnDestroy(): void {
