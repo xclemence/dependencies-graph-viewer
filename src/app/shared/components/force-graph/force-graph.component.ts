@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, AfterViewChecked, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, Input, AfterViewChecked, ChangeDetectionStrategy, AfterViewInit, NgZone } from '@angular/core';
 
 import * as d3 from 'd3';
 import { Simulation } from 'd3';
@@ -44,7 +44,10 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
       return;
     }
     this.#graph = value;
-    this.generateGraphData();
+
+    this.zone.runOutsideAngular(() => {
+      this.generateGraphData();
+    });
   }
 
   private get nodeSelector(): any {
@@ -55,10 +58,12 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
     return this.#svgGroup.select('.links').selectAll('line');
   }
 
-  constructor(private container: ElementRef) { }
+  constructor(private container: ElementRef, private zone: NgZone) { }
 
   ngAfterViewInit() {
-    this.initializeGraph();
+    this.zone.runOutsideAngular(() => {
+      this.initializeGraph();
+    });
   }
 
   ngAfterViewChecked(): void {

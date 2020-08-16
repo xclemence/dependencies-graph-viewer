@@ -25,9 +25,6 @@ export class SoftwarePage {
     return browser.wait(protractor.ExpectedConditions.presenceOf($('.nodes')), 1000);
   }
 
-  waitAssemblyNamesLoaded() {
-    return browser.wait(protractor.ExpectedConditions.presenceOf($('mat-list-option')), 1000);
-  }
   getAssemblyVisibilityCount() {
     return $$('.assemblies-panel .mat-list-item').count();
   }

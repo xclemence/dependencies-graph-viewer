@@ -1,5 +1,3 @@
-import { browser } from 'protractor';
-
 import { SoftwarePage } from '../pages/software.po';
 
 describe('workspace-project App', () => {
@@ -11,10 +9,6 @@ describe('workspace-project App', () => {
 
   it('view software details', async () => {
     await page.navigateTo();
-
-    browser.waitForAngularEnabled(false);
-
-    await page.waitAssemblyNamesLoaded();
 
     await page.selectSoftware(0);
     await page.waitAssemblyLoaded();
@@ -29,10 +23,6 @@ describe('workspace-project App', () => {
 
   it('filter assemblies', async () => {
     await page.navigateTo();
-
-    browser.waitForAngularEnabled(false);
-
-    await page.waitAssemblyNamesLoaded();
 
     await page.selectSoftware(0);
     await page.waitAssemblyLoaded();
