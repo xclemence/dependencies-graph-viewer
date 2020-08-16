@@ -2,7 +2,7 @@ import { Assembly, AssemblyBase } from '@app/core/models';
 
 import { assemblyData } from './asssembly-data';
 
-export const defaultDelay = 1000;
+export const defaultDelay = 10;
 
 export function appendAssemblyReference(assembly: Assembly, parentId: string, depth: number) {
 
