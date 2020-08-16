@@ -3,7 +3,7 @@ import { AssemblyConverter } from '@app/core/converters';
 import { Assembly, AssemblyBase } from '@app/core/models/assembly';
 import { Apollo, gql } from 'apollo-angular';
 import { Observable } from 'rxjs';
-import { flatMap, map, toArray } from 'rxjs/operators';
+import { map, mergeMap, toArray } from 'rxjs/operators';
 
 export const getSoftwareNames = gql`
   query softwareNames {
@@ -42,7 +42,7 @@ export class SoftwareService {
 
   names(): Observable<AssemblyBase[]> {
     return this.apolloService.query({ query: getSoftwareNames }).pipe(
-      flatMap((x: any) => x.data.Software),
+      mergeMap((x: any) => x.data.Software),
       map((x: any) => AssemblyConverter.toAssemblyBase<AssemblyBase>(x)),
       toArray()
     );

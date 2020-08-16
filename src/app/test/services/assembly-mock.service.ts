@@ -1,78 +1,52 @@
 import { Injectable } from '@angular/core';
-import { Assembly, AssemblyLink, AssemblyStat } from '@app/core/models/assembly';
-import { AssemblyMockProvider } from '@app/test/assembly.mock-provider';
+import { Assembly, AssemblyStat } from '@app/core/models';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+
+import { appendAssemblyReference, defaultDelay } from './assembly-mock';
+import { assemblyData } from './asssembly-data';
 
 @Injectable()
 export class AssemblyMockService {
 
   saveAssembly = new Map<string, Assembly>();
 
-  constructor(private provider: AssemblyMockProvider) { }
+  assemblyStatistics(pageSize: number, page: number, namefilter: string, order: string)
+    : Observable<{ assemblies: AssemblyStat[], count: number }> {
 
-  assemblyStatistics(take: number, page: number): Observable<AssemblyStat[]> {
-    return of(this.getMockData()).pipe(delay(1000));
-  }
+    const items = assemblyData.filter(x => !namefilter || x.name.includes(namefilter))
+                              .sort(x => x[order])
+                              .slice(pageSize * page, pageSize * page + pageSize)
+                              .map(x => ({ ...x }) as AssemblyStat);
 
-  private getMockData(): AssemblyStat[] {
-    const assemblies = new Array<AssemblyStat>();
-
-    for (let i = 0; i < 30; ++i) {
-      assemblies.push({
-        id: `${i}`,
-        name: `assembly ${i}`,
-        version: `1.0.${i}`,
-        isNative: this.provider.randomInt(0, 4) === 3,
-        isSoftware: this.provider.randomInt(0, 4) === 3,
-        depthMax: this.provider.randomInt(20, 100),
-        assemblyLinkCount: this.provider.randomInt(20, 100)
-      });
-    }
-
-    return assemblies;
+    return of({
+      assemblies: items,
+      count: assemblyData.length
+    }).pipe(delay(defaultDelay));
   }
 
   references(id: string, depth: number): Observable<Assembly> {
-    let assembly: Assembly;
 
-    if (id === '0') {
-      assembly = this.provider.getMockDataStatic();
-    } else if (!this.saveAssembly.has(id)) {
-      assembly = this.provider.getMockDataRand(75);
-      this.saveAssembly.set(id, assembly);
-    } else {
-      assembly = this.saveAssembly.get(id);
-    }
+    const baseAssembly = assemblyData.find(x => x.id === id);
 
-    return of(this.getdepth(assembly, depth)).pipe(delay(1000));
+    const assembly = {
+      ...baseAssembly,
+      referencedAssemblies: [],
+      links: []
+    } as Assembly;
+
+    appendAssemblyReference(assembly, assembly.id, depth);
+
+    return of(assembly).pipe(delay(defaultDelay));
   }
 
-  getdepth(assembly: Assembly, depth: number): Assembly {
-    const newAssembly = new Assembly();
+  remove(id: string): Observable<string> {
+    const index = assemblyData.findIndex(x => x.id === id);
 
-    Object.assign(newAssembly, assembly);
-    newAssembly.links = new Array<AssemblyLink>();
-
-    let searchIds = [assembly.id];
-    let nextSearchIds: Array<string>;
-    for (let i = 0; i < depth; ++i) {
-      nextSearchIds = [];
-      for (const id of searchIds) {
-        const ref = assembly.links.filter(x => x.sourceId === id);
-        newAssembly.links.push(...ref);
-
-        nextSearchIds.push(...ref.map(x => x.targetId));
-      }
-      searchIds = nextSearchIds;
+    if (index > -1) {
+      assemblyData.splice(index, 1);
     }
 
-    const distinctIds = newAssembly.links.map(x => x.targetId)
-      .concat(newAssembly.links.map(x => x.sourceId))
-      .filter(x => x !== assembly.id);
-
-    newAssembly.referencedAssemblies = assembly.referencedAssemblies.filter(x => distinctIds.some(i => i === x.id));
-
-    return newAssembly;
+    return of(id).pipe(delay(defaultDelay));
   }
 }
