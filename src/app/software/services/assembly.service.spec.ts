@@ -61,15 +61,7 @@ describe('SoftwareService', () => {
       ]
     };
 
-    const name = {
-      id: 'test1',
-      name: 'test1 name',
-      version: '2.0.0.0',
-      isSoftware: true,
-      isNative: true,
-    };
-
-    service.software(name).subscribe({
+    service.software('test1').subscribe({
       next: x => expect(x).toEqual(AssemblyConverter.toAssembly(software))
     });
 

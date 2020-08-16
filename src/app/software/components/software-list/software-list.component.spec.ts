@@ -71,18 +71,6 @@ describe('SoftwareListComponent', () => {
     expect(emitSpy).toHaveBeenCalled();
   });
 
-  it('should set selected software', () => {
-    component.softwareNames = [
-      { id: '1', name: 'name1', version: '1.0', isNative: false, isSoftware: false },
-      { id: '2', name: 'name2', version: '1.0', isNative: false, isSoftware: false }
-    ];
-    const emitSpy = spyOn(component.selectionChange, 'emit');
-
-    component.selectedId = '1';
-
-    expect(emitSpy).toHaveBeenCalled();
-  });
-
   it('should load data from store', fakeAsync(() => {
 
     const softwareNameStateSelectorMock = mockStore.overrideSelector(softwareNameStateSelector, undefined);
@@ -94,13 +82,10 @@ describe('SoftwareListComponent', () => {
       ]
     };
 
-    const emitSpy = spyOn(component.selectionChange, 'emit');
-
     softwareNameStateSelectorMock.setResult(inputStore);
     mockStore.refreshState();
 
     expect(component.softwareNames).toEqual(inputStore.softwareNames);
-    expect(emitSpy).toHaveBeenCalled();
   }));
 
   it('should update template', async () => {
@@ -132,6 +117,16 @@ describe('SoftwareListComponent', () => {
     expect(await firstItem.isSelected()).toBeTrue();
   });
 
+  it('should set selected software', () => {
+    component.softwareNames = [
+      { id: '1', name: 'name1', version: '1.0', isNative: false, isSoftware: false },
+      { id: '2', name: 'name2', version: '1.0', isNative: false, isSoftware: false }
+    ];
+
+    component.selectedId = '1';
+
+    expect(component.selectedSoftwares.includes(component.softwareNames[0])).toBeTrue();
+  });
 
   it('should update selection from template', async () => {
 

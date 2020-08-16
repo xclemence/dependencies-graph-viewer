@@ -15,8 +15,8 @@ export class SoftwareMockService {
     return of(data).pipe(delay(defaultDelay));
   }
 
-  software(assemblyName: AssemblyBase): Observable<Assembly> {
-    const baseAssembly = assemblyData.find(x => x.id === assemblyName.id);
+  software(assemblyId: string): Observable<Assembly> {
+    const baseAssembly = assemblyData.find(x => x.id === assemblyId);
 
     const assembly = {
       ...baseAssembly,

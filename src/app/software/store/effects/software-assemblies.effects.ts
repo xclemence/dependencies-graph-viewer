@@ -21,9 +21,9 @@ export class SoftwareAssembliesEffects {
       ofType(loadSoftwareAssemblies),
       withLatestFrom(this.store.select(softwareAssembliesStateSelector)),
       switchMap(([action, state]) => iif(
-        () => action.assemblyName.id === state?.software?.id,
+        () => action.assemblyId === state?.software?.id,
         of(operationCanceled({ origin: action })),
-        this.softwareService.software(action.assemblyName).pipe(
+        this.softwareService.software(action.assemblyId).pipe(
           map(data => loadSoftwareAssembliesSuccess({ data, origin: action })),
           catchError(error => of(operationFailure({ error: error.message, origin: action })))
         )),
