@@ -8,3 +8,4 @@ export const assemblyStateSelector = createFeatureSelector<AssemblyState>(assemb
 
 export const assembliesStateSelector = createSelector(assemblyStateSelector, (state: AssemblyState) => state.assemblies);
 export const assemblyDepthStateSelector = createSelector(assemblyStateSelector, (state: AssemblyState) => state.assemblyDepth);
+export const assemblyDepthMaxStateSelector = createSelector(assemblyStateSelector, (state: AssemblyState) => state.assemblyDepthMax);

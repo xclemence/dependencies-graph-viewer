@@ -12,7 +12,7 @@ import { MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
 import { loadAssemblyDepth } from '../../store/actions';
-import { assemblyDepthStateSelector } from '../../store/assembly.selectors';
+import { assemblyDepthMaxStateSelector, assemblyDepthStateSelector } from '../../store/assembly.selectors';
 import { AssemblyState } from '../../store/models';
 import { AssemblyDetailsComponent } from './assembly-details.component';
 
@@ -27,10 +27,11 @@ const initialState = {
   }
 };
 
-describe('NotFoundComponent', () => {
+describe('AssemblyDetailsComponent', () => {
   let component: AssemblyDetailsComponent;
   let fixture: ComponentFixture<AssemblyDetailsComponent>;
   let mockAssemblyDepthSelector: MemoizedSelector<AssemblyState, Assembly>;
+  let mockAssemblyDepthMaxSelector: MemoizedSelector<AssemblyState, { assemblyId: string, value: number }>;
   let mockStore: MockStore;
 
   beforeEach(async(() => {
@@ -45,7 +46,7 @@ describe('NotFoundComponent', () => {
         { provide: MatDialogRef, useValue: {} },
         {
           provide: MAT_DIALOG_DATA,
-          useValue: { name: 'test1', depthMax: 10, id: '1' }
+          useValue: { id: '1' }
         },
         provideMockStore({ initialState })
       ]
@@ -61,15 +62,19 @@ describe('NotFoundComponent', () => {
     mockStore = TestBed.inject(MockStore);
 
     mockAssemblyDepthSelector = mockStore.overrideSelector(assemblyDepthStateSelector, undefined);
+    mockAssemblyDepthMaxSelector = mockStore.overrideSelector(assemblyDepthMaxStateSelector, undefined);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display assemblyName', () => {
-    const element = fixture.debugElement.query(By.css('h3'));
-    expect(element.nativeElement.textContent.trim()).toBe('Depth View : test1');
+  it('should update depth max', () => {
+
+    mockAssemblyDepthMaxSelector.setResult({ assemblyId: 'test', value: 10});
+    mockStore.refreshState();
+
+    expect(component.depthMax).toBe(10);
   });
 
   it('should load new depth', fakeAsync(() => {
@@ -163,6 +168,28 @@ describe('NotFoundComponent', () => {
     mockStore.refreshState();
 
     expect(generateGraphDataSpy).toHaveBeenCalledTimes(1);
+
+  }));
+
+  it('should update name', fakeAsync(() => {
+
+    const inputAssembly = {
+      id: '1',
+      name: 'name1',
+      version: '1.0',
+      isNative: false,
+      isSoftware: false,
+      links: [],
+      referencedAssemblies: []
+    };
+
+    mockAssemblyDepthSelector.setResult(inputAssembly);
+    mockStore.refreshState();
+
+    fixture.detectChanges();
+
+    const element = fixture.debugElement.query(By.css('h3'));
+    expect(element.nativeElement.textContent.trim()).toBe('Depth View : name1 (1.0)');
 
   }));
 });

@@ -40,6 +40,12 @@ export class AssemblyMockService {
     return of(assembly).pipe(delay(defaultDelay));
   }
 
+  assemblyDepthMax(id: string): Observable<{id: string, value: number}> {
+    const baseAssembly = assemblyData.find(x => x.id === id);
+
+    return of({ id, value: baseAssembly.depthMax});
+  }
+
   remove(id: string): Observable<string> {
     const index = assemblyData.findIndex(x => x.id === id);
 

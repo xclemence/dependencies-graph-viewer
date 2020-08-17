@@ -1,10 +1,18 @@
-import { loadAssemblies, loadAssembliesSuccess, loadAssemblyDepth, loadAssemblyDepthSuccess } from '../actions';
+import {
+  loadAssemblies,
+  loadAssembliesSuccess,
+  loadAssemblyDepth,
+  loadAssemblyDepthMax,
+  loadAssemblyDepthMaxSuccess,
+  loadAssemblyDepthSuccess,
+} from '../actions';
 import { assemblyReducer } from './assembly.reducer';
 
 describe('assemblyReducer', () => {
 
   const initialValue = {
     assemblyDepth: undefined,
+    assemblyDepthMax: undefined,
     assemblies: {
       filtered: [],
       count: 0
@@ -51,6 +59,7 @@ describe('assemblyReducer', () => {
 
     const expectedValue = {
       assemblyDepth: undefined,
+      assemblyDepthMax: undefined,
       assemblies: {
         filtered: assemblies,
         count: assemblyCount
@@ -88,6 +97,35 @@ describe('assemblyReducer', () => {
 
     const expectedValue = {
       assemblyDepth: assembly,
+      assemblyDepthMax: undefined,
+      assemblies: {
+        filtered: [],
+        count: 0
+      }
+    };
+
+    expect(assemblyReducer(initialValue, action)).toEqual(expectedValue);
+  });
+
+  it('should have same value after loadAssemblyDepthMax', () => {
+    const action = loadAssemblyDepthMax({ assemblyId: '10' });
+    expect(assemblyReducer(initialValue, action)).toEqual(initialValue);
+  });
+
+  it('should update state after load assembly depth max success', () => {
+
+    const action = loadAssemblyDepthMaxSuccess({
+      assemblyId: '1',
+      depthMax: 123,
+      origin: undefined
+    });
+
+    const expectedValue = {
+      assemblyDepth: undefined,
+      assemblyDepthMax: {
+        assemblyId: '1',
+        value: 123
+      },
       assemblies: {
         filtered: [],
         count: 0

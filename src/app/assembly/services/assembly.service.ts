@@ -35,7 +35,7 @@ export const getAssembliesWithFilterQuery = gql`
 `;
 
 export const getAssemblyDepthQuery = gql`
-  query softwareAssemblies($assemblyId: String!, $depth: Int!) {
+  query assemblyDepth($assemblyId: String!, $depth: Int!) {
     Assembly(filter: { name: $assemblyId }){
       name,
       shortName,
@@ -52,8 +52,17 @@ export const getAssemblyDepthQuery = gql`
   }
 `;
 
+export const getAssemblyDepthMaxQuery = gql`
+  query assemblyDepthMax($assemblyId: String!) {
+    Assembly(filter: { name: $assemblyId }){
+      name,
+      maxDepth,
+    }
+  }
+`;
+
 export const removeAssemblyQuery = gql`
-  mutation RemoveAssembly($assemblyName: String!) {
+  mutation removeAssembly($assemblyName: String!) {
     removeAssembly(assemblyName: $assemblyName) {
       name
     }
@@ -117,6 +126,17 @@ export class AssemblyService {
     }).pipe(
       map((x: any) => x.data.Assembly[0]),
       map((x: any) => AssemblyConverter.toAssembly(x))
+    );
+  }
+
+  assemblyDepthMax(id: string): Observable<{id: string, value: number}> {
+    return this.apolloService.query({
+      query: getAssemblyDepthMaxQuery,
+      variables: {
+        assemblyId: id
+      }
+    }).pipe(
+      map((x: any) => ({id, value: x.data.Assembly[0].maxDepth }))
     );
   }
 

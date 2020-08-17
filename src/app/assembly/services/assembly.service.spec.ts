@@ -1,4 +1,4 @@
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed } from '@angular/core/testing';
 import { AssemblyConverter } from '@app/core/converters';
 import { ApolloTestingController, ApolloTestingModule } from 'apollo-angular/testing';
 
@@ -6,6 +6,7 @@ import {
   AssemblyService,
   getAssembliesQuery,
   getAssembliesWithFilterQuery,
+  getAssemblyDepthMaxQuery,
   getAssemblyDepthQuery,
   removeAssemblyQuery,
 } from './assembly.service';
@@ -62,8 +63,6 @@ describe('AssemblyService', () => {
     expect(mockOperation.operation.variables.assemblyId).toEqual('1');
     expect(mockOperation.operation.variables.depth).toEqual(10);
 
-    tick();
-
   }));
 
   it('should load assembly statistic with filter', fakeAsync(() => {
@@ -110,7 +109,6 @@ describe('AssemblyService', () => {
     expect(mockOperation.operation.variables.order).toEqual('order');
     expect(mockOperation.operation.variables.filter).toEqual('test');
 
-    tick();
   }));
 
   it('should load assembly statistic with no filter', fakeAsync(() => {
@@ -156,7 +154,6 @@ describe('AssemblyService', () => {
     expect(mockOperation.operation.variables.offset).toEqual(20);
     expect(mockOperation.operation.variables.order).toEqual('order');
 
-    tick();
   }));
 
   it('should call delete mutation', fakeAsync(() => {
@@ -173,7 +170,27 @@ describe('AssemblyService', () => {
 
     expect(mockOperation.operation.variables.assemblyName).toEqual('1');
 
-    tick();
+  }));
+
+  it('should load assembly depth max', fakeAsync(() => {
+
+    service.assemblyDepthMax('test').subscribe({
+      next: (x) => {
+        expect(x).toEqual({id: 'test', value: 3});
+      }
+    });
+
+    const mockOperation = controller.expectOne(getAssemblyDepthMaxQuery);
+
+    mockOperation.flush({
+      data: {
+        Assembly: [
+          { name: 'test', maxDepth: 3 }
+        ]
+      }
+    });
+
+    expect(mockOperation.operation.variables.assemblyId).toEqual('test');
   }));
 
 });

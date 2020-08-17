@@ -1,5 +1,6 @@
 import {
   assembliesStateSelector,
+  assemblyDepthMaxStateSelector,
   assemblyDepthStateSelector,
   assemblyFeatureKey,
   assemblyStateSelector,
@@ -32,7 +33,8 @@ describe('assembly selector', () => {
         isSoftware: true,
         links: [],
         referencedAssemblies: []
-      }
+      },
+      assemblyDepthMax: undefined
     };
 
     const extractState = assemblyStateSelector({
@@ -85,5 +87,21 @@ describe('assembly selector', () => {
     });
 
     expect(result).toEqual(assembly);
+  });
+
+
+  it('should extract assembly depth max state', () => {
+    const value = {
+      assemblyId: 'test',
+      value: 123
+    };
+
+    const result = assemblyDepthMaxStateSelector({
+      [assemblyFeatureKey]: {
+        assemblyDepthMax: value
+      }
+    });
+
+    expect(result).toEqual(value);
   });
 });

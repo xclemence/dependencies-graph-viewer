@@ -1,14 +1,15 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { loadAssemblyDepthMax } from '@app/assembly/store/actions/assembly-depth-max.actions';
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { Assembly, AssemblyColors } from '@app/core/models/assembly';
 import { Graph, GraphLink, GraphNode } from '@app/shared/models';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 
 import { loadAssemblyDepth } from '../../store/actions/assembly-depth.actions';
-import { assemblyDepthStateSelector } from '../../store/assembly.selectors';
+import { assemblyDepthMaxStateSelector, assemblyDepthStateSelector } from '../../store/assembly.selectors';
 import { AssemblyState } from '../../store/models';
 
 @Component({
@@ -20,11 +21,13 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
 
   assemblyName: string;
   depthMax = 10;
-  graph: Observable<Graph>;
+  graph: Graph;
 
   #selectedDepth = 1;
   #depthChanged: BehaviorSubject<number>;
-  #subscription: Subscription;
+  #depthSubscription: Subscription;
+  #storeSubscription: Subscription;
+  #storeDepthMaxSubscription: Subscription;
 
   assemblyId: string;
 
@@ -44,29 +47,38 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
     return this.depthMax > 1;
   }
 
-  constructor(private store: Store<AssemblyState>, @Inject(MAT_DIALOG_DATA) data: { name: string, depthMax: number, id: string }) {
-    this.assemblyName = data.name;
+  constructor(private store: Store<AssemblyState>, @Inject(MAT_DIALOG_DATA) data: { id: string }) {
     this.assemblyId = data.id;
-    this.depthMax = data.depthMax;
 
+    this.store.dispatch(ActionBusyAppender.executeWithBusy(loadAssemblyDepthMax({ assemblyId: this.assemblyId }), 'AssemblyDepth'));
     this.#depthChanged = new BehaviorSubject(this.selectedDepth);
   }
 
   ngOnInit() {
 
-    this.graph = this.store.select(assemblyDepthStateSelector).pipe(
+    this.#storeDepthMaxSubscription = this.store.select(assemblyDepthMaxStateSelector).pipe(
       filter(x => x !== undefined),
-      map(x => this.generateGraphData(x))
-    );
+    ).subscribe(x => {
+      this.depthMax = x.value;
+    });
 
-    this.#subscription = this.#depthChanged.pipe(
+    this.#storeSubscription = this.store.select(assemblyDepthStateSelector).pipe(
+      filter(x => x !== undefined),
+    ).subscribe(x => {
+      this.graph = this.generateGraphData(x);
+      this.assemblyName = `${x.name} (${x.version})`;
+    });
+
+    this.#depthSubscription = this.#depthChanged.pipe(
       debounceTime(100),
       distinctUntilChanged(),
     ).subscribe(x => this.store.dispatch(ActionBusyAppender.executeWithBusy(loadAssemblyDepth({ assemblyId: this.assemblyId, depth: x }), 'AssemblyDepth')));
   }
 
   ngOnDestroy(): void {
-    this.#subscription.unsubscribe();
+    this.#depthSubscription.unsubscribe();
+    this.#storeSubscription.unsubscribe();
+    this.#storeDepthMaxSubscription.unsubscribe();
   }
 
   private loadDepth(value: number) {
