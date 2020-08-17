@@ -164,12 +164,12 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
   }
 
   private updateAssemblies() {
-    this.store.dispatch(ActionBusyAppender.executeWithMainBusy(loadAssemblies({
+    this.store.dispatch(ActionBusyAppender.executeWithBusy(loadAssemblies({
       take: this.pageSize,
       page: this.currentPage,
       filter: this.#currentFilter,
       order: this.convertorService.getAssemblyServiceOrder(this.sort.active, this.sort.direction)
-    })));
+    }), 'AssemblyList'));
   }
 
   handlePageChanged(event: PageEvent) {

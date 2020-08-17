@@ -16,6 +16,7 @@ import { ActivatedRoute, convertToParamMap, ParamMap } from '@angular/router';
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { AssemblyColors } from '@app/core/models';
 import { UrlService } from '@app/core/services';
+import { BusyComponent } from '@app/shared/components';
 import { MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { of, Subject } from 'rxjs';
@@ -92,7 +93,7 @@ describe('AssemblyListComponent', () => {
         MatIconModule,
         MatTooltipModule
       ],
-      declarations: [AssemblyListComponent],
+      declarations: [AssemblyListComponent, BusyComponent],
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: AssemblyService, useValue: assemblyServiceSpy },
@@ -314,12 +315,12 @@ describe('AssemblyListComponent', () => {
 
     const searchElements = fixture.debugElement.query(By.css('#searchInput'));
 
-    const expectedAction = ActionBusyAppender.executeWithMainBusy(loadAssemblies({
+    const expectedAction = ActionBusyAppender.executeWithBusy(loadAssemblies({
       take: component.pageSize,
       page: component.currentPage,
       filter: 'test',
       order: undefined
-    }));
+    }), 'AssemblyList');
 
     searchElements.nativeElement.value = 'test';
     searchElements.nativeElement.dispatchEvent(new MouseEvent('keyup'));
