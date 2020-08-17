@@ -5,7 +5,7 @@
   <mat-slider min="0" step=1 [max]="depthMax" [(ngModel)]="selectedDepth" thumbLabel="true" class="depth-slider"
     [disabled]="!depthAvailable"></mat-slider>
   <div class="overlap-container">
-    <dgv-force-graph [graph]="graph | async" class="force-graph"></dgv-force-graph>
+    <dgv-force-graph [graph]="graph" class="force-graph"></dgv-force-graph>
     <dgv-busy opacity="0.7" busyKey="AssemblyDepth"></dgv-busy>
   </div>
 </div>

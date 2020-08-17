@@ -243,7 +243,7 @@ describe('AssemblyListComponent', () => {
 
     const updateAssemblySpy = spyOn<any>(component, 'updateAssemblies');
 
-    component.openDetails(viewAssembly);
+    component.openDetails(viewAssembly.id);
 
     tick();
 
@@ -254,58 +254,12 @@ describe('AssemblyListComponent', () => {
 
   it('should try open details screen from parameter with no data', fakeAsync(() => {
 
-    const tryOpenSpy = spyOn(component, 'tryOpenDetailsFromParameter').and.callThrough();
-    const openSpy = spyOn(component, 'openDetails').and.callThrough();
+    const openSpy = spyOn(component, 'openDetails');
 
     paramMap.next(convertToParamMap({ id: '1' }));
 
     tick();
 
-    expect(tryOpenSpy).toHaveBeenCalled();
-    expect(openSpy).not.toHaveBeenCalled();
-  }));
-
-  it('should try open details screen from parameter with id not found', fakeAsync(() => {
-
-    const tryOpenSpy = spyOn(component, 'tryOpenDetailsFromParameter').and.callThrough();
-    const openSpy = spyOn(component, 'openDetails').and.callFake(x => { });
-
-    assembliesStateSelectorMock.setResult({
-      filtered: [
-        { ...viewAssembly, id: '1' }
-      ],
-      count: 100
-    });
-
-    mockStore.refreshState();
-
-    paramMap.next(convertToParamMap({ id: 'bad id' }));
-
-    tick();
-
-    expect(tryOpenSpy).toHaveBeenCalled();
-    expect(openSpy).not.toHaveBeenCalled();
-  }));
-
-  it('should open details screen from parameter', fakeAsync(() => {
-
-    const tryOpenSpy = spyOn(component, 'tryOpenDetailsFromParameter').and.callThrough();
-    const openSpy = spyOn(component, 'openDetails').and.callFake(x => { });
-
-    assembliesStateSelectorMock.setResult({
-      filtered: [
-        { ...viewAssembly, id: '1' }
-      ],
-      count: 100
-    });
-
-    mockStore.refreshState();
-
-    paramMap.next(convertToParamMap({ id: '1' }));
-
-    tick();
-
-    expect(tryOpenSpy).toHaveBeenCalled();
     expect(openSpy).toHaveBeenCalled();
   }));
 

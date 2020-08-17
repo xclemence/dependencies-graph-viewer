@@ -40,7 +40,6 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
 
   #storeSubscription: Subscription;
   #filterSubscription: Subscription;
-  #idParameter: string;
   #currentFilter: string;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -75,8 +74,7 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
       filter(x => x.has('id')),
       map(x => x.get('id'))
     ).subscribe(x => {
-      this.#idParameter = x;
-      this.tryOpenDetailsFromParameter();
+      this.openDetails(x);
     });
 
     this.#storeSubscription = this.store.pipe(
@@ -85,7 +83,6 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
       next: (x) => {
         this.dataSource = this.createDataSource(x?.filtered);
         this.assemblyCount = x?.count ?? 0;
-        this.tryOpenDetailsFromParameter();
       }
     });
 
@@ -115,31 +112,15 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
     return assemblyStat.isNative ? AssemblyColors.native : AssemblyColors.managed;
   }
 
-  tryOpenDetailsFromParameter() {
-    if (!this.#idParameter) {
-      return;
-    }
-
-    if (!this.dataSource || !this.dataSource.data) {
-      return;
-    }
-
-    const index = this.dataSource.data.findIndex(x => x.id === this.#idParameter);
-
-    if (index !== -1) {
-      this.openDetails(this.dataSource.data[index]);
-    }
-  }
-
-  openDetails(item: AssemblyStat) {
+  openDetails(assemblyId: string) {
     const dialogRef = this.dialog.open(AssemblyDetailsComponent, {
       width: '80%',
       height: '80%',
-      data: { name: `${item.name} (${item.version})`, id: item.id, depthMax: item.depthMax }
+      data: { id: assemblyId }
     });
 
     dialogRef.afterOpened().subscribe(() => {
-      this.urlService.replaceSegment(1, item.id, this.route);
+      this.urlService.replaceSegment(1, assemblyId, this.route);
     });
 
     dialogRef.afterClosed().subscribe(() => {

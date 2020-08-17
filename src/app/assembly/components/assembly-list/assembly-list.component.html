@@ -50,7 +50,7 @@
             </td>
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openDetails(row)"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openDetails(row.id)"></tr>
         </table>
       </section>
       <mat-paginator [pageSize]="[pageSize]" [pageSizeOptions]="[20, 50, 100]" [length]="assemblyCount"
