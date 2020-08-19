@@ -4,7 +4,7 @@ import { SnowState } from '../models';
 import { snowActivation } from './../actions/snow.actions';
 
 const initialState: SnowState = {
-  activated: true
+  activated: false
 };
 
 export const snowReducer = createReducer(
