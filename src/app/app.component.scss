@@ -8,6 +8,7 @@
     width: 100%;
     $backgrounds: map-get($app-theme, background);
     background: map-get($backgrounds, card);
+    overflow: hidden;
 }
 
 .main-router {
@@ -42,4 +43,11 @@
 
 .left-panel {
   align-items: center;
+}
+
+
+.snow-panel {
+  position: absolute;
+  display: flex;
+  height: 0px;
 }

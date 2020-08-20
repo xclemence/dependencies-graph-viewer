@@ -10,6 +10,8 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
 import { ForceGraphComponent } from './components/force-graph/force-graph.component';
 import { HeaderPreviousComponent } from './components/header/header-previous/header-previous.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { SnowComponent } from './components/snow/snow.component';
+import { SnowDialogDirective } from './directives/snow-dialog.directive';
 import { NameFilterPipe } from './pipe/name-filter.pipe';
 
 @NgModule({
@@ -21,7 +23,9 @@ import { NameFilterPipe } from './pipe/name-filter.pipe';
     HeaderLinksComponent,
     HeaderPreviousComponent,
     NameFilterPipe,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    SnowComponent,
+    SnowDialogDirective
   ],
   imports: [
     CommonModule,
@@ -37,7 +41,9 @@ import { NameFilterPipe } from './pipe/name-filter.pipe';
     HeaderUserComponent,
     HeaderPreviousComponent,
     NameFilterPipe,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    SnowComponent,
+    SnowDialogDirective
   ],
   entryComponents: [
     ConfirmationDialogComponent

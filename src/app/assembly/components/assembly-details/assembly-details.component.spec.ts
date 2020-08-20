@@ -7,6 +7,7 @@ import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { Assembly, AssemblyColors } from '@app/core/models';
 import { ForceGraphComponent } from '@app/shared/components';
 import { BusyComponent } from '@app/shared/components/busy/busy.component';
+import { SnowDialogDirective } from '@app/shared/directives/snow-dialog.directive';
 import { GraphLink, GraphNode } from '@app/shared/models';
 import { MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -21,6 +22,7 @@ const initialState = {
     assemblyDepth: undefined
   },
   core: {
+    snow: { activated: false },
     busy: {
       actionsInProgress: []
     }
@@ -41,7 +43,7 @@ describe('AssemblyDetailsComponent', () => {
         MatDialogModule,
         MatSliderModule
       ],
-      declarations: [AssemblyDetailsComponent, ForceGraphComponent, BusyComponent],
+      declarations: [AssemblyDetailsComponent, ForceGraphComponent, BusyComponent, SnowDialogDirective],
       providers: [
         { provide: MatDialogRef, useValue: {} },
         {
