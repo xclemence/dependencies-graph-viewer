@@ -1,27 +1,33 @@
-import { GraphNode, Graph } from '../models/force-graph-model';
-import { AssemblyBase, AssemblyColors } from '@app/core/models';
+import { AssemblyBase, AssemblyColors, AssemblyLink } from '@app/core/models';
+import { GraphLink } from '@app/shared/models';
 
-export function toGraphModel(assembly: AssemblyBase, forceColor?: string): GraphNode {
-    let color = forceColor;
-    if (!color) {
-        color = assembly.isNative ? AssemblyColors.native : AssemblyColors.managed;
-    }
+import { Graph, GraphNode } from '../models/force-graph-model';
 
-    return new GraphNode({ id: assembly.id, label: `${assembly.name} (${assembly.version})`, color });
+export function toGraphNode(assembly: AssemblyBase, forceColor?: string): GraphNode {
+  let color = forceColor;
+  if (!color) {
+    color = assembly.isNative ? AssemblyColors.native : AssemblyColors.managed;
+  }
+
+  return new GraphNode({ id: assembly.id, label: `${assembly.name} (${assembly.version})`, color });
+}
+
+export function toGraphLink(link: AssemblyLink): GraphLink {
+  return new GraphLink({ source: link.sourceId, target: link.targetId });
 }
 
 export function consolidateGraphPosition(newGraph: Graph, oldGraph: Graph): Graph {
 
-    if (!oldGraph) {
-      return newGraph;
-    }
-
-    for (const node of newGraph.nodes) {
-      const oldNode = oldGraph.nodes.find(x => x.id === node.id);
-
-      node.x = oldNode?.x;
-      node.y = oldNode?.y;
-    }
-
+  if (!oldGraph) {
     return newGraph;
   }
+
+  for (const node of newGraph.nodes) {
+    const oldNode = oldGraph.nodes.find(x => x.id === node.id);
+
+    node.x = oldNode?.x;
+    node.y = oldNode?.y;
+  }
+
+  return newGraph;
+}

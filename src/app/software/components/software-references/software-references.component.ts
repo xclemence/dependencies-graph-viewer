@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Assembly, AssemblyColors } from '@app/core/models';
-import { consolidateGraphPosition, toGraphModel } from '@app/shared/converters';
-import { Graph, GraphLink } from '@app/shared/models';
+import { consolidateGraphPosition, toGraphLink, toGraphNode } from '@app/shared/converters';
+import { Graph } from '@app/shared/models';
 import { select, Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -42,13 +42,13 @@ export class SoftwareReferencesComponent implements OnInit, OnDestroy {
       return null;
     }
 
-    const nodes = assembly.referencedAssemblies.filter(x => !filteredAssemblyIds.includes(x.id)).map(x => toGraphModel(x));
+    const nodes = assembly.referencedAssemblies.filter(x => !filteredAssemblyIds.includes(x.id)).map(x => toGraphNode(x));
 
-    nodes.push(toGraphModel(assembly, AssemblyColors.main));
+    nodes.push(toGraphNode(assembly, AssemblyColors.main));
 
     const links = assembly.links
       .filter(x => !filteredAssemblyIds.includes(x.targetId) && !filteredAssemblyIds.includes(x.sourceId))
-      .map(x => new GraphLink({ source: x.sourceId, target: x.targetId }));
+      .map(x => toGraphLink(x));
 
     return { nodes, links };
   }

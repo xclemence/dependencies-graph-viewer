@@ -3,8 +3,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { loadAssemblyDepthMax } from '@app/assembly/store/actions/assembly-depth-max.actions';
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { Assembly, AssemblyColors } from '@app/core/models/assembly';
-import { consolidateGraphPosition, toGraphModel } from '@app/shared/converters';
-import { Graph, GraphLink } from '@app/shared/models';
+import { consolidateGraphPosition, toGraphLink, toGraphNode } from '@app/shared/converters';
+import { Graph } from '@app/shared/models';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
@@ -88,13 +88,13 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
   }
 
   generateGraphData(assembly: Assembly): Graph {
-    const nodes = assembly.referencedAssemblies.map(x => toGraphModel(x));
+    const nodes = assembly.referencedAssemblies.map(x => toGraphNode(x));
 
-    nodes.push(toGraphModel(assembly, AssemblyColors.main));
+    nodes.push(toGraphNode(assembly, AssemblyColors.main));
 
     return {
       nodes,
-      links: assembly.links.map(x => new GraphLink({ source: x.sourceId, target: x.targetId }))
+      links: assembly.links.map(x => toGraphLink(x))
     };
   }
 }
