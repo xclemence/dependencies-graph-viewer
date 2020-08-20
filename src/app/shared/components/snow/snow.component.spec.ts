@@ -38,7 +38,7 @@ describe('SnowComponent', () => {
   });
 
   it('should not displayed', () => {
-    expect(fixture.nativeElement.children.length).toBe(0);
+    expect(fixture.nativeElement.childElementCount).toBe(0);
   });
 
   it('should display snow mode', () => {
@@ -46,7 +46,7 @@ describe('SnowComponent', () => {
     mockStore.refreshState();
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.children.length).toBe(1);
+    expect(fixture.nativeElement.childElementCount).toBe(1);
 
   });
 });

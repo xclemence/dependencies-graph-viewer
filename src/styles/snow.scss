@@ -1,0 +1,26 @@
+.snow-dialog {
+  animation-duration: 10s;
+  animation-name: snow-dialog-animation;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+
+@keyframes snow-dialog-animation {
+
+  0% {
+    background-color: blue;
+  }
+
+  33% {
+    background-color: green;
+  }
+
+  66% {
+    background-color: red;
+  }
+
+  100% {
+    background-color: blue;
+  }
+}

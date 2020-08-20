@@ -11,6 +11,7 @@ import { ForceGraphComponent } from './components/force-graph/force-graph.compon
 import { HeaderPreviousComponent } from './components/header/header-previous/header-previous.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { SnowComponent } from './components/snow/snow.component';
+import { SnowDialogDirective } from './directives/snow-dialog.directive';
 import { NameFilterPipe } from './pipe/name-filter.pipe';
 
 @NgModule({
@@ -23,7 +24,8 @@ import { NameFilterPipe } from './pipe/name-filter.pipe';
     HeaderPreviousComponent,
     NameFilterPipe,
     ConfirmationDialogComponent,
-    SnowComponent
+    SnowComponent,
+    SnowDialogDirective
   ],
   imports: [
     CommonModule,
@@ -40,7 +42,8 @@ import { NameFilterPipe } from './pipe/name-filter.pipe';
     HeaderPreviousComponent,
     NameFilterPipe,
     ConfirmationDialogComponent,
-    SnowComponent
+    SnowComponent,
+    SnowDialogDirective
   ],
   entryComponents: [
     ConfirmationDialogComponent
