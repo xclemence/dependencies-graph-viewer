@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class SortDefinitionConvertorService {
+export class SortDefinitionConverterService {
   #fieldMapping = {
     ['type']: 'isNative',
     ['name']: 'shortName',

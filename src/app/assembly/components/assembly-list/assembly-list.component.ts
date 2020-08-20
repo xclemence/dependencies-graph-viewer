@@ -17,7 +17,7 @@ import { fromEvent, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 
 import { AssemblyService } from '../../services/assembly.service';
-import { SortDefinitionConvertorService } from '../../services/sort-definition-convertor.service';
+import { SortDefinitionConverterService } from '../../services/sort-definition-converter.service';
 import { assembliesStateSelector } from '../../store/assembly.selectors';
 import { AssemblyState } from '../../store/models';
 import { snowActivation } from './../../../core/store/actions/snow.actions';
@@ -51,7 +51,7 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
     private store: Store<AssemblyState>,
     private coreStore: Store<CoreState>,
     private assemblyService: AssemblyService,
-    private convertorService: SortDefinitionConvertorService,
+    private converterService: SortDefinitionConverterService,
     private urlService: UrlService,
     private route: ActivatedRoute) {
   }
@@ -151,7 +151,7 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
       take: this.pageSize,
       page: this.currentPage,
       filter: this.#currentFilter,
-      order: this.convertorService.getAssemblyServiceOrder(this.sort.active, this.sort.direction)
+      order: this.converterService.getAssemblyServiceOrder(this.sort.active, this.sort.direction)
     }), 'AssemblyList'));
   }
 

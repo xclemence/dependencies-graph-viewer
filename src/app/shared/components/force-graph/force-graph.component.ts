@@ -5,10 +5,7 @@ import { Simulation } from 'd3';
 
 import { Graph, GraphNode, GraphLink } from '@app/shared/models';
 
-export enum GraphUpdateMode {
-  Update = 'Update',
-  ClearAndAdd = 'ClearAndAdd'
-}
+export type GraphUpdateMode = 'Update' |'ClearAndAdd';
 
 @Component({
   selector: 'dgv-force-graph',
@@ -37,7 +34,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
   @Input() public markerSize = 12;
   @Input() public linkStroke = 1.5;
   @Input() public circleSize = 6;
-  @Input() public updateMode = GraphUpdateMode.Update;
+  @Input() public updateMode: GraphUpdateMode = 'Update';
 
   @Input() set graph(value: Graph) {
     if (value === this.#graph) {
@@ -123,7 +120,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
       this.initializeGraph();
     }
 
-    if (this.#graph == null || this.updateMode === GraphUpdateMode.ClearAndAdd) {
+    if (this.#graph == null || this.updateMode === 'ClearAndAdd') {
       this.clearData();
     }
 
