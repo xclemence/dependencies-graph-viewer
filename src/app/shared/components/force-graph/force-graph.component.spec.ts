@@ -115,7 +115,7 @@ describe('ForceGraphComponent', () => {
       links: []
     };
 
-    component.updateMode = GraphUpdateMode.ClearAndAdd;
+    component.updateMode = 'ClearAndAdd';
     component.graph = baseGraph;
     fixture.detectChanges();
 

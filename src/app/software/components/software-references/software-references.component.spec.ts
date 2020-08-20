@@ -1,7 +1,7 @@
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -125,8 +125,6 @@ describe('SoftwareReferencesComponent', () => {
 
     const softwareAssembliesStateSelectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, undefined);
 
-    const forceGraphComponent = fixture.debugElement.query(By.directive(ForceGraphStubComponent)).componentInstance;
-
     const softwareTest = {
       id: '1',
       name: 'test',
@@ -146,7 +144,7 @@ describe('SoftwareReferencesComponent', () => {
     mockStore.refreshState();
     fixture.detectChanges();
 
-    expect(forceGraphComponent.graph).toEqual({
+    expect(component.graph).toEqual({
       nodes: [new GraphNode({ id: softwareTest.id, label: `${softwareTest.name} (${softwareTest.version})`, color: AssemblyColors.main })],
       links: []
     });
@@ -156,8 +154,6 @@ describe('SoftwareReferencesComponent', () => {
   it('should generate graph with references', () => {
 
     const softwareAssembliesStateSelectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, undefined);
-
-    const forceGraphComponent = fixture.debugElement.query(By.directive(ForceGraphStubComponent)).componentInstance;
 
     const inputStore = {
       software: {
@@ -194,15 +190,13 @@ describe('SoftwareReferencesComponent', () => {
     mockStore.refreshState();
     fixture.detectChanges();
 
-    expect(forceGraphComponent.graph).toEqual(expectedGraph);
+    expect(component.graph).toEqual(expectedGraph);
 
   });
 
   it('should generate graph with references and filter', () => {
 
     const softwareAssembliesStateSelectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, undefined);
-
-    const forceGraphComponent = fixture.debugElement.query(By.directive(ForceGraphStubComponent)).componentInstance;
 
     const inputStore = {
       software: {
@@ -238,15 +232,13 @@ describe('SoftwareReferencesComponent', () => {
     mockStore.refreshState();
     fixture.detectChanges();
 
-    expect(forceGraphComponent.graph).toEqual(expectedGraph);
+    expect(component.graph).toEqual(expectedGraph);
 
   });
 
   it('should generate undefine graph', () => {
 
     const softwareAssembliesStateSelectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, undefined);
-
-    const forceGraphComponent = fixture.debugElement.query(By.directive(ForceGraphStubComponent)).componentInstance;
 
     const inputStore = {
       software: undefined,
@@ -257,7 +249,7 @@ describe('SoftwareReferencesComponent', () => {
     mockStore.refreshState();
     fixture.detectChanges();
 
-    expect(forceGraphComponent.graph).toEqual(null);
+    expect(component.graph).toEqual(null);
 
   });
 
