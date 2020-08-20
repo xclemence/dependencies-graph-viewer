@@ -54,7 +54,7 @@ describe('SnowDialogDirective', () => {
     expect(element.classes['snow-dialog']).toBeFalsy();
   });
 
-  fit('should display snow mode', fakeAsync(() => {
+  it('should display snow mode', fakeAsync(() => {
     snowSelectorMock.setResult({ activated: true });
     mockStore.refreshState();
 
