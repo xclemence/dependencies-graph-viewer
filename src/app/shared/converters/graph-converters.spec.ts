@@ -54,7 +54,7 @@ describe('graph converters', () => {
   });
 
 
-  fit('not consolidation graph position', () => {
+  it('not consolidation graph position', () => {
     const initialGraph = {
       nodes: [
         { id: 'dll1', label: 'name (1)', color: 'black' },
@@ -69,7 +69,7 @@ describe('graph converters', () => {
   });
 
 
-  fit('consolidation graph position', () => {
+  it('consolidation graph position', () => {
     const initialGraph = {
       nodes: [
         { id: 'dll1', label: 'name (1)', color: 'black'  },
