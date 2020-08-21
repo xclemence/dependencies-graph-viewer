@@ -83,7 +83,7 @@ describe('graph converters', () => {
     expect(result.nodes[0]).toEqual( { id: 'dll1', label: 'name (1)', color: 'black', x: 123, y: 2 });
   });
 
-  it('should not update new node postion', () => {
+  it('should not update new node position', () => {
     const initialGraph = {
       nodes: [ { id: 'dll1', label: 'name (1)', color: 'black'  } ],
       links: [ ]
