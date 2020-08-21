@@ -1,7 +1,7 @@
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { async, ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -10,7 +10,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AssemblyColors } from '@app/core/models';
 import { GraphUpdateMode } from '@app/shared/components';
-import { Graph, GraphLink, GraphNode } from '@app/shared/models';
+import { DefaultGraphLink, Graph } from '@app/shared/models';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TestScheduler } from 'rxjs/testing';
 
@@ -145,7 +145,7 @@ describe('SoftwareReferencesComponent', () => {
     fixture.detectChanges();
 
     expect(component.graph).toEqual({
-      nodes: [new GraphNode({ id: softwareTest.id, label: `${softwareTest.name} (${softwareTest.version})`, color: AssemblyColors.main })],
+      nodes: [{ id: softwareTest.id, label: `${softwareTest.name} (${softwareTest.version})`, color: AssemblyColors.main }],
       links: []
     });
 
@@ -163,8 +163,8 @@ describe('SoftwareReferencesComponent', () => {
         isNative: false,
         isSoftware: false,
         links: [
-          { sourceId: '1', targetId: '2'},
-          { sourceId: '1', targetId: '3'},
+          { sourceId: '1', targetId: '2' },
+          { sourceId: '1', targetId: '3' },
         ],
         referencedAssemblies: [
           { id: '2', name: 'name2', version: '1.0', isNative: false, isSoftware: false },
@@ -176,13 +176,13 @@ describe('SoftwareReferencesComponent', () => {
 
     const expectedGraph = {
       nodes: [
-        new GraphNode({ id: '2', label: 'name2 (1.0)', color: AssemblyColors.managed }),
-        new GraphNode({ id: '3', label: 'name3 (1.0)', color: AssemblyColors.native }),
-        new GraphNode({ id: '1', label: 'name1 (1.0)', color: AssemblyColors.main })
+        { id: '2', label: 'name2 (1.0)', color: AssemblyColors.managed },
+        { id: '3', label: 'name3 (1.0)', color: AssemblyColors.native },
+        { id: '1', label: 'name1 (1.0)', color: AssemblyColors.main }
       ],
       links: [
-        new GraphLink({ source: '1', target: '2' }),
-        new GraphLink({ source: '1', target: '3' })
+        new DefaultGraphLink({ source: '1', target: '2' }),
+        new DefaultGraphLink({ source: '1', target: '3' })
       ]
     };
 
@@ -206,25 +206,25 @@ describe('SoftwareReferencesComponent', () => {
         isNative: false,
         isSoftware: false,
         links: [
-          { sourceId: '1', targetId: '2'},
-          { sourceId: '1', targetId: '3'},
-          { sourceId: '2', targetId: '3'},
+          { sourceId: '1', targetId: '2' },
+          { sourceId: '1', targetId: '3' },
+          { sourceId: '2', targetId: '3' },
         ],
         referencedAssemblies: [
           { id: '2', name: 'name2', version: '1.0', isNative: false, isSoftware: false },
           { id: '3', name: 'name3', version: '1.0', isNative: true, isSoftware: false },
         ]
       },
-      filteredAssemblies: [ '2' ]
+      filteredAssemblies: ['2']
     };
 
     const expectedGraph = {
       nodes: [
-        new GraphNode({ id: '3', label: 'name3 (1.0)', color: AssemblyColors.native }),
-        new GraphNode({ id: '1', label: 'name1 (1.0)', color: AssemblyColors.main })
+        { id: '3', label: 'name3 (1.0)', color: AssemblyColors.native },
+        { id: '1', label: 'name1 (1.0)', color: AssemblyColors.main }
       ],
       links: [
-        new GraphLink({ source: '1', target: '3' })
+        new DefaultGraphLink({ source: '1', target: '3' })
       ]
     };
 

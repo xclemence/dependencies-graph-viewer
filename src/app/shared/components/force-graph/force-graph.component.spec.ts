@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { GraphLink, GraphNode } from '@app/shared/models';
+import { DefaultGraphLink, GraphNode } from '@app/shared/models';
 
 import { ForceGraphComponent, GraphUpdateMode } from './force-graph.component';
 
@@ -45,11 +45,11 @@ describe('ForceGraphComponent', () => {
   it('should create a graph force', () => {
     const graph = {
       nodes: [
-        new GraphNode({ id: '1', label: 'node1', color: 'red' }),
-        new GraphNode({ id: '2', label: 'node2', color: 'red' }),
+        { id: '1', label: 'node1', color: 'red' },
+        { id: '2', label: 'node2', color: 'red' },
       ],
       links: [
-        new GraphLink({ source: '1', target: '2' })
+        new DefaultGraphLink({ source: '1', target: '2' })
       ]
     };
 
@@ -64,7 +64,7 @@ describe('ForceGraphComponent', () => {
   it('should not re create graph if same graph object', () => {
     const graph = {
       nodes: [
-        new GraphNode({ id: '1', label: 'node1', color: 'red' }),
+        { id: '1', label: 'node1', color: 'red' },
       ],
       links: []
     };
@@ -72,7 +72,7 @@ describe('ForceGraphComponent', () => {
     component.graph = graph;
     fixture.detectChanges();
 
-    graph.nodes.push(new GraphNode({ id: '3', label: 'node3' }));
+    graph.nodes.push({ id: '3', label: 'node3', color: 'blue' });
 
     component.graph = graph; // No Changed
     fixture.detectChanges();
@@ -83,7 +83,7 @@ describe('ForceGraphComponent', () => {
   it('should update graph', () => {
     const baseGraph = {
       nodes: [
-        new GraphNode({ id: '1', label: 'node1', color: 'red' }),
+        { id: '1', label: 'node1', color: 'red' },
       ],
       links: []
     };
@@ -93,11 +93,11 @@ describe('ForceGraphComponent', () => {
 
     const newGraph = {
       nodes: [
-        new GraphNode({ id: '1', label: 'node1', color: 'red' }),
-        new GraphNode({ id: '2', label: 'node2', color: 'red' }),
+        { id: '1', label: 'node1', color: 'red' },
+        { id: '2', label: 'node2', color: 'red' },
       ],
       links: [
-        new GraphLink({ source: '1', target: '2' })
+        new DefaultGraphLink({ source: '1', target: '2' })
       ]
     };
     component.graph = newGraph;
@@ -110,7 +110,7 @@ describe('ForceGraphComponent', () => {
   it('should update graph with clean mode', () => {
     const baseGraph = {
       nodes: [
-        new GraphNode({ id: '1', label: 'node1', color: 'red' }),
+        { id: '1', label: 'node1', color: 'red' },
       ],
       links: []
     };
@@ -121,11 +121,11 @@ describe('ForceGraphComponent', () => {
 
     const newGraph = {
       nodes: [
-        new GraphNode({ id: '1', label: 'node1', color: 'red' }),
-        new GraphNode({ id: '2', label: 'node2', color: 'red' }),
+        { id: '1', label: 'node1', color: 'red' },
+        { id: '2', label: 'node2', color: 'red' },
       ],
       links: [
-        new GraphLink({ source: '1', target: '2' })
+        new DefaultGraphLink({ source: '1', target: '2' })
       ]
     };
     component.graph = newGraph;
@@ -138,7 +138,7 @@ describe('ForceGraphComponent', () => {
   it('should remove graph', () => {
     const baseGraph = {
       nodes: [
-        new GraphNode({ id: '1', label: 'node1', color: 'red' }),
+        { id: '1', label: 'node1', color: 'red' },
       ],
       links: []
     };
@@ -184,8 +184,8 @@ describe('ForceGraphComponent', () => {
   it('should highlight selected node', () => {
     const baseGraph = {
       nodes: [
-        new GraphNode({ id: '2', label: 'node1', color: 'red' }),
-        new GraphNode({ id: '1', label: 'node1', color: 'red' }),
+        { id: '2', label: 'node1', color: 'red' },
+        { id: '1', label: 'node1', color: 'red' },
       ],
       links: []
     };
@@ -206,8 +206,8 @@ describe('ForceGraphComponent', () => {
   it('should reset selection on mouse out', () => {
     const baseGraph = {
       nodes: [
-        new GraphNode({ id: '2', label: 'node1', color: 'red' }),
-        new GraphNode({ id: '1', label: 'node1', color: 'red' }),
+        { id: '2', label: 'node1', color: 'red' },
+        { id: '1', label: 'node1', color: 'red' },
       ],
       links: []
     };
@@ -229,13 +229,13 @@ describe('ForceGraphComponent', () => {
   it('should highlight selected node and referenced nodes', () => {
     const baseGraph = {
       nodes: [
-        new GraphNode({ id: '1', label: 'node1', color: 'red' }),
-        new GraphNode({ id: '2', label: 'node2', color: 'red' }),
-        new GraphNode({ id: '3', label: 'node3', color: 'red' }),
+        { id: '1', label: 'node1', color: 'red' },
+        { id: '2', label: 'node2', color: 'red' },
+        { id: '3', label: 'node3', color: 'red' },
       ],
       links: [
-        new GraphLink({ source: '1', target: '2' }),
-        new GraphLink({ source: '2', target: '3' })
+        new DefaultGraphLink({ source: '1', target: '2' }),
+        new DefaultGraphLink({ source: '2', target: '3' })
       ]
     };
 
@@ -261,7 +261,7 @@ describe('ForceGraphComponent', () => {
   it('should call drag and drop methods', () => {
     const baseGraph = {
       nodes: [
-        new GraphNode({ id: '1', label: 'node1', color: 'red' }),
+        { id: '1', label: 'node1', color: 'red' },
       ],
       links: []
     };
