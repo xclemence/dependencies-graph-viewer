@@ -56,9 +56,7 @@ describe('graph converters', () => {
 
   it('not consolidation graph position', () => {
     const initialGraph = {
-      nodes: [
-        { id: 'dll1', label: 'name (1)', color: 'black' },
-      ],
+      nodes: [ { id: 'dll1', label: 'name (1)', color: 'black' } ],
       links: [ ]
     };
 
@@ -71,22 +69,35 @@ describe('graph converters', () => {
 
   it('consolidation graph position', () => {
     const initialGraph = {
-      nodes: [
-        { id: 'dll1', label: 'name (1)', color: 'black'  },
-      ],
+      nodes: [ { id: 'dll1', label: 'name (1)', color: 'black'  } ],
       links: [ ]
     };
 
     const oldGraphGraph = {
-      nodes: [
-        { id: 'dll1', label: '', color: 'black', x: 123, y: 2  },
-      ],
+      nodes: [ { id: 'dll1', label: '', color: 'black', x: 123, y: 2  } ],
       links: [ ]
     };
 
     const result = consolidateGraphPosition(initialGraph, oldGraphGraph);
 
     expect(result.nodes[0]).toEqual( { id: 'dll1', label: 'name (1)', color: 'black', x: 123, y: 2 });
+  });
+
+  it('should not update new node postion', () => {
+    const initialGraph = {
+      nodes: [ { id: 'dll1', label: 'name (1)', color: 'black'  } ],
+      links: [ ]
+    };
+
+    const oldGraphGraph = {
+      nodes: [ { id: 'dll2', label: '', color: 'black', x: 123, y: 2  }],
+      links: [ ]
+    };
+
+    const result = consolidateGraphPosition(initialGraph, oldGraphGraph);
+
+    expect(result.nodes[0].x).toBeFalsy();
+    expect(result.nodes[0].y).toBeFalsy();
   });
 
 });
