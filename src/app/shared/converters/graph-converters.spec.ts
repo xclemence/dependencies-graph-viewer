@@ -55,14 +55,14 @@ describe('graph converters', () => {
 
 
   fit('not consolidation graph position', () => {
-    const initialGprah = {
+    const initialGraph = {
       nodes: [
         { id: 'dll1', label: 'name (1)', color: 'black' },
       ],
       links: [ ]
     };
 
-    const result = consolidateGraphPosition(initialGprah, undefined);
+    const result = consolidateGraphPosition(initialGraph, undefined);
 
     expect(result.nodes[0].x).toBeFalsy();
     expect(result.nodes[0].y).toBeFalsy();
@@ -70,21 +70,21 @@ describe('graph converters', () => {
 
 
   fit('consolidation graph position', () => {
-    const initialGprah = {
+    const initialGraph = {
       nodes: [
         { id: 'dll1', label: 'name (1)', color: 'black'  },
       ],
       links: [ ]
     };
 
-    const oldGraphGprah = {
+    const oldGraphGraph = {
       nodes: [
         { id: 'dll1', label: '', color: 'black', x: 123, y: 2  },
       ],
       links: [ ]
     };
 
-    const result = consolidateGraphPosition(initialGprah, oldGraphGprah);
+    const result = consolidateGraphPosition(initialGraph, oldGraphGraph);
 
     expect(result.nodes[0]).toEqual( { id: 'dll1', label: 'name (1)', color: 'black', x: 123, y: 2 });
   });
