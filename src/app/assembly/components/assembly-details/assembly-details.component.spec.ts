@@ -8,7 +8,7 @@ import { Assembly, AssemblyColors } from '@app/core/models';
 import { ForceGraphComponent } from '@app/shared/components';
 import { BusyComponent } from '@app/shared/components/busy/busy.component';
 import { SnowDialogDirective } from '@app/shared/directives/snow-dialog.directive';
-import { GraphLink, GraphNode } from '@app/shared/models';
+import { DefaultGraphLink } from '@app/shared/models';
 import { MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
@@ -119,11 +119,11 @@ describe('AssemblyDetailsComponent', () => {
 
     const expectedGraphData = {
       nodes: [
-        new GraphNode({ id: '2', label: 'name2 (2.0)', color: AssemblyColors.native }),
-        new GraphNode({ id: '1', label: 'name1 (1.0)', color: AssemblyColors.main }),
+        { id: '2', label: 'name2 (2.0)', color: AssemblyColors.native },
+        { id: '1', label: 'name1 (1.0)', color: AssemblyColors.main },
       ],
       links: [
-        new GraphLink({ source: '1', target: '2' })
+        new DefaultGraphLink({ source: '1', target: '2' })
       ]
     };
 
@@ -144,7 +144,7 @@ describe('AssemblyDetailsComponent', () => {
 
     const expectedGraphData = {
       nodes: [
-        new GraphNode({ id: '1', label: 'name1 (1.0)', color: AssemblyColors.main }),
+        { id: '1', label: 'name1 (1.0)', color: AssemblyColors.main },
       ],
       links: []
     };

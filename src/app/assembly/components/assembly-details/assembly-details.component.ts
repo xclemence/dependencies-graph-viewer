@@ -3,7 +3,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { loadAssemblyDepthMax } from '@app/assembly/store/actions/assembly-depth-max.actions';
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { Assembly, AssemblyColors } from '@app/core/models/assembly';
-import { Graph, GraphLink, GraphNode } from '@app/shared/models';
+import { consolidateGraphPosition, toGraphLink, toGraphNode } from '@app/shared/converters';
+import { Graph } from '@app/shared/models';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
@@ -65,7 +66,8 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
     this.#storeSubscription = this.store.select(assemblyDepthStateSelector).pipe(
       filter(x => x !== undefined),
     ).subscribe(x => {
-      this.graph = this.generateGraphData(x);
+      const newGraph = this.generateGraphData(x);
+      this.graph = consolidateGraphPosition(newGraph, this.graph);
       this.assemblyName = `${x.name} (${x.version})`;
     });
 
@@ -86,17 +88,13 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
   }
 
   generateGraphData(assembly: Assembly): Graph {
-    const nodes = assembly.referencedAssemblies.map(x => new GraphNode({
-      id: x.id,
-      label: `${x.name} (${x.version})`,
-      color: x.isNative ? AssemblyColors.native : AssemblyColors.managed
-    }));
+    const nodes = assembly.referencedAssemblies.map(x => toGraphNode(x));
 
-    nodes.push(new GraphNode({ id: assembly.id, label: `${assembly.name} (${assembly.version})`, color: AssemblyColors.main }));
+    nodes.push(toGraphNode(assembly, AssemblyColors.main));
 
     return {
       nodes,
-      links: assembly.links.map(x => new GraphLink({ source: x.sourceId, target: x.targetId }))
+      links: assembly.links.map(x => toGraphLink(x))
     };
   }
 }

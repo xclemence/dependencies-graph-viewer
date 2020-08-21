@@ -22,7 +22,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { of, Subject } from 'rxjs';
 
 import { AssemblyService } from '../../services/assembly.service';
-import { SortDefinitionConvertorService } from '../../services/sort-definition-convertor.service';
+import { SortDefinitionConverterService } from '../../services/sort-definition-converter.service';
 import { loadAssemblies } from '../../store/actions';
 import { assembliesStateSelector } from '../../store/assembly.selectors';
 import { AssemblyFiltered, AssemblyState } from '../../store/models';
@@ -35,7 +35,7 @@ describe('AssemblyListComponent', () => {
   let assembliesStateSelectorMock: MemoizedSelector<AssemblyState, AssemblyFiltered>;
   let mockStore: MockStore;
   let assemblyServiceSpy: jasmine.SpyObj<AssemblyService>;
-  let convertorServiceSpy: jasmine.SpyObj<SortDefinitionConvertorService>;
+  let converterServiceSpy: jasmine.SpyObj<SortDefinitionConverterService>;
   let urlServiceSpy: jasmine.SpyObj<UrlService>;
   let matDialogSpy: jasmine.SpyObj<MatDialog>;
   let paramMap: Subject<ParamMap>;
@@ -79,7 +79,7 @@ describe('AssemblyListComponent', () => {
   beforeEach(async(() => {
     paramMap = new Subject<ParamMap>();
     assemblyServiceSpy = jasmine.createSpyObj<AssemblyService>('service', ['remove']);
-    convertorServiceSpy = jasmine.createSpyObj<SortDefinitionConvertorService>('serviceConvertor', ['getAssemblyServiceOrder']);
+    converterServiceSpy = jasmine.createSpyObj<SortDefinitionConverterService>('serviceConvertor', ['getAssemblyServiceOrder']);
     urlServiceSpy = jasmine.createSpyObj<UrlService>('urlService', ['replaceSegment', 'removeAt']);
     matDialogSpy = jasmine.createSpyObj<MatDialog>('matDialog', ['open']);
 
@@ -99,7 +99,7 @@ describe('AssemblyListComponent', () => {
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: AssemblyService, useValue: assemblyServiceSpy },
         { provide: AssemblyService, useValue: assemblyServiceSpy },
-        { provide: SortDefinitionConvertorService, useValue: convertorServiceSpy },
+        { provide: SortDefinitionConverterService, useValue: converterServiceSpy },
         { provide: UrlService, useValue: urlServiceSpy },
         { provide: ActivatedRoute, useValue: { paramMap: paramMap.asObservable() } },
         provideMockStore({ initialState })

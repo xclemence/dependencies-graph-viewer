@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SortDefinitionConvertorService } from './sort-definition-convertor.service';
+import { SortDefinitionConverterService } from './sort-definition-converter.service';
 
-describe('SortDefinitionConvertorService', () => {
-  let service: SortDefinitionConvertorService;
+describe('SortDefinitionConverterService', () => {
+  let service: SortDefinitionConverterService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(SortDefinitionConvertorService);
+    service = TestBed.inject(SortDefinitionConverterService);
   });
 
   it('should retrieve value', () => {

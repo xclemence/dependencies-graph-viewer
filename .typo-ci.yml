@@ -25,6 +25,7 @@ excluded_words:
   - sft
   - graphql
   - pantoufle
+  - xoverflow
   
 # Would you like filenames to also be spellchecked?
 spellcheck_filenames: true

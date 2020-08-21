@@ -1,14 +1,11 @@
-import { Component, ElementRef, Input, AfterViewChecked, ChangeDetectionStrategy, AfterViewInit, NgZone } from '@angular/core';
+import { Component, ElementRef, Input, AfterViewChecked, ChangeDetectionStrategy, AfterViewInit, NgZone, OnDestroy } from '@angular/core';
 
 import * as d3 from 'd3';
 import { Simulation } from 'd3';
 
 import { Graph, GraphNode, GraphLink } from '@app/shared/models';
 
-export enum GraphUpdateMode {
-  Update = 'Update',
-  ClearAndAdd = 'ClearAndAdd'
-}
+export type GraphUpdateMode = 'Update' | 'ClearAndAdd';
 
 @Component({
   selector: 'dgv-force-graph',
@@ -16,7 +13,7 @@ export enum GraphUpdateMode {
   styleUrls: ['./force-graph.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
+export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnDestroy {
 
   #isInitialized = false;
   #simulation: Simulation<{}, undefined>;
@@ -37,7 +34,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
   @Input() public markerSize = 12;
   @Input() public linkStroke = 1.5;
   @Input() public circleSize = 6;
-  @Input() public updateMode = GraphUpdateMode.Update;
+  @Input() public updateMode: GraphUpdateMode = 'Update';
 
   @Input() set graph(value: Graph) {
     if (value === this.#graph) {
@@ -70,6 +67,13 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
     this.onResize();
   }
 
+  ngOnDestroy(): void {
+    this.clearData();
+    this.#simulation.stop();
+
+    this.#svg.selectAll('*').remove();
+  }
+
   private initializeGraph() {
 
     if (this.#isInitialized) {
@@ -96,22 +100,21 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
     this.#svgGroup = this.#svg.append('g');
 
     this.#svg.append('defs')
-            .append('marker')
-            .attr('id', 'arrowhead')
-            .attr('viewBox', '-0 -5 10 10')
-            .attr('refX', 10)
-            .attr('refY', 0)
-            .attr('orient', 'auto')
-            .attr('markerWidth', this.markerSize)
-            .attr('markerHeight', this.markerSize)
-            .attr('xoverflow', 'visible')
-            .append('svg:path')
-            .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
-            .attr('stroke', 'none')
-            .attr('fill', 'DimGray');
+      .append('marker')
+      .attr('id', 'arrowhead')
+      .attr('viewBox', '-0 -5 10 10')
+      .attr('refX', 10)
+      .attr('refY', 0)
+      .attr('orient', 'auto')
+      .attr('markerWidth', this.markerSize)
+      .attr('markerHeight', this.markerSize)
+      .attr('xoverflow', 'visible')
+      .append('svg:path')
+      .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
+      .attr('stroke', 'none')
+      .attr('fill', 'DimGray');
 
-    const zoomHandler = d3.zoom().on('zoom', () => this.#svgGroup.attr('transform', d3.event.transform));
-    zoomHandler(d3.select('svg'));
+    this.#svg.call(d3.zoom().on('zoom', () => this.#svgGroup.attr('transform', d3.event.transform)));
 
     this.#svgGroup.append('g').attr('class', 'links');
     this.#svgGroup.append('g').attr('class', 'nodes');
@@ -123,7 +126,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
       this.initializeGraph();
     }
 
-    if (this.#graph == null || this.updateMode === GraphUpdateMode.ClearAndAdd) {
+    if (this.#graph == null || this.updateMode === 'ClearAndAdd') {
       this.clearData();
     }
 
@@ -143,10 +146,10 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
     linkData.exit().remove();
 
     this.#links = linkData.enter()
-                          .append('line')
-                          .attr('marker-end', 'url(#arrowhead)')
-                          .style('stroke-width', this.linkStroke)
-                          .style('stroke', 'DimGray');
+      .append('line')
+      .attr('marker-end', 'url(#arrowhead)')
+      .style('stroke-width', this.linkStroke)
+      .style('stroke', 'DimGray');
 
     let nodes = this.nodeSelector.data(this.#graph.nodes, (x: GraphNode) => x.id);
 
@@ -155,29 +158,29 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
     nodes = nodes.enter().append('g');
 
     nodes.append('circle')
-         .attr('stroke', (d: GraphNode) => d.color)
-         .attr('stroke-width', this.circleSize / 2.0)
-         .attr('fill', (d: GraphNode) => d.color)
-         .attr('r', this.circleSize);
+      .attr('stroke', (d: GraphNode) => d.color)
+      .attr('stroke-width', this.circleSize / 2.0)
+      .attr('fill', (d: GraphNode) => d.color)
+      .attr('r', this.circleSize);
 
     nodes.append('text')
-         .text((d: GraphNode) => d.label)
-         .attr('font-size', 15)
-         .attr('fill', 'white')
-         .attr('dx', 15)
-         .attr('dy', 4);
+      .text((d: GraphNode) => d.label)
+      .attr('font-size', 15)
+      .attr('fill', 'white')
+      .attr('dx', 15)
+      .attr('dy', 4);
 
     this.#nodes = this.nodeSelector;
 
     // Here we need the real item
     this.#nodes.on('mouseover', this.fade(this.disableOpacity))
-               .on('mouseout', this.fade(1));
+      .on('mouseout', this.fade(1));
 
     this.#simulation.nodes(this.#graph.nodes).on('tick', () => this.ticked());
 
     this.#nodes.call(d3.drag().on('start', d => this.dragStarted(d, this.#simulation))
-                              .on('drag', this.dragged)
-                              .on('end', d => this.dragEnded(d, this.#simulation)));
+      .on('drag', this.dragged)
+      .on('end', d => this.dragEnded(d, this.#simulation)));
 
     this.#simulation.force<d3.ForceLink<any, any>>('link').links(this.#graph.links);
     this.#simulation.alpha(0).alphaTarget(0.3).restart();
@@ -257,10 +260,10 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked {
     this.#simulation.restart();
   }
 
-  private getControlSize(): {width: number, height: number} {
+  private getControlSize(): { width: number, height: number } {
     const width = (+this.container.nativeElement.offsetWidth);
     const height = (+this.container.nativeElement.offsetHeight);
 
-    return {width, height};
+    return { width, height };
   }
 }

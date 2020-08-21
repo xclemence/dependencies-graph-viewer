@@ -1,16 +1,18 @@
-export class GraphNode {
+export interface GraphNode {
   id: string;
   label: string;
   color: string;
-  x: number;
-  y: number;
-
-  public constructor(init?: Partial<GraphNode>) {
-    Object.assign(this, init);
-  }
+  x?: number;
+  y?: number;
 }
 
-export class GraphLink {
+export interface GraphLink {
+  source: string;
+  target: string;
+  value: number;
+}
+
+export class DefaultGraphLink implements GraphLink {
   source: string;
   target: string;
   value = 10;
