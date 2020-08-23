@@ -234,4 +234,32 @@ describe('SoftwareAssembliesComponent', () => {
     expect(emitSpy).toHaveBeenCalled();
   });
 
+  it('should emit assembly over', () => {
+    const emitSpy = spyOn(component.hoveredItem, 'emit');
+
+    component.onOverItem('test');
+
+    expect(emitSpy).toHaveBeenCalled();
+  });
+
+  it('should emit assembly over twice', () => {
+
+    component.onOverItem('test');
+
+    const emitSpy = spyOn(component.hoveredItem, 'emit');
+    component.onOverItem('test');
+    expect(emitSpy).not.toHaveBeenCalled();
+  });
+
+  it('should update display label flag', () => {
+
+    const dispatchSpy = spyOn(mockStore, 'dispatch').and.callThrough();
+
+    const expectedAction = displayLabel({ value: false });
+
+    component.onDisplayLabelChanged(false);
+
+    expect(dispatchSpy).toHaveBeenCalledWith(expectedAction);
+  });
+
 });

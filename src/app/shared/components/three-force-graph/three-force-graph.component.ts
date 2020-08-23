@@ -14,22 +14,16 @@ export class ThreeForceGraphComponent implements AfterViewInit {
 
   @ViewChild('container') container!: ElementRef;
 
-  graphInstance: ForceGraph3DInstance;
+  #graphInstance: ForceGraph3DInstance;
   #isInitialized = false;
-
   #graphData: Graph;
-
-  highlightNodes = new Set();
-  highlightLinks = new Set();
-  hoverNode = null;
-
-  nodeLink = {};
-
+  #hoverNode = null;
+  #nodeLink = {};
   #filteredNodes: string[] = [];
   #displayNodeLabel = true;
 
   @Input() set hoverNodeId(id: string) {
-    this.hoverNode = id ? this.#graphData?.nodes.find(x => x.id === id) : null;
+    this.#hoverNode = id ? this.#graphData?.nodes.find(x => x.id === id) : null;
     this.zone.runOutsideAngular(() => this.updateGraphData());
   }
 
@@ -40,7 +34,7 @@ export class ThreeForceGraphComponent implements AfterViewInit {
     this.#displayNodeLabel = value;
 
     this.zone.runOutsideAngular(() => {
-      this.graphInstance?.nodeLabel((node: any) => this.getNodeLabel(node))
+      this.#graphInstance?.nodeLabel((node: any) => this.getNodeLabel(node))
                          .nodeThreeObject((node: any) => this.getNodeExtendObject(node));
     });
   }
@@ -60,7 +54,7 @@ export class ThreeForceGraphComponent implements AfterViewInit {
     this.#graphData = value;
     this.prepareNodeLink();
 
-    this.zone.runOutsideAngular(() => this.graphInstance?.graphData(this.#graphData));
+    this.zone.runOutsideAngular(() => this.#graphInstance?.graphData(this.#graphData));
   }
 
   constructor(private zone: NgZone) { }
@@ -71,20 +65,20 @@ export class ThreeForceGraphComponent implements AfterViewInit {
 
   private prepareNodeLink() {
     if (!this.#graphData?.links) {
-      this.nodeLink = {};
+      this.#nodeLink = {};
       return;
     }
 
     this.#graphData.links.forEach(x => {
-      (this.nodeLink[x.source] = this.nodeLink[x.source] || []).push(x.target);
+      (this.#nodeLink[x.source] = this.#nodeLink[x.source] || []).push(x.target);
     });
   }
 
   private getNodeColor(node: any) {
-    if (!this.isHighlightNodes(this.hoverNode?.id, node.id)) {
+    if (!this.isHighlightNodes(this.#hoverNode?.id, node.id)) {
       return node.color;
     }
-    return node === this.hoverNode ? '#afb42b' : 'rgba(255,160,0,0.8)';
+    return node === this.#hoverNode ? '#afb42b' : 'rgba(255,160,0,0.8)';
   }
 
   private getNodeLabel(node: any): any {
@@ -106,7 +100,7 @@ export class ThreeForceGraphComponent implements AfterViewInit {
 
   private onNodeHover(node: any) {
     this.container.nativeElement.style.cursor = node ? 'pointer' : null;
-    this.hoverNode = node || null;
+    this.#hoverNode = node || null;
 
     this.updateGraphData();
   }
@@ -115,7 +109,7 @@ export class ThreeForceGraphComponent implements AfterViewInit {
     const distance = 250;
     const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
 
-    this.graphInstance.cameraPosition(
+    this.#graphInstance.cameraPosition(
       { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }, // new position
       node, // lookAt ({ x, y, z })
       3000  // ms transition duration
@@ -123,8 +117,8 @@ export class ThreeForceGraphComponent implements AfterViewInit {
   }
 
   private initializeGraph() {
-    this.graphInstance = ForceGraph3D();
-    this.graphInstance(this.container.nativeElement)
+    this.#graphInstance = ForceGraph3D();
+    this.#graphInstance(this.container.nativeElement)
       .backgroundColor('rgba(0,0,0,0)')
       .nodeRelSize(3)
       .nodeVisibility(x => !this.#filteredNodes.includes(x.id.toString()))
@@ -132,8 +126,8 @@ export class ThreeForceGraphComponent implements AfterViewInit {
       .nodeColor((node: any) => this.getNodeColor(node))
       .nodeThreeObjectExtend(true)
       .nodeThreeObject((node: any) => this.getNodeExtendObject(node))
-      .linkWidth((link: any) => this.isHighlightLink(this.hoverNode?.id, link.source.id, link.target.id) ? 4 : 1)
-      .linkDirectionalParticles((link: any) => this.isHighlightLink(this.hoverNode?.id, link.source.id, link.target.id) ? 4 : 0)
+      .linkWidth((link: any) => this.isHighlightLink(this.#hoverNode?.id, link.source.id, link.target.id) ? 4 : 1)
+      .linkDirectionalParticles((link: any) => this.isHighlightLink(this.#hoverNode?.id, link.source.id, link.target.id) ? 4 : 0)
       .linkDirectionalArrowLength(8)
       .linkDirectionalArrowRelPos(1)
       .linkDirectionalParticleWidth(4)
@@ -150,7 +144,7 @@ export class ThreeForceGraphComponent implements AfterViewInit {
       return true;
     }
 
-    return this.nodeLink[selectedNodeId]?.includes(testNodeid) ?? false;
+    return this.#nodeLink[selectedNodeId]?.includes(testNodeid) ?? false;
   }
 
   private isHighlightLink(selectedNodeId: string, sourceId: string, targetId: string): boolean {
@@ -158,14 +152,14 @@ export class ThreeForceGraphComponent implements AfterViewInit {
       return false;
     }
 
-    return this.nodeLink[sourceId]?.includes(targetId) ?? false;
+    return this.#nodeLink[sourceId]?.includes(targetId) ?? false;
   }
 
   private updateGraphData() {
 
-    this.graphInstance?.nodeColor(this.graphInstance.nodeColor())
-      .linkWidth(this.graphInstance.linkWidth())
-      .linkDirectionalParticles(this.graphInstance.linkDirectionalParticles());
+    this.#graphInstance?.nodeColor(this.#graphInstance.nodeColor())
+      .linkWidth(this.#graphInstance.linkWidth())
+      .linkDirectionalParticles(this.#graphInstance.linkDirectionalParticles());
   }
 
   onResize() {
@@ -178,8 +172,8 @@ export class ThreeForceGraphComponent implements AfterViewInit {
     }
 
     const size = this.getControlSize();
-    this.graphInstance.width(size.width);
-    this.graphInstance.height(size.height);
+    this.#graphInstance.width(size.width);
+    this.#graphInstance.height(size.height);
   }
 
   private getControlSize(): { width: number, height: number } {
