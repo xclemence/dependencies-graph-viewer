@@ -1,6 +1,7 @@
 import ForceGraph3D, { ForceGraph3DInstance } from '3d-force-graph';
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, NgZone, ViewChild } from '@angular/core';
 import { Graph } from '@app/shared/models';
+import { Object3D } from 'Three';
 import SpriteText from 'three-spritetext';
 
 @Component({
@@ -29,9 +30,7 @@ export class ThreeForceGraphComponent implements AfterViewInit {
 
   @Input() set hoverNodeId(id: string) {
     this.hoverNode = id ? this.#graphData?.nodes.find(x => x.id === id) : null;
-
-    console.log(`test ${id}, ${this.hoverNode?.id}`);
-    this.updateGraphData();
+    this.zone.runOutsideAngular(() => this.updateGraphData());
   }
 
   @Input() set displayNodeLabel(value: boolean) {
@@ -41,20 +40,8 @@ export class ThreeForceGraphComponent implements AfterViewInit {
     this.#displayNodeLabel = value;
 
     this.zone.runOutsideAngular(() => {
-      this.graphInstance?.nodeLabel((x: any) => this.#displayNodeLabel ? undefined : x.label)
-      .nodeThreeObject((node: any) => {
-        if (!this.#displayNodeLabel) {
-          return null;
-        }
-
-        const sprite = new SpriteText(node.label);
-        sprite.color = 'lightgray';
-        sprite.textHeight = 5;
-
-        sprite.translateY(6);
-        return sprite;
-      });
-      this.updateGraphData();
+      this.graphInstance?.nodeLabel((node: any) => this.getNodeLabel(node))
+                         .nodeThreeObject((node: any) => this.getNodeExtendObject(node));
     });
   }
 
@@ -73,9 +60,7 @@ export class ThreeForceGraphComponent implements AfterViewInit {
     this.#graphData = value;
     this.prepareNodeLink();
 
-    this.zone.runOutsideAngular(() => {
-      this.graphInstance?.graphData(this.#graphData);
-    });
+    this.zone.runOutsideAngular(() => this.graphInstance?.graphData(this.#graphData));
   }
 
   constructor(private zone: NgZone) { }
@@ -95,54 +80,66 @@ export class ThreeForceGraphComponent implements AfterViewInit {
     });
   }
 
-  initializeGraph() {
+  private getNodeColor(node: any) {
+    if (!this.isHighlightNodes(this.hoverNode?.id, node.id)) {
+      return node.color;
+    }
+    return node === this.hoverNode ? '#afb42b' : 'rgba(255,160,0,0.8)';
+  }
+
+  private getNodeLabel(node: any): any {
+    return this.#displayNodeLabel ? undefined : node.label;
+  }
+
+  private getNodeExtendObject(node: any): Object3D {
+    if (!this.#displayNodeLabel) {
+      return null;
+    }
+
+    const sprite = new SpriteText(node.label);
+    sprite.color = 'lightgray';
+    sprite.textHeight = 5;
+
+    sprite.translateY(6);
+    return sprite;
+  }
+
+  private onNodeHover(node: any) {
+    this.container.nativeElement.style.cursor = node ? 'pointer' : null;
+    this.hoverNode = node || null;
+
+    this.updateGraphData();
+  }
+
+  private onNodeClick(node: any) {
+    const distance = 250;
+    const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
+
+    this.graphInstance.cameraPosition(
+      { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }, // new position
+      node, // lookAt ({ x, y, z })
+      3000  // ms transition duration
+    );
+  }
+
+  private initializeGraph() {
     this.graphInstance = ForceGraph3D();
     this.graphInstance(this.container.nativeElement)
       .backgroundColor('rgba(0,0,0,0)')
       .nodeRelSize(3)
       .nodeVisibility(x => !this.#filteredNodes.includes(x.id.toString()))
       .nodeLabel((x: any) => this.#displayNodeLabel ? undefined : x.label)
-      .nodeColor((node: any) => {
-        if (!this.isHighlightNodes(this.hoverNode?.id, node.id)) {
-          return node.color;
-        }
-        return node === this.hoverNode ? '#afb42b' : 'rgba(255,160,0,0.8)';
-      })
+      .nodeColor((node: any) => this.getNodeColor(node))
       .nodeThreeObjectExtend(true)
-      .nodeThreeObject((node: any) => {
-        if (!this.#displayNodeLabel) {
-          return null;
-        }
-
-        const sprite = new SpriteText(node.label);
-        sprite.color = 'lightgray';
-        sprite.textHeight = 5;
-
-        sprite.translateY(6);
-        return sprite;
-      })
+      .nodeThreeObject((node: any) => this.getNodeExtendObject(node))
       .linkWidth((link: any) => this.isHighlightLink(this.hoverNode?.id, link.source.id, link.target.id) ? 4 : 1)
       .linkDirectionalParticles((link: any) => this.isHighlightLink(this.hoverNode?.id, link.source.id, link.target.id) ? 4 : 0)
       .linkDirectionalArrowLength(8)
       .linkDirectionalArrowRelPos(1)
       .linkDirectionalParticleWidth(4)
       .linkVisibility((x: any) => !this.#filteredNodes.includes(x.source.id) && !this.#filteredNodes.includes(x.target.id))
-      .onNodeHover((node: any) => {
-        this.container.nativeElement.style.cursor = node ? 'pointer' : null;
-        this.hoverNode = node || null;
-
-        this.updateGraphData();
-      })
-      .onNodeClick((node: any) => {
-        const distance = 250;
-        const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
-
-        this.graphInstance.cameraPosition(
-          { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }, // new position
-          node, // lookAt ({ x, y, z })
-          3000  // ms transition duration
-        );
-      });
+      .onNodeHover((node: any) => this.onNodeHover(node))
+      .onNodeClick((node: any) => this.onNodeClick(node));
 
     this.#isInitialized = true;
     this.resizeGraph();

@@ -1,40 +1,45 @@
-  <mat-card>
+  <mat-card class="full-mat-card">
     <mat-card-header class="flex-panel">
-      <mat-card-title>Visibility Settings</mat-card-title>
+      <mat-card-title class="main-card-title">Visibility Settings</mat-card-title>
       <button id="close-visibility-button" mat-flat-button aria-label="Close" (click)="close()">
         <mat-icon>close</mat-icon>
       </button>
     </mat-card-header>
-    <section>
+    <mat-card class="assembly-card">
+      <mat-card-title class="sub-header global-header">Global</mat-card-title>
+      <section>
         <mat-checkbox [checked]="displayLabel"
           (change)="onDisplayLabelChanged($event.checked)">
           Display assemblies names
       </mat-checkbox>
     </section>
-    
-    <section class="flex-panel search-panel">
+    </mat-card>
+    <mat-card class="full-mat-card">
+      <mat-card-title class="sub-header assembly-header">Assemblies</mat-card-title>
+      <section class="flex-panel search-panel">
       
-      <mat-form-field class="flex-one">
-        <mat-label>Search</mat-label>
-        <input matInput #searchInput id="visibility-assemblies-filter">
-      </mat-form-field>
-    </section>
-    <ng-container *ngIf="assemblies | nameFilter:searchInput.value as filteredAssemblies">
-      <section class="assemblies-panel">
-        <mat-checkbox [checked]="isAllVisibleFilterResult(filteredAssemblies)"
-                      [indeterminate]="isIndeterminateResult(filteredAssemblies)"
-                      (change)="changeVisibility(filteredAssemblies, $event.checked)"
-                      class="all-checkbox">
-          Search results visibility
-        </mat-checkbox>
-        <mat-divider></mat-divider>
-        <section class="flex-one results-section">
-          <mat-list >
-            <mat-list-item *ngFor="let item of filteredAssemblies" (mouseover)="onOverItem(item.id)" (mouseleave)="onOverItem(null)">
-              <mat-checkbox [checked]="item.isVisible" (change)="toggleVisibility(item)">{{item.name}}</mat-checkbox>
-            </mat-list-item>
-          </mat-list>
-        </section>
+        <mat-form-field class="flex-one">
+          <mat-label>Search</mat-label>
+          <input matInput #searchInput id="visibility-assemblies-filter">
+        </mat-form-field>
       </section>
-    </ng-container>
+      <ng-container *ngIf="assemblies | nameFilter:searchInput.value as filteredAssemblies">
+        <section class="assemblies-panel">
+          <mat-checkbox [checked]="isAllVisibleFilterResult(filteredAssemblies)"
+                        [indeterminate]="isIndeterminateResult(filteredAssemblies)"
+                        (change)="changeVisibility(filteredAssemblies, $event.checked)"
+                        class="all-checkbox">
+            Search results visibility
+          </mat-checkbox>
+          <mat-divider></mat-divider>
+          <section class="flex-one results-section">
+            <mat-list >
+              <mat-list-item *ngFor="let item of filteredAssemblies" (mouseover)="onOverItem(item.id)" (mouseleave)="onOverItem(null)">
+                <mat-checkbox [checked]="item.isVisible" (change)="toggleVisibility(item)">{{item.name}}</mat-checkbox>
+              </mat-list-item>
+            </mat-list>
+          </section>
+        </section>
+      </ng-container>
+    </mat-card>
   </mat-card>
