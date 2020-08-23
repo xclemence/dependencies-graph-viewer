@@ -92,4 +92,16 @@ describe('softwareAssembliesReducer', () => {
     expect(softwareAssembliesReducer(initialState, action)).toEqual(expectedValue);
   });
 
+  fit('should update display flag', () => {
+
+    const action = displayLabel({ value: false});
+
+    const expectedValue = {
+      ...initialState,
+      displayLabel: false
+    };
+
+    expect(softwareAssembliesReducer(initialState, action)).toEqual(expectedValue);
+  });
+
 });

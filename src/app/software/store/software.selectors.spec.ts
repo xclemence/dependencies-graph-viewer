@@ -1,6 +1,7 @@
 import { displayLabel } from './actions/software-assemblies.actions';
 import { SoftwareNameState, SoftwareState } from './models';
 import {
+  displayLabelSelector,
   filteredAssembliesStateSelector,
   softwareAssembliesStateSelector,
   softwareFeatureKey,
@@ -123,13 +124,13 @@ describe('software selector', () => {
     expect(result).toEqual(software);
   });
 
-  fit('should extract display label flag', () => {
+  it('should extract display label flag', () => {
 
-    const filteredAssemblies = [ 'test1', 'test2' ];
-
-    const result = filteredAssembliesStateSelector({
+    const result = displayLabelSelector({
       [softwareFeatureKey]: {
-        displayLabel: true
+        assemblies: {
+          displayLabel: true
+        }
       }
     });
 
