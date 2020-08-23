@@ -14,6 +14,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
 import { updateFilteredAssemblies } from '../../store/actions';
 import { softwareAssembliesStateSelector } from '../../store/software.selectors';
+import { displayLabel } from './../../store/actions/software-assemblies.actions';
 import { AssembliesVisibilityComponent } from './assemblies-visibility.component';
 
 describe('SoftwareAssembliesComponent', () => {
@@ -177,7 +178,8 @@ describe('SoftwareAssembliesComponent', () => {
           { id: '3', name: 'name3', version: '1.0', isNative: false, isSoftware: false },
         ]
       },
-      filteredAssemblies: ['3']
+      filteredAssemblies: ['3'],
+      displayLabel: false
     };
 
     softwareAssembliesStateSelectorMock.setResult(inputStore);
@@ -211,7 +213,8 @@ describe('SoftwareAssembliesComponent', () => {
           { id: '3', name: 'name3', version: '1.0', isNative: false, isSoftware: false },
         ]
       },
-      filteredAssemblies: ['3']
+      filteredAssemblies: ['3'],
+      displayLabel: false
     };
 
     softwareAssembliesStateSelectorMock.setResult(inputStore);

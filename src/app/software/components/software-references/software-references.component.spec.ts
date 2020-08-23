@@ -9,7 +9,6 @@ import { MatDrawerHarness } from '@angular/material/sidenav/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AssemblyColors } from '@app/core/models';
-import { GraphUpdateMode } from '@app/shared/components';
 import { DefaultGraphLink, Graph } from '@app/shared/models';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TestScheduler } from 'rxjs/testing';
@@ -31,10 +30,11 @@ class BusyStubComponent {
   @Input() busyKey: string;
 }
 
-@Component({ selector: 'dgv-force-graph', template: '' })
+@Component({ selector: 'dgv-three-force-graph', template: '' })
 class ForceGraphStubComponent {
   @Input() graph: Graph;
-  @Input() updateMode: GraphUpdateMode;
+  @Input() hoverNodeId: string;
+  @Input() filteredNodes: string[];
 }
 
 describe('SoftwareReferencesComponent', () => {
@@ -125,6 +125,8 @@ describe('SoftwareReferencesComponent', () => {
 
     const softwareAssembliesStateSelectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, undefined);
 
+    const forceGraphComponent = fixture.debugElement.query(By.directive(ForceGraphStubComponent)).componentInstance;
+
     const softwareTest = {
       id: '1',
       name: 'test',
@@ -132,19 +134,21 @@ describe('SoftwareReferencesComponent', () => {
       isNative: false,
       isSoftware: true,
       links: [],
-      referencedAssemblies: []
+      referencedAssemblies: [],
+      displayLabel: false
     };
 
     const inputStore = {
       software: softwareTest,
-      filteredAssemblies: []
+      filteredAssemblies: [],
+      displayLabel: false
     };
 
     softwareAssembliesStateSelectorMock.setResult(inputStore);
     mockStore.refreshState();
     fixture.detectChanges();
 
-    expect(component.graph).toEqual({
+    expect(forceGraphComponent.graph).toEqual({
       nodes: [{ id: softwareTest.id, label: `${softwareTest.name} (${softwareTest.version})`, color: AssemblyColors.main }],
       links: []
     });
@@ -154,6 +158,8 @@ describe('SoftwareReferencesComponent', () => {
   it('should generate graph with references', () => {
 
     const softwareAssembliesStateSelectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, undefined);
+
+    const forceGraphComponent = fixture.debugElement.query(By.directive(ForceGraphStubComponent)).componentInstance;
 
     const inputStore = {
       software: {
@@ -171,7 +177,8 @@ describe('SoftwareReferencesComponent', () => {
           { id: '3', name: 'name3', version: '1.0', isNative: true, isSoftware: false },
         ]
       },
-      filteredAssemblies: []
+      filteredAssemblies: [],
+      displayLabel: false
     };
 
     const expectedGraph = {
@@ -190,66 +197,26 @@ describe('SoftwareReferencesComponent', () => {
     mockStore.refreshState();
     fixture.detectChanges();
 
-    expect(component.graph).toEqual(expectedGraph);
-
-  });
-
-  it('should generate graph with references and filter', () => {
-
-    const softwareAssembliesStateSelectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, undefined);
-
-    const inputStore = {
-      software: {
-        id: '1',
-        name: 'name1',
-        version: '1.0',
-        isNative: false,
-        isSoftware: false,
-        links: [
-          { sourceId: '1', targetId: '2' },
-          { sourceId: '1', targetId: '3' },
-          { sourceId: '2', targetId: '3' },
-        ],
-        referencedAssemblies: [
-          { id: '2', name: 'name2', version: '1.0', isNative: false, isSoftware: false },
-          { id: '3', name: 'name3', version: '1.0', isNative: true, isSoftware: false },
-        ]
-      },
-      filteredAssemblies: ['2']
-    };
-
-    const expectedGraph = {
-      nodes: [
-        { id: '3', label: 'name3 (1.0)', color: AssemblyColors.native },
-        { id: '1', label: 'name1 (1.0)', color: AssemblyColors.main }
-      ],
-      links: [
-        new DefaultGraphLink({ source: '1', target: '3' })
-      ]
-    };
-
-    softwareAssembliesStateSelectorMock.setResult(inputStore);
-    mockStore.refreshState();
-    fixture.detectChanges();
-
-    expect(component.graph).toEqual(expectedGraph);
+    expect(forceGraphComponent.graph).toEqual(expectedGraph);
 
   });
 
   it('should generate undefine graph', () => {
 
     const softwareAssembliesStateSelectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, undefined);
+    const forceGraphComponent = fixture.debugElement.query(By.directive(ForceGraphStubComponent)).componentInstance;
 
     const inputStore = {
       software: undefined,
-      filteredAssemblies: []
+      filteredAssemblies: [],
+      displayLabel: false
     };
 
     softwareAssembliesStateSelectorMock.setResult(inputStore);
     mockStore.refreshState();
     fixture.detectChanges();
 
-    expect(component.graph).toEqual(null);
+    expect(forceGraphComponent.graph).toBeFalsy();
 
   });
 

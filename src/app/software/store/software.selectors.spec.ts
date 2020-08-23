@@ -1,3 +1,4 @@
+import { displayLabel } from './actions/software-assemblies.actions';
 import { SoftwareNameState, SoftwareState } from './models';
 import {
   filteredAssembliesStateSelector,
@@ -23,7 +24,8 @@ describe('software selector', () => {
           links: [],
           referencedAssemblies: []
         },
-        filteredAssemblies: []
+        filteredAssemblies: [],
+        displayLabel: false
       },
       name: {
         softwareNames: []
@@ -70,7 +72,8 @@ describe('software selector', () => {
         links: [],
         referencedAssemblies: []
       },
-      filteredAssemblies: []
+      filteredAssemblies: [],
+      displayLabel: false
     };
 
     const result = softwareAssembliesStateSelector({

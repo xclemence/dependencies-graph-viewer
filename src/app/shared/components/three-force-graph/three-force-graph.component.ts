@@ -5,7 +5,7 @@ import { Object3D } from 'Three';
 import SpriteText from 'three-spritetext';
 
 @Component({
-  selector: 'dgv-threed-force-graph',
+  selector: 'dgv-three-force-graph',
   templateUrl: './three-force-graph.component.html',
   styleUrls: ['./three-force-graph.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
