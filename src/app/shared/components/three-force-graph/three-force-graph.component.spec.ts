@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { DefaultGraphLink } from '@app/shared/models';
 
 import { ThreeForceGraphComponent } from './three-force-graph.component';
@@ -52,10 +52,67 @@ describe('ThreeForceGraphComponent', () => {
       ]
     };
 
+    const updateDataSpy = spyOn<any>(component, 'updateGraphData').and.callThrough();
+
     component.graph = graph;
     component.filteredNodes = ['1'];
     fixture.detectChanges();
 
+    expect(updateDataSpy).toHaveBeenCalled();
+  });
+
+  it('should clear graph data', () => {
+    const graph = {
+      nodes: [
+        { id: '1', label: 'node1', color: 'red' },
+      ],
+      links: []
+    };
+
+    component.graph = graph;
+
+    const updateDataSpy = spyOn<any>(component, 'updateGraphData').and.callThrough();
+
+    component.graph = undefined;
+
     expect(component).toBeTruthy();
+  });
+
+  it('should mask labels', fakeAsync(() => {
+    const graph = {
+      nodes: [
+        { id: '1', label: 'node1', color: 'red' },
+        { id: '2', label: 'node2', color: 'red' },
+      ],
+      links: [
+        new DefaultGraphLink({ source: '1', target: '2' })
+      ]
+    };
+
+    component.graph = graph;
+    component.displayNodeLabel = false;
+    fixture.detectChanges();
+
+    expect(component).toBeTruthy();
+  }));
+
+  it('should update hover node', () => {
+    const graph = {
+      nodes: [
+        { id: '1', label: 'node1', color: 'red' },
+        { id: '2', label: 'node2', color: 'red' },
+      ],
+      links: [
+        new DefaultGraphLink({ source: '1', target: '2' })
+      ]
+    };
+
+    const updateDataSpy = spyOn<any>(component, 'updateGraphData').and.callThrough();
+
+    component.graph = graph;
+    component.hoverNodeId = '1';
+    fixture.detectChanges();
+
+    expect(updateDataSpy).toHaveBeenCalled();
   });
 });
