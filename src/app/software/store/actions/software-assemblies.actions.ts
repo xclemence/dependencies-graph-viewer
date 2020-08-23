@@ -20,3 +20,8 @@ export const updateFilteredAssemblies = createAction(
   props<{ assemblyIds: string[] }>()
 );
 
+export const displayLabel = createAction(
+  '[Software Assemblies] Display Label',
+  props<{ value: boolean }>()
+);
+

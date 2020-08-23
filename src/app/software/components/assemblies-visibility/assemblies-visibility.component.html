@@ -1,11 +1,19 @@
   <mat-card>
     <mat-card-header class="flex-panel">
-      <mat-card-title>Assemblies Visibility</mat-card-title>
+      <mat-card-title>Visibility Settings</mat-card-title>
       <button id="close-visibility-button" mat-flat-button aria-label="Close" (click)="close()">
         <mat-icon>close</mat-icon>
       </button>
     </mat-card-header>
+    <section>
+        <mat-checkbox [checked]="displayLabel"
+          (change)="onDisplayLabelChanged($event.checked)">
+          Display assemblies names
+      </mat-checkbox>
+    </section>
+    
     <section class="flex-panel search-panel">
+      
       <mat-form-field class="flex-one">
         <mat-label>Search</mat-label>
         <input matInput #searchInput id="visibility-assemblies-filter">
@@ -22,7 +30,7 @@
         <mat-divider></mat-divider>
         <section class="flex-one results-section">
           <mat-list >
-            <mat-list-item *ngFor="let item of filteredAssemblies">
+            <mat-list-item *ngFor="let item of filteredAssemblies" (mouseover)="onOverItem(item.id)" (mouseleave)="onOverItem(null)">
               <mat-checkbox [checked]="item.isVisible" (change)="toggleVisibility(item)">{{item.name}}</mat-checkbox>
             </mat-list-item>
           </mat-list>

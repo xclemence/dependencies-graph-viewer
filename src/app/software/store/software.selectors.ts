@@ -11,3 +11,4 @@ export const softwareAssembliesStateSelector = createSelector(softwareStateSelec
 
 export const filteredAssembliesStateSelector = createSelector(softwareAssembliesStateSelector, (state) => state.filteredAssemblies);
 export const softwareSelector = createSelector(softwareAssembliesStateSelector, (state) => state.software);
+export const displayLabelSelector = createSelector(softwareAssembliesStateSelector, (state) => state.displayLabel);

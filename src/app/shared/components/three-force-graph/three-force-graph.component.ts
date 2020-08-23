@@ -25,14 +25,44 @@ export class ThreeForceGraphComponent implements AfterViewInit {
   nodeLink = {};
 
   #filteredNodes: string[] = [];
+  #displayNodeLabel = true;
 
+  @Input() set hoverNodeId(id: string) {
+    this.hoverNode = id ? this.#graphData?.nodes.find(x => x.id === id) : null;
+
+    console.log(`test ${id}, ${this.hoverNode?.id}`);
+    this.updateGraphData();
+  }
+
+  @Input() set displayNodeLabel(value: boolean) {
+    if (this.#displayNodeLabel === value) {
+      return;
+    }
+    this.#displayNodeLabel = value;
+
+    this.zone.runOutsideAngular(() => {
+      this.graphInstance?.nodeLabel((x: any) => this.#displayNodeLabel ? undefined : x.label)
+      .nodeThreeObject((node: any) => {
+        if (!this.#displayNodeLabel) {
+          return null;
+        }
+
+        const sprite = new SpriteText(node.label);
+        sprite.color = 'lightgray';
+        sprite.textHeight = 5;
+
+        sprite.translateY(6);
+        return sprite;
+      });
+      this.updateGraphData();
+    });
+  }
 
   @Input() set filteredNodes(value: string[]) {
     if (this.#filteredNodes === value) {
       return;
     }
     this.#filteredNodes = value;
-
     this.zone.runOutsideAngular(() => this.updateGraphData());
   }
 
@@ -68,24 +98,22 @@ export class ThreeForceGraphComponent implements AfterViewInit {
   initializeGraph() {
     this.graphInstance = ForceGraph3D();
     this.graphInstance(this.container.nativeElement)
-      .linkWidth((link: any) => this.isHighlightLink(this.hoverNode?.id, link.source.id, link.target.id) ? 4 : 1)
+      .backgroundColor('rgba(0,0,0,0)')
       .nodeRelSize(3)
       .nodeVisibility(x => !this.#filteredNodes.includes(x.id.toString()))
-      .linkDirectionalParticles((link: any) => this.isHighlightLink(this.hoverNode?.id, link.source.id, link.target.id) ? 4 : 0)
-      .backgroundColor('rgba(0,0,0,0)')
-      .linkDirectionalArrowLength(8)
-      .linkDirectionalArrowRelPos(1)
-      .linkVisibility((x: any) => !this.#filteredNodes.includes(x.source.id) && !this.#filteredNodes.includes(x.target.id))
+      .nodeLabel((x: any) => this.#displayNodeLabel ? undefined : x.label)
       .nodeColor((node: any) => {
         if (!this.isHighlightNodes(this.hoverNode?.id, node.id)) {
           return node.color;
         }
         return node === this.hoverNode ? '#afb42b' : 'rgba(255,160,0,0.8)';
       })
-      .linkDirectionalParticleWidth(4)
       .nodeThreeObjectExtend(true)
       .nodeThreeObject((node: any) => {
-        // add text sprite as child
+        if (!this.#displayNodeLabel) {
+          return null;
+        }
+
         const sprite = new SpriteText(node.label);
         sprite.color = 'lightgray';
         sprite.textHeight = 5;
@@ -93,6 +121,12 @@ export class ThreeForceGraphComponent implements AfterViewInit {
         sprite.translateY(6);
         return sprite;
       })
+      .linkWidth((link: any) => this.isHighlightLink(this.hoverNode?.id, link.source.id, link.target.id) ? 4 : 1)
+      .linkDirectionalParticles((link: any) => this.isHighlightLink(this.hoverNode?.id, link.source.id, link.target.id) ? 4 : 0)
+      .linkDirectionalArrowLength(8)
+      .linkDirectionalArrowRelPos(1)
+      .linkDirectionalParticleWidth(4)
+      .linkVisibility((x: any) => !this.#filteredNodes.includes(x.source.id) && !this.#filteredNodes.includes(x.target.id))
       .onNodeHover((node: any) => {
         this.container.nativeElement.style.cursor = node ? 'pointer' : null;
         this.hoverNode = node || null;
@@ -100,7 +134,6 @@ export class ThreeForceGraphComponent implements AfterViewInit {
         this.updateGraphData();
       })
       .onNodeClick((node: any) => {
-        // Aim at node from outside it
         const distance = 250;
         const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
 

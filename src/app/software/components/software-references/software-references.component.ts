@@ -3,11 +3,12 @@ import { Assembly, AssemblyColors } from '@app/core/models';
 import { toGraphLink, toGraphNode } from '@app/shared/converters';
 import { Graph } from '@app/shared/models';
 import { select, Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { SoftwareState } from '../../store/models';
 import { filteredAssembliesStateSelector, softwareSelector } from '../../store/software.selectors';
+import { displayLabelSelector } from './../../store/software.selectors';
 
 @Component({
   selector: 'app-software-references',
@@ -19,9 +20,10 @@ export class SoftwareReferencesComponent implements OnInit {
 
   graph: Observable<Graph>;
   filteredAssemblies: Observable<string[]>;
+  displayLabel: Observable<boolean>;
 
   visibilityPanelOpened = false;
-  #storeSubscription: Subscription;
+  hoveredNode = null;
 
   constructor(private store: Store<SoftwareState>) { }
 
@@ -32,6 +34,7 @@ export class SoftwareReferencesComponent implements OnInit {
     );
 
     this.filteredAssemblies = this.store.pipe(select(filteredAssembliesStateSelector));
+    this.displayLabel = this.store.pipe(select(displayLabelSelector));
   }
 
   private generateGraphData(assembly: Assembly, filteredAssemblyIds: string[]): Graph {

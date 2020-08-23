@@ -2,11 +2,12 @@ import { createReducer, on } from '@ngrx/store';
 
 import { loadSoftwareAssemblies, loadSoftwareAssembliesSuccess } from '../actions';
 import { SoftwareAssembliesState } from '../models';
-import { clearSoftwareAssemblies, updateFilteredAssemblies } from './../actions/software-assemblies.actions';
+import { clearSoftwareAssemblies, displayLabel, updateFilteredAssemblies } from './../actions/software-assemblies.actions';
 
 const initialState: SoftwareAssembliesState = {
   software: undefined,
-  filteredAssemblies: []
+  filteredAssemblies: [],
+  displayLabel: true
 };
 
 export const softwareAssembliesReducer = createReducer(
@@ -17,5 +18,7 @@ export const softwareAssembliesReducer = createReducer(
 
   on(clearSoftwareAssemblies, (state, _) => ({ ...state, software: undefined, filteredAssemblies: [] })),
 
-  on(updateFilteredAssemblies, (state, action) => ({...state, filteredAssemblies: action.assemblyIds}))
+  on(updateFilteredAssemblies, (state, action) => ({...state, filteredAssemblies: action.assemblyIds})),
+
+  on(displayLabel, (state, action) => ({...state, displayLabel : action.value}))
 );
