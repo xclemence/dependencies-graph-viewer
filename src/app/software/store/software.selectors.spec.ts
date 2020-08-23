@@ -122,4 +122,17 @@ describe('software selector', () => {
 
     expect(result).toEqual(software);
   });
+
+  fit('should extract display label flag', () => {
+
+    const filteredAssemblies = [ 'test1', 'test2' ];
+
+    const result = filteredAssembliesStateSelector({
+      [softwareFeatureKey]: {
+        displayLabel: true
+      }
+    });
+
+    expect(result).toBeTrue();
+  });
 });

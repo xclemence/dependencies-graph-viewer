@@ -1,7 +1,7 @@
 import ForceGraph3D, { ForceGraph3DInstance } from '3d-force-graph';
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, NgZone, ViewChild } from '@angular/core';
 import { Graph } from '@app/shared/models';
-import { Object3D } from 'Three';
+import { Object3D } from 'three';
 import SpriteText from 'three-spritetext';
 
 @Component({
