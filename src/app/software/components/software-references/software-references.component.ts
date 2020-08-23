@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Assembly, AssemblyColors } from '@app/core/models';
-import { toGraphLink, toGraphNode } from '@app/shared/converters';
+import { toGraph } from '@app/shared/converters';
 import { Graph } from '@app/shared/models';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -30,25 +29,11 @@ export class SoftwareReferencesComponent implements OnInit {
   ngOnInit() {
     this.graph = this.store.pipe(
       select(softwareSelector),
-      map(x => this.generateGraphData(x, null))
+      map(x => toGraph(x))
     );
 
     this.filteredAssemblies = this.store.pipe(select(filteredAssembliesStateSelector));
     this.displayLabel = this.store.pipe(select(displayLabelSelector));
-  }
-
-  private generateGraphData(assembly: Assembly, filteredAssemblyIds: string[]): Graph {
-    if (!assembly) {
-      return null;
-    }
-
-    const nodes = assembly.referencedAssemblies.map(x => toGraphNode(x));
-
-    nodes.push(toGraphNode(assembly, AssemblyColors.main));
-
-    const links = assembly.links.map(x => toGraphLink(x));
-
-    return { nodes, links };
   }
 
   openVisibilityPanel() {
