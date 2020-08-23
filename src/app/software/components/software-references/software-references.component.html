@@ -7,7 +7,8 @@
     </mat-drawer>
     <mat-drawer-content>
       <div class="assembly-details overlap-container">
-        <dgv-force-graph class="overlap-item" [graph]="graph" updateMode="ClearAndAdd"></dgv-force-graph>
+        <!-- <dgv-force-graph class="overlap-item" [graph]="graph" updateMode="ClearAndAdd"></dgv-force-graph> -->
+        <dgv-threed-force-graph class="overlap-item" [graph]="graph | async" [filteredNodes]="filteredAssemblies | async"></dgv-threed-force-graph>
         <sft-software-statistics class="absolute-position no-pointer-events"></sft-software-statistics>
         <div class="overlap-item open-visibility-panel no-pointer-events">
           <button id="open-visibility-button" mat-fab aria-label="Open visibility panel" (click)="openVisibilityPanel()" class="pointer-events">

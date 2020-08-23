@@ -43,7 +43,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
     this.#graph = value;
 
     this.zone.runOutsideAngular(() => {
-      this.generateGraphData();
+      this.updateGraphData();
     });
   }
 
@@ -121,7 +121,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
 
   }
 
-  private generateGraphData() {
+  private updateGraphData() {
     if (!this.#isInitialized) {
       this.initializeGraph();
     }

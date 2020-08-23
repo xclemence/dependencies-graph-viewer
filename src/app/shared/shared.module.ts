@@ -11,6 +11,7 @@ import { ForceGraphComponent } from './components/force-graph/force-graph.compon
 import { HeaderPreviousComponent } from './components/header/header-previous/header-previous.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { SnowComponent } from './components/snow/snow.component';
+import { ThreeForceGraphComponent } from './components/three-force-graph/three-force-graph.component';
 import { SnowDialogDirective } from './directives/snow-dialog.directive';
 import { NameFilterPipe } from './pipe/name-filter.pipe';
 
@@ -25,7 +26,8 @@ import { NameFilterPipe } from './pipe/name-filter.pipe';
     NameFilterPipe,
     ConfirmationDialogComponent,
     SnowComponent,
-    SnowDialogDirective
+    SnowDialogDirective,
+    ThreeForceGraphComponent
   ],
   imports: [
     CommonModule,
@@ -35,6 +37,7 @@ import { NameFilterPipe } from './pipe/name-filter.pipe';
   ],
   exports: [
     ForceGraphComponent,
+    ThreeForceGraphComponent,
     PageNotFoundComponent,
     BusyComponent,
     HeaderLinksComponent,

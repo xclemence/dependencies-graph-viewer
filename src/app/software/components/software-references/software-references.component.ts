@@ -1,13 +1,13 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Assembly, AssemblyColors } from '@app/core/models';
-import { consolidateGraphPosition, toGraphLink, toGraphNode } from '@app/shared/converters';
+import { toGraphLink, toGraphNode } from '@app/shared/converters';
 import { Graph } from '@app/shared/models';
 import { select, Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { SoftwareState } from '../../store/models';
-import { softwareAssembliesStateSelector } from '../../store/software.selectors';
+import { filteredAssembliesStateSelector, softwareSelector } from '../../store/software.selectors';
 
 @Component({
   selector: 'app-software-references',
@@ -15,40 +15,35 @@ import { softwareAssembliesStateSelector } from '../../store/software.selectors'
   styleUrls: ['./software-references.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SoftwareReferencesComponent implements OnInit, OnDestroy {
+export class SoftwareReferencesComponent implements OnInit {
 
-  graph: Graph;
+  graph: Observable<Graph>;
+  filteredAssemblies: Observable<string[]>;
+
   visibilityPanelOpened = false;
   #storeSubscription: Subscription;
 
   constructor(private store: Store<SoftwareState>) { }
 
   ngOnInit() {
-    this.#storeSubscription = this.store.pipe(
-      select(softwareAssembliesStateSelector),
-      map(x => this.generateGraphData(x.software, x.filteredAssemblies))
-    ).subscribe({
-      next: x => this.graph = consolidateGraphPosition(x, this.graph)
-    });
-  }
+    this.graph = this.store.pipe(
+      select(softwareSelector),
+      map(x => this.generateGraphData(x, null))
+    );
 
-  ngOnDestroy(): void {
-    this.#storeSubscription.unsubscribe();
+    this.filteredAssemblies = this.store.pipe(select(filteredAssembliesStateSelector));
   }
-
 
   private generateGraphData(assembly: Assembly, filteredAssemblyIds: string[]): Graph {
     if (!assembly) {
       return null;
     }
 
-    const nodes = assembly.referencedAssemblies.filter(x => !filteredAssemblyIds.includes(x.id)).map(x => toGraphNode(x));
+    const nodes = assembly.referencedAssemblies.map(x => toGraphNode(x));
 
     nodes.push(toGraphNode(assembly, AssemblyColors.main));
 
-    const links = assembly.links
-      .filter(x => !filteredAssemblyIds.includes(x.targetId) && !filteredAssemblyIds.includes(x.sourceId))
-      .map(x => toGraphLink(x));
+    const links = assembly.links.map(x => toGraphLink(x));
 
     return { nodes, links };
   }
