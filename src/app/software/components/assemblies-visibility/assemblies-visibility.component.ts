@@ -27,7 +27,7 @@ export class AssembliesVisibilityComponent implements OnInit {
 
   displayLabel: boolean;
   #hoveredItemCode: string;
-  
+
   @Output() closed: EventEmitter<void> = new EventEmitter();
 
   @Output() hoveredItem: EventEmitter<string> = new EventEmitter<string>();
@@ -39,7 +39,7 @@ export class AssembliesVisibilityComponent implements OnInit {
       select(softwareAssembliesStateSelector),
       filter(x => (x?.software?.referencedAssemblies) && x.software !== this.#currentSoftware),
       tap(x => this.#currentSoftware = x.software),
-      map(x => x.software.referencedAssemblies.map(y => ({ isVisible: !x.filteredAssemblies.includes(y.id) , name: y.name, id: y.id})))
+      map(x => x.software.referencedAssemblies.map(y => ({ isVisible: !x.filteredAssemblies.includes(y.id), name: y.name, id: y.id })))
     ).subscribe(x => this.assemblies = x);
 
     this.store.pipe(
@@ -81,7 +81,7 @@ export class AssembliesVisibilityComponent implements OnInit {
 
   onDisplayLabelChanged(value: boolean) {
     this.displayLabel = value;
-    this.store.dispatch(displayLabel({value}));
+    this.store.dispatch(displayLabel({ value }));
   }
 
   onOverItem(value: string) {
