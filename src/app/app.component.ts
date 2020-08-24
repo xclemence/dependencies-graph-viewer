@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { TestModuleRightsKey } from './app-security.module';
+import { VersionService } from './core/services/version.service';
 import { errorStateSelector } from './core/store/core.selectors';
 import { CoreState } from './core/store/models';
 import { SecurityConfigurationService } from './security/services/security-configuration.service';
@@ -24,10 +25,15 @@ export class AppComponent implements OnInit, OnDestroy{
     { path : 'assembly', label: 'Assembly', roles: [ ] },
   ];
 
+  get version(): string {
+    return this.versionService.version;
+  }
+
   constructor(
-    private securityConfigurationService: SecurityConfigurationService,
+    securityConfigurationService: SecurityConfigurationService,
     private store: Store<CoreState>,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    private versionService: VersionService) {
     const testModuleRights = securityConfigurationService.getRights(TestModuleRightsKey);
 
     this.links.push({ path: 'test', label: 'Test', roles: testModuleRights.rights});
