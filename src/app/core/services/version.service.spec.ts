@@ -14,7 +14,7 @@ describe('VersionService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should have versop, number', () => {
+  it('should have version number', () => {
     expect(service.version).toBeTruthy();
   });
 });
