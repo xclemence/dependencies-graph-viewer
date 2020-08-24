@@ -55,10 +55,13 @@ describe('ThreeForceGraphComponent', () => {
     const updateDataSpy = spyOn<any>(component, 'updateGraphData').and.callThrough();
 
     component.graph = graph;
-    component.filteredNodes = ['1'];
+    const filteredNodes = ['1'];
+
+    component.filteredNodes = filteredNodes;
+    component.filteredNodes = filteredNodes;
     fixture.detectChanges();
 
-    expect(updateDataSpy).toHaveBeenCalled();
+    expect(updateDataSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should clear graph data', () => {
@@ -91,6 +94,7 @@ describe('ThreeForceGraphComponent', () => {
 
     component.graph = graph;
     component.displayNodeLabel = false;
+    component.displayNodeLabel = false;
     fixture.detectChanges();
 
     expect(component).toBeTruthy();
@@ -115,4 +119,15 @@ describe('ThreeForceGraphComponent', () => {
 
     expect(updateDataSpy).toHaveBeenCalled();
   });
+
+  it('should update hover node no graph', () => {
+
+    const updateDataSpy = spyOn<any>(component, 'updateGraphData').and.callThrough();
+
+    component.hoverNodeId = '1';
+    fixture.detectChanges();
+
+    expect(updateDataSpy).toHaveBeenCalled();
+  });
+
 });

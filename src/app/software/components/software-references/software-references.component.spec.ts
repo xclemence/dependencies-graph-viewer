@@ -35,6 +35,7 @@ class ForceGraphStubComponent {
   @Input() graph: Graph;
   @Input() hoverNodeId: string;
   @Input() filteredNodes: string[];
+  @Input() displayNodeLabel: boolean;
 }
 
 describe('SoftwareReferencesComponent', () => {
