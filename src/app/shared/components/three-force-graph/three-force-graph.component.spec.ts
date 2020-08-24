@@ -52,7 +52,7 @@ describe('ThreeForceGraphComponent', () => {
       ]
     };
 
-    const updateDataSpy = spyOn<any>(component, 'updateGraphData').and.callThrough();
+    const updateDataSpy = spyOn<any>(component, 'refreshGraphData').and.callThrough();
 
     component.graph = graph;
     const filteredNodes = ['1'];
@@ -74,7 +74,7 @@ describe('ThreeForceGraphComponent', () => {
 
     component.graph = graph;
 
-    const updateDataSpy = spyOn<any>(component, 'updateGraphData').and.callThrough();
+    const updateDataSpy = spyOn<any>(component, 'refreshGraphData').and.callThrough();
 
     component.graph = undefined;
 
@@ -111,7 +111,7 @@ describe('ThreeForceGraphComponent', () => {
       ]
     };
 
-    const updateDataSpy = spyOn<any>(component, 'updateGraphData').and.callThrough();
+    const updateDataSpy = spyOn<any>(component, 'refreshGraphData').and.callThrough();
 
     component.graph = graph;
     component.hoverNodeId = '1';
@@ -122,7 +122,7 @@ describe('ThreeForceGraphComponent', () => {
 
   it('should update hover node no graph', () => {
 
-    const updateDataSpy = spyOn<any>(component, 'updateGraphData').and.callThrough();
+    const updateDataSpy = spyOn<any>(component, 'refreshGraphData').and.callThrough();
 
     component.hoverNodeId = '1';
     fixture.detectChanges();
