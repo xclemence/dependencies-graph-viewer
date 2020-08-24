@@ -2,8 +2,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { loadAssemblyDepthMax } from '@app/assembly/store/actions/assembly-depth-max.actions';
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
-import { Assembly, AssemblyColors } from '@app/core/models/assembly';
-import { consolidateGraphPosition, toGraphLink, toGraphNode } from '@app/shared/converters';
+import { consolidateGraphPosition, toGraph } from '@app/shared/converters';
 import { Graph } from '@app/shared/models';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, Subscription } from 'rxjs';
@@ -66,7 +65,7 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
     this.#storeSubscription = this.store.select(assemblyDepthStateSelector).pipe(
       filter(x => x !== undefined),
     ).subscribe(x => {
-      const newGraph = this.generateGraphData(x);
+      const newGraph = toGraph(x);
       this.graph = consolidateGraphPosition(newGraph, this.graph);
       this.assemblyName = `${x.name} (${x.version})`;
     });
@@ -85,16 +84,5 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
 
   private loadDepth(value: number) {
     this.#depthChanged.next(value);
-  }
-
-  generateGraphData(assembly: Assembly): Graph {
-    const nodes = assembly.referencedAssemblies.map(x => toGraphNode(x));
-
-    nodes.push(toGraphNode(assembly, AssemblyColors.main));
-
-    return {
-      nodes,
-      links: assembly.links.map(x => toGraphLink(x))
-    };
   }
 }

@@ -1,52 +1,69 @@
 :host {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
 }
 
 .assemblies-panel {
-    flex-direction: column;
-    flex: 1;
-    display: flex;
+  flex-direction: column;
+  flex: 1;
+  display: flex;
 }
 
-mat-card {
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    height: 0px;
+.full-mat-card {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 0px;
 }
 
-mat-card-title {
-    margin: 0 !important;
+.sub-header {
+  font-size: 17px;
+}
+
+.assembly-header {
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+.assembly-card {
+  margin-bottom: 5px;
+}
+
+.global-header {
+  margin-bottom: 10px;
+}
+
+.main-card-title {
+  margin: 0;
 }
 
 mat-card-header {
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 2px !important;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2px !important;
 }
 
 mat-list {
-    height: 100%;
-    overflow: auto;
+  height: 100%;
+  overflow: auto;
 }
 
 mat-divider {
-    position: unset !important;
+  position: unset !important;
 }
 
 .search-panel {
-    margin-left: 20px;
-    margin-right: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .results-section {
-    height: 1px;
+  height: 1px;
 }
 
 .all-checkbox {
-    margin-left: 15px;
-    margin-bottom: 10px;
+  margin-left: 16px;
+  margin-bottom: 10px;
 }

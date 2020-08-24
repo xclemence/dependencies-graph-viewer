@@ -1,5 +1,7 @@
+import { displayLabel } from './actions/software-assemblies.actions';
 import { SoftwareNameState, SoftwareState } from './models';
 import {
+  displayLabelSelector,
   filteredAssembliesStateSelector,
   softwareAssembliesStateSelector,
   softwareFeatureKey,
@@ -23,7 +25,8 @@ describe('software selector', () => {
           links: [],
           referencedAssemblies: []
         },
-        filteredAssemblies: []
+        filteredAssemblies: [],
+        displayLabel: false
       },
       name: {
         softwareNames: []
@@ -70,7 +73,8 @@ describe('software selector', () => {
         links: [],
         referencedAssemblies: []
       },
-      filteredAssemblies: []
+      filteredAssemblies: [],
+      displayLabel: false
     };
 
     const result = softwareAssembliesStateSelector({
@@ -118,5 +122,18 @@ describe('software selector', () => {
     });
 
     expect(result).toEqual(software);
+  });
+
+  it('should extract display label flag', () => {
+
+    const result = displayLabelSelector({
+      [softwareFeatureKey]: {
+        assemblies: {
+          displayLabel: true
+        }
+      }
+    });
+
+    expect(result).toBeTrue();
   });
 });

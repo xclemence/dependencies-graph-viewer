@@ -1,4 +1,4 @@
-import { AssemblyBase, AssemblyColors, AssemblyLink } from '@app/core/models';
+import { Assembly, AssemblyBase, AssemblyColors, AssemblyLink } from '@app/core/models';
 import { DefaultGraphLink, GraphLink } from '@app/shared/models';
 
 import { Graph, GraphNode } from '../models/force-graph-model';
@@ -14,6 +14,20 @@ export function toGraphNode(assembly: AssemblyBase, forceColor?: string): GraphN
 
 export function toGraphLink(link: AssemblyLink): GraphLink {
   return new DefaultGraphLink({ source: link.sourceId, target: link.targetId });
+}
+
+export function toGraph(assembly: Assembly): Graph {
+  if (!assembly) {
+    return null;
+  }
+
+  const nodes = assembly.referencedAssemblies.map(x => toGraphNode(x));
+
+  nodes.push(toGraphNode(assembly, AssemblyColors.main));
+
+  const links = assembly.links.map(x => toGraphLink(x));
+
+  return { nodes, links };
 }
 
 export function consolidateGraphPosition(newGraph: Graph, oldGraph: Graph): Graph {

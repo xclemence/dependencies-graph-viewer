@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { HeaderLink } from '@app/shared/components';
 import { select, Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -9,6 +8,7 @@ import { TestModuleRightsKey } from './app-security.module';
 import { errorStateSelector } from './core/store/core.selectors';
 import { CoreState } from './core/store/models';
 import { SecurityConfigurationService } from './security/services/security-configuration.service';
+import { HeaderLink } from './shared/components';
 
 @Component({
   selector: 'app-root',

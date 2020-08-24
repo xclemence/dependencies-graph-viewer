@@ -4,11 +4,11 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatSliderModule } from '@angular/material/slider';
 import { By } from '@angular/platform-browser';
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
-import { Assembly, AssemblyColors } from '@app/core/models';
+import { Assembly } from '@app/core/models';
 import { ForceGraphComponent } from '@app/shared/components';
 import { BusyComponent } from '@app/shared/components/busy/busy.component';
+import { toGraph } from '@app/shared/converters';
 import { SnowDialogDirective } from '@app/shared/directives/snow-dialog.directive';
-import { DefaultGraphLink } from '@app/shared/models';
 import { MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
@@ -102,59 +102,7 @@ describe('AssemblyDetailsComponent', () => {
     expect(dispatchSpy).toHaveBeenCalledWith(expectedAction);
   }));
 
-  it('should generate graph data', () => {
-    const inputAssembly = {
-      id: '1',
-      name: 'name1',
-      version: '1.0',
-      isNative: false,
-      isSoftware: false,
-      links: [
-        { sourceId: '1', targetId: '2' }
-      ],
-      referencedAssemblies: [
-        { id: '2', name: 'name2', version: '2.0', isNative: true, isSoftware: false },
-      ]
-    };
-
-    const expectedGraphData = {
-      nodes: [
-        { id: '2', label: 'name2 (2.0)', color: AssemblyColors.native },
-        { id: '1', label: 'name1 (1.0)', color: AssemblyColors.main },
-      ],
-      links: [
-        new DefaultGraphLink({ source: '1', target: '2' })
-      ]
-    };
-
-    const graphData = component.generateGraphData(inputAssembly);
-    expect(graphData).toEqual(expectedGraphData);
-  });
-
-  it('should generate graph data with no reference', () => {
-    const inputAssembly = {
-      id: '1',
-      name: 'name1',
-      version: '1.0',
-      isNative: false,
-      isSoftware: false,
-      links: [],
-      referencedAssemblies: []
-    };
-
-    const expectedGraphData = {
-      nodes: [
-        { id: '1', label: 'name1 (1.0)', color: AssemblyColors.main },
-      ],
-      links: []
-    };
-
-    const graphData = component.generateGraphData(inputAssembly);
-    expect(graphData).toEqual(expectedGraphData);
-  });
-
   it('should refresh graph on state updated', fakeAsync(() => {
-    const generateGraphDataSpy = spyOn(component, 'generateGraphData').and.callThrough();
 
     const inputAssembly = {
       id: '1',
@@ -169,8 +117,7 @@ describe('AssemblyDetailsComponent', () => {
     mockAssemblyDepthSelector.setResult(inputAssembly);
     mockStore.refreshState();
 
-    expect(generateGraphDataSpy).toHaveBeenCalledTimes(1);
-
+    expect(component.graph).toEqual(toGraph(inputAssembly));
   }));
 
   it('should update name', fakeAsync(() => {

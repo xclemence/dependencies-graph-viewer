@@ -2,6 +2,7 @@ import { AssemblyColors } from '@app/core/models';
 
 import { consolidateGraphPosition, toGraphLink, toGraphNode } from '.';
 import { DefaultGraphLink } from '../models';
+import { toGraph } from './graph-converters';
 
 describe('graph converters', () => {
 
@@ -98,6 +99,62 @@ describe('graph converters', () => {
 
     expect(result.nodes[0].x).toBeFalsy();
     expect(result.nodes[0].y).toBeFalsy();
+  });
+
+  it('should generate graph data', () => {
+    const inputAssembly = {
+      id: '1',
+      name: 'name1',
+      version: '1.0',
+      isNative: false,
+      isSoftware: false,
+      links: [
+        { sourceId: '1', targetId: '2' }
+      ],
+      referencedAssemblies: [
+        { id: '2', name: 'name2', version: '2.0', isNative: true, isSoftware: false },
+      ]
+    };
+
+    const expectedGraphData = {
+      nodes: [
+        { id: '2', label: 'name2 (2.0)', color: AssemblyColors.native },
+        { id: '1', label: 'name1 (1.0)', color: AssemblyColors.main },
+      ],
+      links: [
+        new DefaultGraphLink({ source: '1', target: '2' })
+      ]
+    };
+
+    const graphData = toGraph(inputAssembly);
+    expect(graphData).toEqual(expectedGraphData);
+  });
+
+  it('should generate graph data with no reference', () => {
+    const inputAssembly = {
+      id: '1',
+      name: 'name1',
+      version: '1.0',
+      isNative: false,
+      isSoftware: false,
+      links: [],
+      referencedAssemblies: []
+    };
+
+    const expectedGraphData = {
+      nodes: [
+        { id: '1', label: 'name1 (1.0)', color: AssemblyColors.main },
+      ],
+      links: []
+    };
+
+    const graphData = toGraph(inputAssembly);
+    expect(graphData).toEqual(expectedGraphData);
+  });
+
+  it('should null graph', () => {
+    const graphData = toGraph(undefined);
+    expect(graphData).toBeFalsy();
   });
 
 });

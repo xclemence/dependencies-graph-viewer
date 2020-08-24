@@ -1,4 +1,4 @@
-import { $, $$, browser, protractor } from 'protractor';
+import { $, $$, browser } from 'protractor';
 
 export class SoftwarePage {
   navigateTo() {
@@ -9,20 +9,12 @@ export class SoftwarePage {
     return $$('mat-list-option').get(index).click();
   }
 
-  getGraphAssemblyCount() {
-    return $$('g.nodes>g').count();
-  }
-
   openVisibilityPanel() {
     return $('#open-visibility-button').click();
   }
 
   closeVisibilityPanel() {
     return $('#close-visibility-button').click();
-  }
-
-  waitAssemblyLoaded() {
-    return browser.wait(protractor.ExpectedConditions.presenceOf($('.nodes')), 1000);
   }
 
   getAssemblyVisibilityCount() {

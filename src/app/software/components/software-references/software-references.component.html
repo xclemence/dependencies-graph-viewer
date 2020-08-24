@@ -2,12 +2,13 @@
   <mat-drawer-container class="flex-one overlap-item" hasBackdrop="false">
     <mat-drawer position="end" [(opened)]="visibilityPanelOpened">
       <div class="visibility-panel">
-        <sft-assemblies-visibility (closed)="closeVisibilityPanel()"></sft-assemblies-visibility>
+        <sft-assemblies-visibility (closed)="closeVisibilityPanel()" (hoveredItem)="hoveredNode = $event" ></sft-assemblies-visibility>
       </div>
     </mat-drawer>
     <mat-drawer-content>
       <div class="assembly-details overlap-container">
-        <dgv-force-graph class="overlap-item" [graph]="graph" updateMode="ClearAndAdd"></dgv-force-graph>
+        <dgv-three-force-graph class="overlap-item" [graph]="graph | async"  [filteredNodes]="filteredAssemblies | async"
+                                [displayNodeLabel]="displayLabel | async" [hoverNodeId]="hoveredNode"></dgv-three-force-graph>
         <sft-software-statistics class="absolute-position no-pointer-events"></sft-software-statistics>
         <div class="overlap-item open-visibility-panel no-pointer-events">
           <button id="open-visibility-button" mat-fab aria-label="Open visibility panel" (click)="openVisibilityPanel()" class="pointer-events">

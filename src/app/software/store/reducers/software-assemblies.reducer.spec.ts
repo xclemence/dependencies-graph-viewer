@@ -4,13 +4,15 @@ import {
   loadSoftwareAssembliesSuccess,
   updateFilteredAssemblies,
 } from '../actions';
+import { displayLabel } from './../actions/software-assemblies.actions';
 import { softwareAssembliesReducer } from './software-assemblies.reducer';
 
 describe('softwareAssembliesReducer', () => {
 
   const initialState = {
     software: undefined,
-    filteredAssemblies: []
+    filteredAssemblies: [],
+    displayLabel: true
   };
 
   const assemblyTest = {
@@ -52,7 +54,8 @@ describe('softwareAssembliesReducer', () => {
 
     const expectedValue = {
       software: resultAssembly,
-      filteredAssemblies: []
+      filteredAssemblies: [],
+      displayLabel: true
     };
 
     expect(softwareAssembliesReducer(state, action)).toEqual(expectedValue);
@@ -68,7 +71,8 @@ describe('softwareAssembliesReducer', () => {
 
     const expectedValue = {
       software: undefined,
-      filteredAssemblies: []
+      filteredAssemblies: [],
+      displayLabel: true
     };
 
     expect(softwareAssembliesReducer(state, action)).toEqual(expectedValue);
@@ -83,6 +87,18 @@ describe('softwareAssembliesReducer', () => {
     const expectedValue = {
       ...initialState,
       filteredAssemblies: ['test1', 'test2']
+    };
+
+    expect(softwareAssembliesReducer(initialState, action)).toEqual(expectedValue);
+  });
+
+  it('should update display flag', () => {
+
+    const action = displayLabel({ value: false});
+
+    const expectedValue = {
+      ...initialState,
+      displayLabel: false
     };
 
     expect(softwareAssembliesReducer(initialState, action)).toEqual(expectedValue);

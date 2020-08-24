@@ -14,6 +14,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
 import { updateFilteredAssemblies } from '../../store/actions';
 import { softwareAssembliesStateSelector } from '../../store/software.selectors';
+import { displayLabel } from './../../store/actions/software-assemblies.actions';
 import { AssembliesVisibilityComponent } from './assemblies-visibility.component';
 
 describe('SoftwareAssembliesComponent', () => {
@@ -177,7 +178,8 @@ describe('SoftwareAssembliesComponent', () => {
           { id: '3', name: 'name3', version: '1.0', isNative: false, isSoftware: false },
         ]
       },
-      filteredAssemblies: ['3']
+      filteredAssemblies: ['3'],
+      displayLabel: false
     };
 
     softwareAssembliesStateSelectorMock.setResult(inputStore);
@@ -211,7 +213,8 @@ describe('SoftwareAssembliesComponent', () => {
           { id: '3', name: 'name3', version: '1.0', isNative: false, isSoftware: false },
         ]
       },
-      filteredAssemblies: ['3']
+      filteredAssemblies: ['3'],
+      displayLabel: false
     };
 
     softwareAssembliesStateSelectorMock.setResult(inputStore);
@@ -229,6 +232,34 @@ describe('SoftwareAssembliesComponent', () => {
     component.close();
 
     expect(emitSpy).toHaveBeenCalled();
+  });
+
+  it('should emit assembly over', () => {
+    const emitSpy = spyOn(component.hoveredItem, 'emit');
+
+    component.onOverItem('test');
+
+    expect(emitSpy).toHaveBeenCalled();
+  });
+
+  it('should emit assembly over twice', () => {
+
+    component.onOverItem('test');
+
+    const emitSpy = spyOn(component.hoveredItem, 'emit');
+    component.onOverItem('test');
+    expect(emitSpy).not.toHaveBeenCalled();
+  });
+
+  it('should update display label flag', () => {
+
+    const dispatchSpy = spyOn(mockStore, 'dispatch').and.callThrough();
+
+    const expectedAction = displayLabel({ value: false });
+
+    component.onDisplayLabelChanged(false);
+
+    expect(dispatchSpy).toHaveBeenCalledWith(expectedAction);
   });
 
 });
