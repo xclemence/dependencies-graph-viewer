@@ -14,6 +14,9 @@ export class ThreeForceGraphComponent implements AfterViewInit {
 
   @ViewChild('container') container!: ElementRef;
 
+  #selectionColor = 'rgba(175, 180, 43, 1)';
+  #linkSelectionColor = 'rgba(255, 160, 0, 0.6)';
+
   #graphInstance: ForceGraph3DInstance;
   #isInitialized = false;
   #graphData: Graph;
@@ -35,7 +38,7 @@ export class ThreeForceGraphComponent implements AfterViewInit {
 
     this.zone.runOutsideAngular(() => {
       this.#graphInstance?.nodeLabel((node: any) => this.getNodeLabel(node))
-                         .nodeThreeObject((node: any) => this.getNodeExtendObject(node));
+        .nodeThreeObject((node: any) => this.getNodeExtendObject(node));
     });
   }
 
@@ -78,7 +81,7 @@ export class ThreeForceGraphComponent implements AfterViewInit {
     if (!this.isHighlightNodes(this.#hoverNode?.id, node.id)) {
       return node.color;
     }
-    return node === this.#hoverNode ? '#afb42b' : 'rgba(255,160,0,0.8)';
+    return node === this.#hoverNode ? this.#selectionColor : this.#linkSelectionColor;
   }
 
   private getNodeLabel(node: any): any {
@@ -126,8 +129,8 @@ export class ThreeForceGraphComponent implements AfterViewInit {
       .nodeColor((node: any) => this.getNodeColor(node))
       .nodeThreeObjectExtend(true)
       .nodeThreeObject((node: any) => this.getNodeExtendObject(node))
-      .linkWidth((link: any) => this.isHighlightLink(this.#hoverNode?.id, link.source.id, link.target.id) ? 4 : 1)
-      .linkDirectionalParticles((link: any) => this.isHighlightLink(this.#hoverNode?.id, link.source.id, link.target.id) ? 4 : 0)
+      .linkWidth((link: any) => this.isHighlightLink(link) ? 4 : 1)
+      .linkDirectionalParticles((link: any) => this.isHighlightLink(link) ? 4 : 0)
       .linkDirectionalArrowLength(8)
       .linkDirectionalArrowRelPos(1)
       .linkDirectionalParticleWidth(4)
@@ -139,20 +142,21 @@ export class ThreeForceGraphComponent implements AfterViewInit {
     this.resizeGraph();
   }
 
+  private isHighlightLink(link: any): boolean {
+
+    if (this.#hoverNode?.id !== link.source.id) {
+      return false;
+    }
+
+    return this.#nodeLink[link.source.id]?.includes(link.target.id) ?? false;
+  }
+
   private isHighlightNodes(selectedNodeId: string, testNodeid: string): boolean {
     if (selectedNodeId === testNodeid) {
       return true;
     }
 
     return this.#nodeLink[selectedNodeId]?.includes(testNodeid) ?? false;
-  }
-
-  private isHighlightLink(selectedNodeId: string, sourceId: string, targetId: string): boolean {
-    if (selectedNodeId !== sourceId) {
-      return false;
-    }
-
-    return this.#nodeLink[sourceId]?.includes(targetId) ?? false;
   }
 
   private updateGraphData() {
