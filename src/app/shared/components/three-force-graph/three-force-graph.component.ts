@@ -2,7 +2,7 @@ import ForceGraph3D, { ForceGraph3DInstance } from '3d-force-graph';
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, NgZone, ViewChild } from '@angular/core';
 import { Graph } from '@app/shared/models';
 import { first } from 'rxjs/operators';
-import { Object3D } from 'three';
+import { MOUSE, Object3D } from 'three';
 import SpriteText from 'three-spritetext';
 
 @Component({
@@ -121,9 +121,10 @@ export class ThreeForceGraphComponent implements AfterViewInit {
   }
 
   private initializeGraph() {
-    this.#graphInstance = ForceGraph3D();
+    this.#graphInstance = ForceGraph3D( { controlType: 'orbit' });
     this.#graphInstance(this.container.nativeElement)
       .backgroundColor('rgba(0,0,0,0)')
+      .showNavInfo(false)
       .nodeRelSize(3)
       .nodeVisibility(x => !this.#filteredNodes.includes(x.id.toString()))
       .nodeLabel((x: any) => this.#displayNodeLabel ? undefined : x.label)
@@ -139,11 +140,25 @@ export class ThreeForceGraphComponent implements AfterViewInit {
       .onNodeHover((node: any) => this.onNodeHover(node))
       .onNodeClick((node: any) => this.onNodeClick(node));
 
+    this.configureControls();
+
     this.#isInitialized = true;
 
     this.updateGraphWithData();
 
     this.zone.onStable.pipe(first()).subscribe(x => this.onResize());
+  }
+
+  private configureControls() {
+    const orbitControl = this.#graphInstance.controls() as any;
+
+    orbitControl.zoomSpeed = 3;
+
+    orbitControl.mouseButtons = {
+      LEFT: MOUSE.PAN,
+      RIGHT: MOUSE.ROTATE,
+      MIDELE: undefined,
+    };
   }
 
   private updateGraphWithData() {
