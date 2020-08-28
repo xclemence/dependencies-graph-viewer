@@ -1,0 +1,22 @@
+@import '~styles/app-colors';
+
+.button-selected {
+  background-color: mat-color($primary, default);
+
+  ::ng-deep {
+    * {
+      color: hsla(0, 0%, 100%, .5) !important;
+    }
+  }
+}
+
+.flat-icon-button {
+  padding: 0 7px;
+  min-width: 0;
+
+  ::ng-deep {
+    * {
+      color: mat-color($primary, default);
+    }
+  }
+}

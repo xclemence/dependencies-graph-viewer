@@ -251,15 +251,4 @@ describe('SoftwareAssembliesComponent', () => {
     expect(emitSpy).not.toHaveBeenCalled();
   });
 
-  it('should update display label flag', () => {
-
-    const dispatchSpy = spyOn(mockStore, 'dispatch').and.callThrough();
-
-    const expectedAction = displayLabel({ value: false });
-
-    component.onDisplayLabelChanged(false);
-
-    expect(dispatchSpy).toHaveBeenCalledWith(expectedAction);
-  });
-
 });

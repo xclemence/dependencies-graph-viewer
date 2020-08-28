@@ -6,8 +6,6 @@ import { filter, map, tap } from 'rxjs/operators';
 import { updateFilteredAssemblies } from '../../store/actions/software-assemblies.actions';
 import { SoftwareState } from '../../store/models';
 import { softwareAssembliesStateSelector } from '../../store/software.selectors';
-import { displayLabel } from './../../store/actions/software-assemblies.actions';
-import { displayLabelSelector } from './../../store/software.selectors';
 
 export interface SelectableAssembly {
   isVisible: boolean;
@@ -25,11 +23,9 @@ export class AssembliesVisibilityComponent implements OnInit {
   assemblies: SelectableAssembly[] = [];
   #currentSoftware: Assembly;
 
-  displayLabel: boolean;
   #hoveredItemCode: string;
 
   @Output() closed: EventEmitter<void> = new EventEmitter();
-
   @Output() hoveredItem: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private store: Store<SoftwareState>) { }
@@ -41,10 +37,6 @@ export class AssembliesVisibilityComponent implements OnInit {
       tap(x => this.#currentSoftware = x.software),
       map(x => x.software.referencedAssemblies.map(y => ({ isVisible: !x.filteredAssemblies.includes(y.id), name: y.name, id: y.id })))
     ).subscribe(x => this.assemblies = x);
-
-    this.store.pipe(
-      select(displayLabelSelector),
-    ).subscribe(x => this.displayLabel = x);
   }
 
   toggleVisibility(assembly: SelectableAssembly) {
@@ -77,11 +69,6 @@ export class AssembliesVisibilityComponent implements OnInit {
 
     const filteredAssemblyIds = this.assemblies.filter(x => !x.isVisible).map(x => x.id);
     this.store.dispatch(updateFilteredAssemblies({ assemblyIds: filteredAssemblyIds }));
-  }
-
-  onDisplayLabelChanged(value: boolean) {
-    this.displayLabel = value;
-    this.store.dispatch(displayLabel({ value }));
   }
 
   onOverItem(value: string) {
