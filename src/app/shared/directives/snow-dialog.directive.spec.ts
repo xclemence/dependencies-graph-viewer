@@ -9,7 +9,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { SnowDialogDirective } from './snow-dialog.directive';
 
 @Component({
-  template: '<div class="test" appSnowDialog ></div>'
+  template: '<div class="test" dgvSnowDialog ></div>'
 })
 export class TestComponent { }
 

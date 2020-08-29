@@ -18,7 +18,6 @@ import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators'
 import { AssemblyService } from '../../services/assembly.service';
 import { SortDefinitionConverterService } from '../../services/sort-definition-converter.service';
 import { assembliesStateSelector } from '../../store/assembly.selectors';
-import { snowActivation } from './../../../core/store/actions/snow.actions';
 import { loadAssemblies } from './../../store/actions/assemblies.actions';
 import { AssemblyDetailsComponent } from './../assembly-details/assembly-details.component';
 
@@ -63,7 +62,6 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
         this.currentPage = 0;
         this.#currentFilter = x;
         this.updateAssemblies();
-        this.trySnowMode(x);
       }
     });
   }
@@ -161,11 +159,5 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
 
   handleSortChanged(event: Sort) {
     this.updateAssemblies();
-  }
-
-  private trySnowMode(nameFilter: string) {
-    if (nameFilter.toLocaleLowerCase() === 'pantoufle') {
-      this.store.dispatch(snowActivation());
-    }
   }
 }

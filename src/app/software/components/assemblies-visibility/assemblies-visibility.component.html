@@ -8,7 +8,7 @@
   <section class="flex-panel search-panel">
     <mat-form-field class="flex-one">
       <mat-label>Search</mat-label>
-      <input cdkFocusInitial matInput #searchInput id="visibility-assemblies-filter">
+      <input cdkFocusInitial matInput #searchInput id="visibility-assemblies-filter" dgvSnowInput>
     </mat-form-field>
   </section>
   <ng-container *ngIf="assemblies | nameFilter:searchInput.value as filteredAssemblies">

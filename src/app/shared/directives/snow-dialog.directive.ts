@@ -5,7 +5,7 @@ import { select, Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 
 @Directive({
-  selector: '[appSnowDialog]'
+  selector: '[dgvSnowDialog]'
 })
 export class SnowDialogDirective implements OnInit, OnDestroy {
 
