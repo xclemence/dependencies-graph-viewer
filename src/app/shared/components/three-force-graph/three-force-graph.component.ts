@@ -59,9 +59,10 @@ export class ThreeForceGraphComponent implements AfterViewInit {
     if (value === this.#graphData) {
       return;
     }
-    this.#graphData = value;
-    this.prepareNodeLink();
 
+    this.#graphData = value;
+
+    this.prepareNodeLink();
     this.updateGraphWithData();
   }
 
@@ -168,9 +169,6 @@ export class ThreeForceGraphComponent implements AfterViewInit {
   }
 
   private updateGraphWithData() {
-    if (!this.#graphData) {
-      return;
-    }
     this.zone.runOutsideAngular(() => this.#graphInstance?.graphData(this.#graphData));
   }
 

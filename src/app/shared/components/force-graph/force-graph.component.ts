@@ -114,7 +114,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
       .attr('stroke', 'none')
       .attr('fill', 'DimGray');
 
-    this.#svg.call(d3.zoom().on('zoom', ({transform}) => this.#svgGroup.attr('transform', transform)));
+    this.#svg.call(d3.zoom().on('zoom', ({ transform }) => this.#svgGroup.attr('transform', transform)));
 
     this.#svgGroup.append('g').attr('class', 'links');
     this.#svgGroup.append('g').attr('class', 'nodes');
@@ -145,9 +145,9 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
 
     linkData.exit().remove();
 
-    this.#links = linkData.enter()
-      .append('line')
-      .attr('marker-end', 'url(#arrowhead)')
+    this.#links = linkData.enter().append('line');
+
+    this.#links.attr('marker-end', 'url(#arrowhead)')
       .style('stroke-width', this.linkStroke)
       .style('stroke', 'DimGray');
 

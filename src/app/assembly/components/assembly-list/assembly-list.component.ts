@@ -10,7 +10,6 @@ import { ActivatedRoute } from '@angular/router';
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { AssemblyColors, AssemblyStat } from '@app/core/models/assembly';
 import { UrlService } from '@app/core/services';
-import { CoreState } from '@app/core/store/models';
 import { ConfirmationDialogComponent } from '@app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { select, Store } from '@ngrx/store';
 import { fromEvent, Subscription } from 'rxjs';
@@ -19,7 +18,6 @@ import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators'
 import { AssemblyService } from '../../services/assembly.service';
 import { SortDefinitionConverterService } from '../../services/sort-definition-converter.service';
 import { assembliesStateSelector } from '../../store/assembly.selectors';
-import { AssemblyState } from '../../store/models';
 import { snowActivation } from './../../../core/store/actions/snow.actions';
 import { loadAssemblies } from './../../store/actions/assemblies.actions';
 import { AssemblyDetailsComponent } from './../assembly-details/assembly-details.component';
@@ -48,8 +46,7 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
 
   constructor(
     public dialog: MatDialog,
-    private store: Store<AssemblyState>,
-    private coreStore: Store<CoreState>,
+    private store: Store,
     private assemblyService: AssemblyService,
     private converterService: SortDefinitionConverterService,
     private urlService: UrlService,
@@ -140,7 +137,7 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.assemblyService.remove(assembly.id).executeWithMainBusy(this.coreStore).subscribe({
+        this.assemblyService.remove(assembly.id).executeWithMainBusy(this.store).subscribe({
           next: (x) => this.updateAssemblies()
         });
       }
@@ -168,7 +165,7 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
 
   private trySnowMode(nameFilter: string) {
     if (nameFilter.toLocaleLowerCase() === 'pantoufle') {
-      this.coreStore.dispatch(snowActivation());
+      this.store.dispatch(snowActivation());
     }
   }
 }

@@ -1,6 +1,6 @@
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
@@ -197,7 +197,6 @@ describe('SoftwareAssembliesComponent', () => {
 
   }));
 
-
   it('should load data on template', async () => {
 
     const softwareAssembliesStateSelectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, undefined);
@@ -227,6 +226,50 @@ describe('SoftwareAssembliesComponent', () => {
 
     expect(listItems.length).toBe(2);
   });
+
+  it('should clear data when undefined software', fakeAsync(() => {
+
+    const softwareAssembliesStateSelectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, undefined);
+
+    const inputStore = {
+      software:  undefined,
+      filteredAssemblies: [],
+      displayLabel: false
+    };
+
+    softwareAssembliesStateSelectorMock.setResult(inputStore);
+    mockStore.refreshState();
+    flush();
+
+    expect(component.assemblies).toBeFalsy();
+
+  }));
+
+  it('should clear data when undefined assemblies', fakeAsync(() => {
+
+    const softwareAssembliesStateSelectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, undefined);
+
+    const inputStore = {
+      software: {
+        id: '1',
+        name: 'name1',
+        version: '1.0',
+        isNative: false,
+        isSoftware: false,
+        links: [],
+        referencedAssemblies: undefined
+      },
+      filteredAssemblies: [],
+      displayLabel: false
+    };
+
+    softwareAssembliesStateSelectorMock.setResult(inputStore);
+    mockStore.refreshState();
+    flush();
+
+    expect(component.assemblies).toBeFalsy();
+
+  }));
 
   it('should emit close event on close', () => {
     const emitSpy = spyOn(component.closed, 'emit');

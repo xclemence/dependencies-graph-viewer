@@ -18,7 +18,7 @@ export function toGraphLink(link: AssemblyLink): GraphLink {
 
 export function toGraph(assembly: Assembly): Graph {
   if (!assembly) {
-    return null;
+    return undefined;
   }
 
   const nodes = assembly.referencedAssemblies.map(x => toGraphNode(x));
