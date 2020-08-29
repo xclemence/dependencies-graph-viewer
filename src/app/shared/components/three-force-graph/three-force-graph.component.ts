@@ -65,7 +65,7 @@ export class ThreeForceGraphComponent implements AfterViewInit {
     this.updateGraphWithData();
   }
 
-  @Output() labelVisibilityChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() labelVisibilityChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private zone: NgZone) { }
 
@@ -221,13 +221,9 @@ export class ThreeForceGraphComponent implements AfterViewInit {
     return { width, height };
   }
 
-  toggleDisplayLabel() {
-    this.displayNodeLabel = !this.displayNodeLabel;
-  }
-
   toggleNodesVisibility() {
     this.displayNodeLabel = !this.#displayNodeLabel;
-    this.labelVisibilityChanged.emit(this.#displayNodeLabel);
+    this.labelVisibilityChange.emit(this.#displayNodeLabel);
   }
 
   zoomToFit() {

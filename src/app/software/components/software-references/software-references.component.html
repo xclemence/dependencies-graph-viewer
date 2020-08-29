@@ -9,7 +9,7 @@
       <div class="assembly-details overlap-container">
         <dgv-three-force-graph class="overlap-item" [graph]="graph | async"  [filteredNodes]="filteredAssemblies | async"
                                 [displayNodeLabel]="displayLabel | async" [hoverNodeId]="hoveredNode"
-                                (labelVisibilityChanged)="onLabelVisibilityChanged($event)"></dgv-three-force-graph>
+                                (labelVisibilityChange)="onLabelVisibilityChanged($event)"></dgv-three-force-graph>
         <sft-software-statistics class="absolute-position no-pointer-events"></sft-software-statistics>
         <div class="overlap-item open-visibility-panel no-pointer-events">
           <button id="open-visibility-button" mat-fab aria-label="Open visibility panel" (click)="openVisibilityPanel()" class="pointer-events">

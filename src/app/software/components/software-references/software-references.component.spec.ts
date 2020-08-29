@@ -1,7 +1,7 @@
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -10,6 +10,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AssemblyColors } from '@app/core/models';
 import { DefaultGraphLink, Graph } from '@app/shared/models';
+import { displayLabel } from '@app/software/store/actions';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TestScheduler } from 'rxjs/testing';
 
@@ -218,7 +219,15 @@ describe('SoftwareReferencesComponent', () => {
     fixture.detectChanges();
 
     expect(forceGraphComponent.graph).toBeFalsy();
-
   });
+
+  it('should dispatch event on node label changed', fakeAsync(() => {
+
+    const dispatchSpy = spyOn(mockStore, 'dispatch').and.callThrough();
+    component.onLabelVisibilityChanged(false);
+    flush();
+
+    expect(dispatchSpy).toHaveBeenCalledWith(displayLabel({value: false}));
+  }));
 
 });

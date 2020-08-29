@@ -141,4 +141,14 @@ describe('ThreeForceGraphComponent', () => {
     expect(updateDataSpy).toHaveBeenCalled();
   });
 
+  it('should change lavel visibility value and emit new value', () => {
+    component.displayNodeLabel = false;
+    const emitSpy = spyOn(component.labelVisibilityChange, 'emit');
+
+    component.toggleNodesVisibility();
+
+    expect(emitSpy).toHaveBeenCalledWith(true);
+    expect(component.displayNodeLabel).toBeTrue();
+  });
+
 });
