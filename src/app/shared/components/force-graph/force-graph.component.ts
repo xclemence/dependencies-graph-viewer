@@ -114,7 +114,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
       .attr('stroke', 'none')
       .attr('fill', 'DimGray');
 
-    this.#svg.call(d3.zoom().on('zoom', () => this.#svgGroup.attr('transform', d3.event.transform)));
+    this.#svg.call(d3.zoom().on('zoom', ({transform}) => this.#svgGroup.attr('transform', transform)));
 
     this.#svgGroup.append('g').attr('class', 'links');
     this.#svgGroup.append('g').attr('class', 'nodes');
@@ -161,14 +161,16 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
       .attr('stroke', (d: GraphNode) => d.color)
       .attr('stroke-width', this.circleSize / 2.0)
       .attr('fill', (d: GraphNode) => d.color)
-      .attr('r', this.circleSize);
+      .attr('r', this.circleSize)
+      .style('cursor', 'pointer');
 
     nodes.append('text')
       .text((d: GraphNode) => d.label)
       .attr('font-size', 15)
       .attr('fill', 'white')
       .attr('dx', 15)
-      .attr('dy', 4);
+      .attr('dy', 4)
+      .style('cursor', 'pointer');
 
     this.#nodes = this.nodeSelector;
 
@@ -178,9 +180,9 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
 
     this.#simulation.nodes(this.#graph.nodes).on('tick', () => this.ticked());
 
-    this.#nodes.call(d3.drag().on('start', d => this.dragStarted(d, this.#simulation))
+    this.#nodes.call(d3.drag().on('start', (event, d) => this.dragStarted(event, d, this.#simulation))
       .on('drag', this.dragged)
-      .on('end', d => this.dragEnded(d, this.#simulation)));
+      .on('end', (event, d) => this.dragEnded(event, d, this.#simulation)));
 
     this.#simulation.force<d3.ForceLink<any, any>>('link').links(this.#graph.links);
     this.#simulation.alpha(0).alphaTarget(0.3).restart();
@@ -210,14 +212,14 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
   }
 
   private fade(opacity: number) {
-    return (d: any) => {
+    return (_: any, d: any) => {
       this.#nodes.style('opacity', (o: any) => this.isConnected(d, o) ? 1 : opacity);
       this.#links.style('opacity', (o: any) => (o.source === d ? 1 : opacity));
     };
   }
 
-  private dragStarted(d: any, simulation: any): void {
-    if (!d3.event?.active) {
+  private dragStarted(event: any, d: any, simulation: any): void {
+    if (!event?.active) {
       simulation.alphaTarget(0.3).restart();
     }
 
@@ -225,13 +227,13 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
     d.fy = d.y;
   }
 
-  private dragged(d: any): void {
-    d.fx = d3.event.x;
-    d.fy = d3.event.y;
+  private dragged(event: any, d: any): void {
+    d.fx = event.x;
+    d.fy = event.y;
   }
 
-  private dragEnded(d: any, simulation: any): void {
-    if (!d3.event?.active) {
+  private dragEnded(event: any, d: any, simulation: any): void {
+    if (!event?.active) {
       simulation.alphaTarget(0);
     }
 
