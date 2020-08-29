@@ -2,6 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { Assembly } from '@app/core/models';
@@ -41,7 +42,8 @@ describe('AssemblyDetailsComponent', () => {
       imports: [
         FormsModule,
         MatDialogModule,
-        MatSliderModule
+        MatSliderModule,
+        MatTooltipModule
       ],
       declarations: [AssemblyDetailsComponent, ForceGraphComponent, BusyComponent, SnowDialogDirective],
       providers: [

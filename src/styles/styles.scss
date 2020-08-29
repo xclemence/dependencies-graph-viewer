@@ -60,3 +60,7 @@ html {
 .pointer-events {
   pointer-events: auto;
 }
+
+.no-padding-dialog .mat-dialog-container {
+  padding: 0;
+}
