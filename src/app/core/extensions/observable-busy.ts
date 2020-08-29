@@ -4,7 +4,6 @@ import { Observable, of } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 
 import { addBusyIndicatorAction } from '../store/actions';
-import { CoreState } from '../store/models';
 
 declare module 'rxjs' {
   export interface Observable<T> {
