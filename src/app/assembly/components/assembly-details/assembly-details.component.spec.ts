@@ -1,6 +1,7 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
@@ -43,11 +44,12 @@ describe('AssemblyDetailsComponent', () => {
         FormsModule,
         MatDialogModule,
         MatSliderModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatIconModule
       ],
       declarations: [AssemblyDetailsComponent, ForceGraphComponent, BusyComponent, SnowDialogDirective],
       providers: [
-        { provide: MatDialogRef, useValue: {} },
+        { provide: MatDialogRef, useValue: { close: () => {} } },
         {
           provide: MAT_DIALOG_DATA,
           useValue: { id: '1' }
@@ -143,4 +145,10 @@ describe('AssemblyDetailsComponent', () => {
     expect(element.nativeElement.textContent.trim()).toBe('Depth View : name1 (1.0)');
 
   }));
+
+  it('should close dialog', () => {
+    const closeSpy = spyOn(component.dialogRef, 'close');
+    component.close();
+    expect(closeSpy).toHaveBeenCalled();
+  });
 });
