@@ -48,8 +48,7 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
 
   constructor(
     public dialog: MatDialog,
-    private store: Store<AssemblyState>,
-    private coreStore: Store<CoreState>,
+    private store: Store,
     private assemblyService: AssemblyService,
     private converterService: SortDefinitionConverterService,
     private urlService: UrlService,
@@ -140,7 +139,7 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.assemblyService.remove(assembly.id).executeWithMainBusy(this.coreStore).subscribe({
+        this.assemblyService.remove(assembly.id).executeWithMainBusy(this.store).subscribe({
           next: (x) => this.updateAssemblies()
         });
       }
@@ -168,7 +167,7 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
 
   private trySnowMode(nameFilter: string) {
     if (nameFilter.toLocaleLowerCase() === 'pantoufle') {
-      this.coreStore.dispatch(snowActivation());
+      this.store.dispatch(snowActivation());
     }
   }
 }

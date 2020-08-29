@@ -8,10 +8,10 @@ import { CoreState } from '../store/models';
 
 declare module 'rxjs' {
   export interface Observable<T> {
-    executeWithMainBusy(store: Store<CoreState>): Observable<T>;
+    executeWithMainBusy(store: Store): Observable<T>;
   }
 }
-function executeWithMainBusy<T>(operation: Observable<T>, store: Store<CoreState>): Observable<T>  {
+function executeWithMainBusy<T>(operation: Observable<T>, store: Store): Observable<T>  {
   return of(null).pipe(
     tap(x => store.dispatch(addBusyIndicatorAction({key: 'Main'}))),
     switchMap(x => operation),

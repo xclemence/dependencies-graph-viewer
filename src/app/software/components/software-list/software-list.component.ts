@@ -55,6 +55,7 @@ export class SoftwareListComponent implements OnInit, OnDestroy {
 
   private selectSoftwareById() {
     if (!this.softwareNames) {
+      this.selectedSoftwares = undefined;
       return;
     }
 
