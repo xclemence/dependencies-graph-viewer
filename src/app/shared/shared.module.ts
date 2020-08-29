@@ -9,10 +9,11 @@ import { BusyComponent } from './components/busy/busy.component';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { ForceGraphComponent } from './components/force-graph/force-graph.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { StateButtonComponent } from './components/state-button/state-button.component';
 import { ThreeForceGraphComponent } from './components/three-force-graph/three-force-graph.component';
 import { SnowDialogDirective } from './directives/snow-dialog.directive';
+import { SnowInputDirective } from './directives/snow-input.directive';
 import { NameFilterPipe } from './pipe/name-filter.pipe';
-import { StateButtonComponent } from './components/state-button/state-button.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { StateButtonComponent } from './components/state-button/state-button.com
     HeaderLinksComponent,
     HeaderPreviousComponent,
     HeaderUserComponent,
-    StateButtonComponent
+    StateButtonComponent,
+    SnowInputDirective
   ],
   imports: [
     CommonModule,
@@ -44,7 +46,8 @@ import { StateButtonComponent } from './components/state-button/state-button.com
     SnowDialogDirective,
     HeaderLinksComponent,
     HeaderPreviousComponent,
-    HeaderUserComponent
+    HeaderUserComponent,
+    SnowInputDirective
   ],
   entryComponents: [
     ConfirmationDialogComponent

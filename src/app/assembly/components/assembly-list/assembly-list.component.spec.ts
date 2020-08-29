@@ -26,7 +26,6 @@ import { SortDefinitionConverterService } from '../../services/sort-definition-c
 import { loadAssemblies } from '../../store/actions';
 import { assembliesStateSelector } from '../../store/assembly.selectors';
 import { AssemblyFiltered, AssemblyState } from '../../store/models';
-import { snowActivation } from './../../../core/store/actions/snow.actions';
 import { AssemblyListComponent } from './assembly-list.component';
 
 describe('AssemblyListComponent', () => {
@@ -286,20 +285,4 @@ describe('AssemblyListComponent', () => {
     expect(dispatchSpy).toHaveBeenCalledWith(expectedAction);
   }));
 
-
-  it('snow test', fakeAsync(() => {
-
-    const dispatchSpy = spyOn(mockStore, 'dispatch');
-
-    const searchElements = fixture.debugElement.query(By.css('#searchInput'));
-
-    const expectedAction = snowActivation();
-
-    searchElements.nativeElement.value = 'pantoufle';
-    searchElements.nativeElement.dispatchEvent(new MouseEvent('keyup'));
-
-    tick(500);
-
-    expect(dispatchSpy).toHaveBeenCalledWith(expectedAction);
-  }));
 });
