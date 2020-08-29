@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatListItemHarness } from '@angular/material/list/testing';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NameFilterPipe } from '@app/shared/pipe/name-filter.pipe';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -44,7 +45,8 @@ describe('SoftwareAssembliesComponent', () => {
         MatIconModule,
         MatInputModule,
         NoopAnimationsModule,
-        MatCardModule
+        MatCardModule,
+        MatTooltipModule
       ],
       declarations: [
         AssembliesVisibilityComponent,

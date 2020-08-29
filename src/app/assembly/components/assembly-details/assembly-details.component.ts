@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { loadAssemblyDepthMax } from '@app/assembly/store/actions/assembly-depth-max.actions';
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { consolidateGraphPosition, toGraph } from '@app/shared/converters';
@@ -47,7 +47,11 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
     return this.depthMax > 1;
   }
 
-  constructor(private store: Store<AssemblyState>, @Inject(MAT_DIALOG_DATA) data: { id: string }) {
+  constructor(
+    public dialogRef: MatDialogRef<AssemblyDetailsComponent>,
+    private store: Store<AssemblyState>,
+    @Inject(MAT_DIALOG_DATA) data: { id: string }) {
+
     this.assemblyId = data.id;
 
     this.store.dispatch(ActionBusyAppender.executeWithBusy(loadAssemblyDepthMax({ assemblyId: this.assemblyId }), 'AssemblyDepth'));
@@ -84,5 +88,9 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
 
   private loadDepth(value: number) {
     this.#depthChanged.next(value);
+  }
+
+  close() {
+    this.dialogRef.close();
   }
 }

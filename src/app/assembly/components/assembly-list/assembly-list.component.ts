@@ -116,8 +116,9 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
 
   openDetails(assemblyId: string) {
     const dialogRef = this.dialog.open(AssemblyDetailsComponent, {
-      width: '80%',
-      height: '80%',
+      width: '98%',
+      height: '98%',
+      panelClass: 'no-padding-dialog',
       data: { id: assemblyId }
     });
 
