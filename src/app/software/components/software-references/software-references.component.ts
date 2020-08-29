@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 
 import { SoftwareState } from '../../store/models';
 import { filteredAssembliesStateSelector, softwareSelector } from '../../store/software.selectors';
+import { displayLabel } from './../../store/actions/software-assemblies.actions';
 import { displayLabelSelector } from './../../store/software.selectors';
 
 @Component({
@@ -42,5 +43,9 @@ export class SoftwareReferencesComponent implements OnInit {
 
   closeVisibilityPanel() {
     this.visibilityPanelOpened = false;
+  }
+
+  onLabelVisibilityChanged(value: boolean) {
+    this.store.dispatch(displayLabel({value}));
   }
 }

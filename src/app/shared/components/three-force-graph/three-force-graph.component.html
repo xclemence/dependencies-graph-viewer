@@ -1,1 +1,22 @@
-<div class="graph-container" id="3d-graph" #container (window:resize)="onResize()"></div>
+<section class="overlap-container">
+  <div class="overlap-item graph-container" id="3d-graph" #container (window:resize)="onResize()"></div>
+  <section class="overlap-item menu-section no-pointer-events">
+    <mat-card class="menu-card">
+      <div class="button-container">
+
+        <dgv-state-button description="Managed assembly name visibility" [value]="displayNodeLabel"
+          (valueChange)="toggleNodesVisibility()" tooltip="Display assembly name">
+          <mat-icon>speaker_notes</mat-icon>
+        </dgv-state-button>
+
+        <span class="vertical-line"></span>
+
+        <button mat-icon-button color="primary" class="pointer-events" matTooltip="Zoom to fit"
+          aria-label="Zoom graph to fit" (click)="zoomToFit()">
+          <mat-icon>center_focus_weak</mat-icon>
+        </button>
+      </div>
+    </mat-card>
+
+  </section>
+</section>

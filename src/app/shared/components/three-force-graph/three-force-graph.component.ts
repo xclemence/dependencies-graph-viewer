@@ -1,5 +1,5 @@
 import ForceGraph3D, { ForceGraph3DInstance } from '3d-force-graph';
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, NgZone, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, NgZone, Output, ViewChild } from '@angular/core';
 import { Graph } from '@app/shared/models';
 import { first } from 'rxjs/operators';
 import { MOUSE, Object3D } from 'three';
@@ -9,7 +9,7 @@ import SpriteText from 'three-spritetext';
   selector: 'dgv-three-force-graph',
   templateUrl: './three-force-graph.component.html',
   styleUrls: ['./three-force-graph.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ThreeForceGraphComponent implements AfterViewInit {
 
@@ -43,6 +43,10 @@ export class ThreeForceGraphComponent implements AfterViewInit {
     });
   }
 
+  get displayNodeLabel(): boolean {
+    return this.#displayNodeLabel;
+  }
+
   @Input() set filteredNodes(value: string[]) {
     if (this.#filteredNodes === value) {
       return;
@@ -60,6 +64,8 @@ export class ThreeForceGraphComponent implements AfterViewInit {
 
     this.updateGraphWithData();
   }
+
+  @Output() labelVisibilityChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private zone: NgZone) { }
 
@@ -213,5 +219,14 @@ export class ThreeForceGraphComponent implements AfterViewInit {
     const height = (+this.container.nativeElement.offsetHeight);
 
     return { width, height };
+  }
+
+  toggleNodesVisibility() {
+    this.displayNodeLabel = !this.#displayNodeLabel;
+    this.labelVisibilityChange.emit(this.#displayNodeLabel);
+  }
+
+  zoomToFit() {
+    this.#graphInstance.zoomToFit();
   }
 }

@@ -3,3 +3,25 @@
   height: 100%;
   overflow: hidden;
 }
+
+.menu-section {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.menu-card {
+  padding: 5px 10px;
+  margin-bottom: 10px;
+}
+
+.vertical-line{
+  border-left: 1px solid hsla(0,0%,100%,.3);
+  margin: 0 10px;
+  height: 30px;
+}
+
+.button-container {
+  display: flex;
+  align-items: center;
+}

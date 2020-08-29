@@ -1,6 +1,11 @@
 import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { DefaultGraphLink } from '@app/shared/models';
 
+import { StateButtonComponent } from './../state-button/state-button.component';
 import { ThreeForceGraphComponent } from './three-force-graph.component';
 
 describe('ThreeForceGraphComponent', () => {
@@ -9,7 +14,13 @@ describe('ThreeForceGraphComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ThreeForceGraphComponent ]
+      declarations: [ ThreeForceGraphComponent, StateButtonComponent ],
+      imports: [
+        MatButtonModule,
+        MatIconModule,
+        MatTooltipModule,
+        MatCardModule
+      ]
     })
     .compileComponents();
   }));
@@ -128,6 +139,16 @@ describe('ThreeForceGraphComponent', () => {
     fixture.detectChanges();
 
     expect(updateDataSpy).toHaveBeenCalled();
+  });
+
+  it('should change label visibility value and emit new value', () => {
+    component.displayNodeLabel = false;
+    const emitSpy = spyOn(component.labelVisibilityChange, 'emit');
+
+    component.toggleNodesVisibility();
+
+    expect(emitSpy).toHaveBeenCalledWith(true);
+    expect(component.displayNodeLabel).toBeTrue();
   });
 
 });

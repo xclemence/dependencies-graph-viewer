@@ -12,6 +12,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { ThreeForceGraphComponent } from './components/three-force-graph/three-force-graph.component';
 import { SnowDialogDirective } from './directives/snow-dialog.directive';
 import { NameFilterPipe } from './pipe/name-filter.pipe';
+import { StateButtonComponent } from './components/state-button/state-button.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { NameFilterPipe } from './pipe/name-filter.pipe';
     ThreeForceGraphComponent,
     HeaderLinksComponent,
     HeaderPreviousComponent,
-    HeaderUserComponent
+    HeaderUserComponent,
+    StateButtonComponent
   ],
   imports: [
     CommonModule,
