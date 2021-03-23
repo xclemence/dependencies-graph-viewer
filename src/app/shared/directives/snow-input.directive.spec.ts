@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { snowActivation } from '@app/core/store/actions/snow.actions';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -16,7 +16,7 @@ describe('SnowInputDirective', () => {
   let fixture: ComponentFixture<TestComponent>;
   let mockStore: MockStore;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [TestComponent, SnowInputDirective],
       providers: [

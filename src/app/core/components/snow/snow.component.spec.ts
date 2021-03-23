@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { snowStateSelector } from '@app/core/store/core.selectors';
 import { CoreState, SnowState } from '@app/core/store/models';
 import { MemoizedSelector } from '@ngrx/store';
@@ -12,7 +12,7 @@ describe('SnowComponent', () => {
   let mockStore: MockStore;
   let snowSelectorMock: MemoizedSelector<CoreState, SnowState>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SnowComponent ],
       providers: [

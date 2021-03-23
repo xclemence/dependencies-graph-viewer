@@ -1,4 +1,4 @@
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { operationCanceled } from '@app/core/store/actions';
 import { operationFailure } from '@app/core/store/actions/error.actions';
 import { Actions } from '@ngrx/effects';
@@ -38,7 +38,7 @@ describe('SoftwareAssembliesEffects', () => {
   let testScheduler: TestScheduler;
   let serviceSpy: jasmine.SpyObj<SoftwareService>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     serviceSpy = jasmine.createSpyObj<SoftwareService>('service', ['software']);
 
     TestBed.configureTestingModule({

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { busyStateSelector } from '@app/core/store/core.selectors';
 import { BusyState, CoreState } from '@app/core/store/models';
@@ -13,7 +13,7 @@ describe('BusyComponent', () => {
   let mockBusySelector: MemoizedSelector<CoreState, BusyState>;
   let mockStore: MockStore;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [ ],
       declarations: [BusyComponent],
