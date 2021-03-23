@@ -1,5 +1,5 @@
 import ForceGraph3D, { ForceGraph3DInstance } from '3d-force-graph';
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, NgZone, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, NgZone, Output, ViewChild } from '@angular/core';
 import { Graph } from '@app/shared/models';
 import { first } from 'rxjs/operators';
 import { MOUSE, Object3D } from 'three';
@@ -9,7 +9,7 @@ import SpriteText from 'three-spritetext';
   selector: 'dgv-three-force-graph',
   templateUrl: './three-force-graph.component.html',
   styleUrls: ['./three-force-graph.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ThreeForceGraphComponent implements AfterViewInit {
 
@@ -101,10 +101,7 @@ export class ThreeForceGraphComponent implements AfterViewInit {
       return null;
     }
 
-    const sprite = new SpriteText(node.label);
-    sprite.color = 'lightgray';
-    sprite.textHeight = 5;
-
+    const sprite = new SpriteText(node.label, 5, 'lightgray');
     sprite.translateY(6);
     return sprite;
   }

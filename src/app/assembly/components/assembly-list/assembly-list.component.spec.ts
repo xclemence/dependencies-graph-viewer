@@ -1,6 +1,6 @@
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -75,7 +75,7 @@ describe('AssemblyListComponent', () => {
   };
 
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     paramMap = new Subject<ParamMap>();
     assemblyServiceSpy = jasmine.createSpyObj<AssemblyService>('service', ['remove']);
     converterServiceSpy = jasmine.createSpyObj<SortDefinitionConverterService>('serviceConvertor', ['getAssemblyServiceOrder']);

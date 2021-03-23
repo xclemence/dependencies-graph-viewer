@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DefaultGraphLink, GraphNode } from '@app/shared/models';
 
@@ -8,7 +8,7 @@ describe('ForceGraphComponent', () => {
   let component: ForceGraphComponent;
   let fixture: ComponentFixture<ForceGraphComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
       ],

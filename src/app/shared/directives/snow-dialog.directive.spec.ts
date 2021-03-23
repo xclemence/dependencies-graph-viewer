@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { snowStateSelector } from '@app/core/store/core.selectors';
 import { CoreState, SnowState } from '@app/core/store/models';
@@ -25,7 +25,7 @@ describe('SnowDialogDirective', () => {
   let mockStore: MockStore;
   let snowSelectorMock: MemoizedSelector<CoreState, SnowState>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [TestComponent, SnowDialogDirective],
       providers: [
