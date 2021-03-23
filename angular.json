@@ -167,6 +167,7 @@
   },
   "defaultProject": "dependencies-graph",
   "cli": {
+    "analytics": false,
     "defaultCollection": "@ngrx/schematics"
   }
 }
