@@ -1,31 +1,32 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { UserSecurityService } from '@app/security/services';
+// import { Injectable } from '@angular/core';
+// import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+// import { UserSecurityService } from '@app/security/services';
 
-import { FeatureRightsService } from '../services/feature-rights.service';
+// import { FeatureRightsService } from '../services/feature-rights.service';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class ComponentRightsGuard implements CanActivate {
+// @Injectable({
+//   providedIn: 'root'
+// })
+// export class ComponentRightsGuard implements CanActivate {
 
-  constructor(private securityService: UserSecurityService, private featureRightsService: FeatureRightsService,
-    private router: Router) { }
+//   constructor(private securityService: UserSecurityService, private featureRightsService: FeatureRightsService,
+//     private router: Router) { }
 
-  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
+//   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
 
-    const redirect = next.data.redirect as string;
+//     const redirect = next.data.redirect as string;
 
-    const component = next.component.toString();
+//     const component = next.component.toString();
 
-    if (this.featureRightsService.validateComponentRight(component, this.securityService.user)) {
-      return true;
-    }
+//     return
+//     if (this.featureRightsService.validateComponentRight(component, this.securityService.user)) {
+//       return true;
+//     }
 
-    if (redirect === undefined) {
-      return false;
-    }
+//     if (redirect === undefined) {
+//       return false;
+//     }
 
-    return this.router.parseUrl(redirect);
-  }
-}
+//     return this.router.parseUrl(redirect);
+//   }
+// }

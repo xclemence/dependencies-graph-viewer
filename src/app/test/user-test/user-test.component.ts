@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { SecurityConfigurationService } from '@app/security/services/security-configuration.service';
+import { securityStateSelector } from '@app/core/store/core.selectors';
+import { CoreState } from '@app/core/store/models';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-user-test',
@@ -7,11 +10,12 @@ import { SecurityConfigurationService } from '@app/security/services/security-co
 })
 export class UserTestComponent implements OnInit {
 
-  result: any;
-  constructor(private config: SecurityConfigurationService) { }
+  result: Observable<any>;
+
+  constructor(private store: Store<CoreState>) { }
 
   ngOnInit() {
-    this.result = this.config.FeatureRights;
+    this.result = this.store.select(securityStateSelector);
   }
 
 }

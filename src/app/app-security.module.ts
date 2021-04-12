@@ -5,10 +5,10 @@ import { SecurityModule } from '@app/security/security.module';
 export const TestModuleRightsKey = 'TestModuleRights';
 
 const config: FeatureRightsConfig[] = [
-  { feature: TestModuleRightsKey, rights: [ 'admin' ] }
+  { feature: TestModuleRightsKey, rights: [ 'test' ] }
 ];
 
 @NgModule({
-  imports: [SecurityModule.forRoot({serverUrl: 'http://'}, config)],
+  imports: [SecurityModule.config(config)],
 })
 export class AppSecurityModule { }

@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { User } from '@app/core/models/user';
 import { LoggerService } from '@app/core/services';
-import { SecurityConfigurationService } from '@app/security/services/security-configuration.service';
+import { securityStateSelector } from '@app/core/store/core.selectors';
+import { CoreState } from '@app/core/store/models';
+import { Store } from '@ngrx/store';
+import { filter, map, mergeMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +14,7 @@ export class FeatureRightsService {
 
   #location = new Map<string, string>();
 
-  constructor(private configurationService: SecurityConfigurationService, private loggerService: LoggerService) { }
+  constructor(private store: Store<CoreState>, private loggerService: LoggerService) { }
 
   addLocation(key: string, component: any) {
     this.#location.set(key, component.constructor.name);
@@ -20,23 +24,25 @@ export class FeatureRightsService {
     this.#location.delete(key);
   }
 
-  validateCurrentLocation(user: User): boolean {
-    return Array.from(this.#location.values()).every(x => this.validateComponentRight(x, user));
+  validateCurrentLocation(): boolean {
+    return Array.from(this.#location.values()).every(x => this.validateComponentRight(x));
   }
 
-  validateComponentRight(component: string, user: User): boolean {
-    const config = this.configurationService.FeatureRights;
+  private testRights(userRights: string[], featureRights: string[]): boolean {
+    return featureRights.every(x => userRights.some(r => r === x));
+  }
 
-    const componentFeature = config.find(x => x.feature === component);
+  validateComponentRight(component: string): Observable<boolean> {
 
-    if (!componentFeature) {
-      return true;
-    }
+    return this.store.select(securityStateSelector).pipe(
+      map(x => {
+        const featureConfiguration = x.featuresConfiguration.find(f => f.name === component);
 
-    if (user === null) {
-      return false;
-    }
-
-    return componentFeature.rights.every(x => user.roles.some(r => r === x));
+        if (!featureConfiguration) {
+          return true;
+        }
+        this.testRights(x.currentUser.rights, featureConfiguration.rights)
+      })
+    );
   }
 }

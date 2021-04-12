@@ -5,10 +5,10 @@ import { SecurityModule } from '@app/security/security.module';
 import { UserTestComponent } from './user-test/user-test.component';
 
 const config: FeatureRightsConfig[] = [
-  { feature: UserTestComponent.name, rights: [ 'admin' ] }
+  { feature: UserTestComponent.name, rights: [ 'test' ] }
 ];
 
 @NgModule({
-  imports: [SecurityModule.forChild(config)],
+  imports: [SecurityModule.config(config)],
 })
 export class TestSecurityModule { }

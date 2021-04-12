@@ -2,7 +2,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { environment } from 'environments/environment';
 
-import { ConfigurationService } from './configuration.service';
+import { ConfigurationService } from '../configuration.service';
 
 describe('ConfigurationService', () => {
   let service: ConfigurationService;

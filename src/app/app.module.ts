@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from '@app/core';
 import { SharedModule } from '@app/shared';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+// import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -13,9 +14,41 @@ import { AppStoreModule } from './app-store.module';
 import { AppComponent } from './app.component';
 import { HttpErrorInterceptor } from './core/interceptors/http-error.interceptor';
 import { ConfigurationService } from './core/services/configuration.service';
+import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+import { Store } from '@ngrx/store';
+import { setCurrentUserAction } from './core/store/actions';
 
-export function configurationInit(config: ConfigurationService) {
-  return () => config.load(environment.production);
+export function configurationInit(
+  config: ConfigurationService,
+  keycloak: KeycloakService,
+  store: Store,
+  ) {
+  return async () => {
+
+    config.load(environment.production);
+
+    await keycloak.init({
+      config: {
+        url: 'http://localhost:9080/auth',
+        realm: 'dependencies',
+        clientId: 'graph',
+      },
+      initOptions: {
+        onLoad: 'check-sso',
+        silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
+        enableLogging: true,
+      },
+      loadUserProfileAtStartUp: true
+    });
+
+    if(await keycloak.isLoggedIn()) {
+
+      store.dispatch(setCurrentUserAction({
+        name: keycloak.getUsername(),
+        rigths: keycloak.getUserRoles()
+      }));
+    }
+  }
 }
 
 @NgModule({
@@ -32,7 +65,9 @@ export function configurationInit(config: ConfigurationService) {
     AppStoreModule,
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     HttpClientModule,
-    ...environment.modules
+    KeycloakAngularModule,
+    ...environment.modules,
+    // AuthConfigModule
   ],
   providers: [
     {
@@ -44,7 +79,7 @@ export function configurationInit(config: ConfigurationService) {
       provide: APP_INITIALIZER,
       useFactory: configurationInit,
       multi: true,
-      deps: [ConfigurationService]
+      deps: [ConfigurationService, KeycloakService, Store]
     }
   ],
   bootstrap: [AppComponent]

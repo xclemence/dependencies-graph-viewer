@@ -9,7 +9,7 @@ import { reducers } from './store/reducers/core.reducer';
 @NgModule({
   imports: [
     StoreModule.forFeature(coreFeatureKey, reducers),
-    EffectsModule.forFeature([BusyIndicatorEffects]),
+    EffectsModule.forFeature([BusyIndicatorEffects ]),
   ],
 })
 export class CoreStoreModule { }

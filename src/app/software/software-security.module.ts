@@ -7,7 +7,7 @@ const config: FeatureRightsConfig[] = [
 ];
 
 @NgModule({
-  imports: [SecurityModule.forChild(config)],
+  imports: [SecurityModule.config(config)],
   // exports: [SecurityModule]
 })
 export class SoftwareSecurityModule { }
