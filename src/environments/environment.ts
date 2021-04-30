@@ -5,7 +5,15 @@
 export const environment = {
   production: false,
   assemblyGraphqlUri: 'http://localhost:4001/graphql',
+  security: {
+    enabled: true,
+    rightMapping: new Map([
+      ['dg_assembly_remove', 'remove-assembly']
+    ])
+  },
+
   modules: [ ],
+
 };
 
 /*

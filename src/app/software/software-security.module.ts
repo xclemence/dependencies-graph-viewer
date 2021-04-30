@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
-import { FeatureRightsConfig } from '@app/security/models';
 import { SecurityModule } from '@app/security/security.module';
 
-const config: FeatureRightsConfig[] = [
-  { feature: 'admin-software-item', rights: [ 'admin' ] }
-];
+const config = {
+  features: [
+  ]
+}
 
 @NgModule({
   imports: [SecurityModule.config(config)],

@@ -7,17 +7,16 @@ import { AuthGuard } from './security/guards/auth.guard';
 const routes: Routes = [
   {
     path: 'software',
-    loadChildren: () => import('./software/software.module').then(m => m.SoftwareModule),
-    canLoad: [AuthGuard]
+    loadChildren: () => import('./software/software.module').then(m => m.SoftwareModule)
   },
   {
     path: 'assembly',
-    loadChildren: () => import('./assembly/assembly.module').then(m => m.AssemblyModule),
-    canLoad: [AuthGuard]
+    loadChildren: () => import('./assembly/assembly.module').then(m => m.AssemblyModule)
   },
   {
     path: 'test',
     loadChildren: () => import('./test/test.module').then(m => m.TestModule),
+    canLoad: [AuthGuard]
   },
   {
     path: '',

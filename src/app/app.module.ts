@@ -17,11 +17,13 @@ import { ConfigurationService } from './core/services/configuration.service';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { Store } from '@ngrx/store';
 import { setCurrentUserAction } from './core/store/actions';
+import { RightMappingService } from './security/services/right-mapping.service';
 
 export function configurationInit(
   config: ConfigurationService,
   keycloak: KeycloakService,
   store: Store,
+  rigthsMapping: RightMappingService
   ) {
   return async () => {
 
@@ -42,10 +44,11 @@ export function configurationInit(
     });
 
     if(await keycloak.isLoggedIn()) {
-
+      console.log(`rights: ${keycloak.getUserRoles()}`);
+      console.log(`rights udpate: ${keycloak.getUserRoles().map(x => rigthsMapping.getApplicationRight(x))}`);
       store.dispatch(setCurrentUserAction({
         name: keycloak.getUsername(),
-        rigths: keycloak.getUserRoles()
+        rigths: keycloak.getUserRoles().map(x => rigthsMapping.getApplicationRight(x))
       }));
     }
   }
@@ -79,7 +82,7 @@ export function configurationInit(
       provide: APP_INITIALIZER,
       useFactory: configurationInit,
       multi: true,
-      deps: [ConfigurationService, KeycloakService, Store]
+      deps: [ConfigurationService, KeycloakService, Store, RightMappingService]
     }
   ],
   bootstrap: [AppComponent]

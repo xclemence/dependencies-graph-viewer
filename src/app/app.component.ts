@@ -23,6 +23,7 @@ export class AppComponent implements OnInit, OnDestroy{
   links: Array<HeaderLink> = [
     { path : 'software', label: 'Software', roles: [ ] },
     { path : 'assembly', label: 'Assembly', roles: [ ] },
+    { path : 'test', label: 'Test', roles: [ 'test' ] },
   ];
 
   get version(): string {
@@ -37,12 +38,6 @@ export class AppComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
-
-    this.store.select(featuresRightsSelector).pipe(
-      mergeMap(x => x),
-      filter(x => x.name === TestModuleRightsKey)
-    ).subscribe(x => this.links.push({ path: 'test', label: 'Test', roles: x.rights}));
-
     this.#storeSubscription = this.store.pipe(
       select(errorStateSelector),
       filter(x => x.lastError),

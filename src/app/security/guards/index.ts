@@ -1,2 +1,2 @@
-export * from './connected.guard';
-export * from './logon.guard';
+export * from './component-rights.guard';
+export * from './auth.guard';

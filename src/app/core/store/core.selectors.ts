@@ -13,4 +13,3 @@ export const securityStateSelector = createSelector(coreStateSelector, (state: C
 
 export const currentUserSelector = createSelector(securityStateSelector, (state) => state.currentUser);
 export const featuresRightsSelector = createSelector(securityStateSelector, (state) => state.featuresConfiguration);
-

@@ -18,7 +18,7 @@ export class AssembliesEffects {
       switchMap(action => this.assemblyService.assemblyStatistics(action.take, action.page, action.filter, action.order).pipe(
         map(data => loadAssembliesSuccess({ data: data.assemblies, assembliesCount: data.count, origin: action })),
         catchError(error => of(operationFailure({ error: error.message, origin: action })))
-        )),
+      )),
     );
   });
 }

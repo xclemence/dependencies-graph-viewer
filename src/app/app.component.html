@@ -1,11 +1,13 @@
 <div class="mat-elevation-z6 header">
-  <div class="flex-panel left-panel">
-    <dgv-header-previous></dgv-header-previous>
-    <dgv-header-links [allLinks]="links"></dgv-header-links>
-  </div>
-  <div class="right-panel">
-    <h3 class="header-title flex-panel">Dependencies Graph Viewer</h3>
-    <h6 class="header-title flex-panel">{{version}}</h6>
+  <div class="header-left">
+    <div class="right-panel">
+      <h3 class="header-title flex-panel">Dependencies Graph Viewer</h3>
+      <h6 class="header-title flex-panel">{{version}}</h6>
+    </div>
+    <div class="flex-panel left-panel">
+      <!-- <dgv-header-previous></dgv-header-previous> -->
+      <dgv-header-links [allLinks]="links"></dgv-header-links>
+    </div>
   </div>
 
   <dgv-header-user></dgv-header-user>

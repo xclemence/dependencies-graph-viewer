@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AllMaterialModuleModule, SharedModule } from '@app/shared';
 
 import { AssemblyRoutingModule } from './assembly-routing.module';
+import { AssemblySecurityModule } from './assembly-security.module';
 import { AssemblyStoreModule } from './assembly-store.module';
 import { AssemblyDetailsComponent } from './components/assembly-details/assembly-details.component';
 import { AssemblyListComponent } from './components/assembly-list/assembly-list.component';
@@ -16,10 +17,8 @@ import { AssemblyListComponent } from './components/assembly-list/assembly-list.
     AssemblyRoutingModule,
     AllMaterialModuleModule,
     FormsModule,
-    AssemblyStoreModule
-  ],
-  entryComponents: [
-    AssemblyDetailsComponent
+    AssemblyStoreModule,
+    AssemblySecurityModule
   ]
 })
 export class AssemblyModule { }

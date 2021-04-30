@@ -1,1 +1,1 @@
-export * from './force-graph-model';
+export * from './force-graph';

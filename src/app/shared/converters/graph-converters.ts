@@ -1,7 +1,7 @@
 import { Assembly, AssemblyBase, AssemblyColors, AssemblyLink } from '@app/core/models';
 import { DefaultGraphLink, GraphLink } from '@app/shared/models';
 
-import { Graph, GraphNode } from '../models/force-graph-model';
+import { Graph, GraphNode } from '../models/force-graph';
 
 export function toGraphNode(assembly: AssemblyBase, forceColor?: string): GraphNode {
   let color = forceColor;

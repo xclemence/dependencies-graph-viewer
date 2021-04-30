@@ -1,5 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { currentUserSelector } from '@app/core/store/core.selectors';
+import { CoreState } from '@app/core/store/models';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 export class HeaderLink {
   path: string;
@@ -17,24 +21,22 @@ export class HeaderLinksComponent implements OnInit, OnDestroy {
   userLinks: Array<HeaderLink> = [];
   #serviceSubscription: Subscription;
 
-  constructor() {
+  constructor(private store: Store<CoreState>) {
   }
 
   ngOnInit(): void {
     this.updateUserLinks();
-    // this.#serviceSubscription = this.userService.observe().subscribe(x => this.updateUserLinks());
   }
 
   ngOnDestroy(): void {
-    this.#serviceSubscription.unsubscribe();
-  }
-
-  hasRoles(roles: Array<string>): boolean {
-    return true;
-    // return roles.every(x => this.userService.hasRight(x));
+    this.#serviceSubscription?.unsubscribe();
   }
 
   private updateUserLinks(): void {
-    this.userLinks = this.allLinks.filter(l => l.roles.length === 0 || this.hasRoles(l.roles));
+    this.store.select(currentUserSelector).pipe(
+      map(x => x?.rights ?? [])
+    ).subscribe(x => {
+      this.userLinks = this.allLinks.filter(l => l.roles.length === 0 || l.roles.every(r => x.includes(r)));
+    })
   }
 }

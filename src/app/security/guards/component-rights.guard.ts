@@ -1,32 +1,37 @@
-// import { Injectable } from '@angular/core';
-// import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-// import { UserSecurityService } from '@app/security/services';
+import { Injectable, Type } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
 
-// import { FeatureRightsService } from '../services/feature-rights.service';
+import { RightService } from '../services/right.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class ComponentRightsGuard implements CanActivate {
+@Injectable({
+  providedIn: 'root'
+})
+export class ComponentRightsGuard implements CanActivate {
 
-//   constructor(private securityService: UserSecurityService, private featureRightsService: FeatureRightsService,
-//     private router: Router) { }
+  constructor(
+    private featureRightsService: RightService,
+    private router: Router) { }
 
-//   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
+  canActivate(next: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
 
-//     const redirect = next.data.redirect as string;
+    let coponentName = '';
+    if (next.component instanceof Type) {
+      coponentName = next.component.name;
+    } else {
+      coponentName = next.component;
+    }
 
-//     const component = next.component.toString();
+    return this.featureRightsService.hasFeature(coponentName).pipe(
+      map(x => {
+        console.log(`${coponentName}: ${x}`);
+        if(!x) {
+          return this.router.parseUrl('notfound');
+        }
 
-//     return
-//     if (this.featureRightsService.validateComponentRight(component, this.securityService.user)) {
-//       return true;
-//     }
-
-//     if (redirect === undefined) {
-//       return false;
-//     }
-
-//     return this.router.parseUrl(redirect);
-//   }
-// }
+        return true;
+      })
+    );
+  }
+}
