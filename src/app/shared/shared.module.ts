@@ -14,7 +14,6 @@ import { ThreeForceGraphComponent } from './components/three-force-graph/three-f
 import { SnowDialogDirective } from './directives/snow-dialog.directive';
 import { SnowInputDirective } from './directives/snow-input.directive';
 import { NameFilterPipe } from './pipe/name-filter.pipe';
-import { SafeUrlPipe } from './pipe/safe-url.pipe';
 
 @NgModule({
   declarations: [
@@ -29,8 +28,7 @@ import { SafeUrlPipe } from './pipe/safe-url.pipe';
     HeaderPreviousComponent,
     HeaderUserComponent,
     StateButtonComponent,
-    SnowInputDirective,
-    SafeUrlPipe
+    SnowInputDirective
   ],
   imports: [
     CommonModule,

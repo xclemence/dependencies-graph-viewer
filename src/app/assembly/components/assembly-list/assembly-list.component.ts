@@ -61,7 +61,6 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
     private rightService: RightService) {
 
     this.initializeColumns();
-
   }
 
 

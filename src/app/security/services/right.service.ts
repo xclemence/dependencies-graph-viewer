@@ -19,7 +19,7 @@ export class RightService {
   }
 
   private hasComponentRight(component: string, configuration: FeatureRigthsState[], userRights: string[]): boolean {
-    const featureConfiguration = configuration.find(f => f.name === component);
+    const featureConfiguration = configuration?.find(f => f.name === component);
 
     if (!featureConfiguration || !userRights) {
       return false;
@@ -38,15 +38,12 @@ export class RightService {
       return of(true);
     }
 
-    console.log(' ritgh')
-
     return combineLatest([
         this.store.select(currentUserSelector),
         this.store.select(featuresRightsSelector)
       ]).pipe(
         map(results => ({user: results[0], features: results[1]})),
         map(x =>  rights.every(r => this.hasComponentRight(r, x.features, x.user?.rights))),
-        tap(x => console.log(`test right ${rights} :${x}`))
     );
   }
 }
