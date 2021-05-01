@@ -5,7 +5,7 @@ export const environment = {
   assemblyGraphqlUri: '[Placeholder]',
   security: {
     enabled: false,
-    rightMapping: ''
+    rightMapping: new Map()
   },
 
   modules: [ MockModule ],
