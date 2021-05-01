@@ -5,7 +5,10 @@ export const environment = {
   assemblyGraphqlUri: '[Placeholder]',
   security: {
     enabled: false,
-    rightMapping: new Map()
+    server: '',
+    realm: '',
+    clientId: '',
+    rightMapping: []
   },
 
   modules: [ MockModule ],

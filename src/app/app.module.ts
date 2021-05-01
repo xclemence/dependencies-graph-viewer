@@ -5,7 +5,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from '@app/core';
 import { SharedModule } from '@app/shared';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-// import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -15,42 +14,15 @@ import { AppComponent } from './app.component';
 import { HttpErrorInterceptor } from './core/interceptors/http-error.interceptor';
 import { ConfigurationService } from './core/services/configuration.service';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
-import { Store } from '@ngrx/store';
-import { setCurrentUserAction } from './core/store/actions';
-import { RightMappingService } from './security/services/right-mapping.service';
+import { SecurityConfigurationService } from './security/services/security-configuration.service';
 
 export function configurationInit(
   config: ConfigurationService,
-  keycloak: KeycloakService,
-  store: Store,
-  rigthsMapping: RightMappingService
+  securityConfig: SecurityConfigurationService,
   ) {
   return async () => {
-
-    config.load(environment.production);
-
-    await keycloak.init({
-      config: {
-        url: 'http://localhost:9080/auth',
-        realm: 'dependencies',
-        clientId: 'graph',
-      },
-      initOptions: {
-        onLoad: 'check-sso',
-        silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
-        enableLogging: true,
-      },
-      loadUserProfileAtStartUp: true
-    });
-
-    if (await keycloak.isLoggedIn()) {
-      console.log(`rights: ${keycloak.getUserRoles()}`);
-      console.log(`rights udpate: ${keycloak.getUserRoles().map(x => rigthsMapping.getApplicationRight(x))}`);
-      store.dispatch(setCurrentUserAction({
-        name: keycloak.getUsername(),
-        rigths: keycloak.getUserRoles().map(x => rigthsMapping.getApplicationRight(x))
-      }));
-    }
+    await config.load(environment.production);
+    await securityConfig.configure(window.location.origin + '/assets/silent-check-sso.html');
   };
 }
 
@@ -70,7 +42,6 @@ export function configurationInit(
     HttpClientModule,
     KeycloakAngularModule,
     ...environment.modules,
-    // AuthConfigModule
   ],
   providers: [
     {
@@ -82,7 +53,7 @@ export function configurationInit(
       provide: APP_INITIALIZER,
       useFactory: configurationInit,
       multi: true,
-      deps: [ConfigurationService, KeycloakService, Store, RightMappingService]
+      deps: [ConfigurationService, SecurityConfigurationService]
     }
   ],
   bootstrap: [AppComponent]

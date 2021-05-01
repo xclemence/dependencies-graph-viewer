@@ -7,9 +7,12 @@ export const environment = {
   assemblyGraphqlUri: 'http://localhost:4001/graphql',
   security: {
     enabled: true,
-    rightMapping: new Map([
-      ['dg_assembly_remove', 'remove-assembly']
-    ])
+    server: 'http://localhost:9080/auth',
+    realm: 'dependencies',
+    clientId: 'graph',
+    rightMapping: [
+      {server: 'dg_assembly_remove', application: 'remove-assembly' }
+    ]
   },
 
   modules: [ ],

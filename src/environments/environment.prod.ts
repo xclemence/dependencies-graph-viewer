@@ -1,9 +1,12 @@
 export const environment = {
   production: true,
-  assemblyGraphqlUri: '[Placeholder-assemblyGraphqlUri]',
+  assemblyGraphqlUri: '[Placeholder]',
   security: {
-    enabled: '[Placeholder-rightsEnable]',
-    mapping: '[Placeholder-rigthsMapping]'
+    enabled: false,
+    server: '[Placeholder]',
+    realm: '[Placeholder]',
+    clientId: '[Placeholder]',
+    rightMapping: []
   },
   modules: [],
 };

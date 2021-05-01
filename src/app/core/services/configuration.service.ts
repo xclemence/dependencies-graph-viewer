@@ -9,16 +9,23 @@ export class ConfigurationService {
 
   constructor(private http: HttpClient) { }
 
-  load(productionMode: boolean): Promise<boolean> | boolean {
+  async load(productionMode: boolean): Promise<boolean> {
 
     if (productionMode) {
-      return this.http.get('/assets/config.json')
-        .toPromise()
-        .then((config: any) => {
-          environment.assemblyGraphqlUri = config.assemblyGraphqlUri;
-          return true;
-        }).catch((err) => false);
+      try {
+        const config = await this.http.get<any>('/assets/config.json').toPromise()
+        environment.assemblyGraphqlUri = config.assemblyGraphqlUri;
+
+        environment.security = {
+          ... config.security,
+          rightMapping: [... config.security.rightMapping]
+        };
+
+      } catch {
+        return false;
+      }
     }
+
     return true;
   }
 }
