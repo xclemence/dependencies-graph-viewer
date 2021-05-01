@@ -48,7 +48,6 @@ import { NameFilterPipe } from './pipe/name-filter.pipe';
     HeaderPreviousComponent,
     HeaderUserComponent,
     SnowInputDirective,
-    SafeUrlPipe
   ],
   entryComponents: [
     ConfirmationDialogComponent
