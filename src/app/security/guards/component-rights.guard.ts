@@ -25,8 +25,7 @@ export class ComponentRightsGuard implements CanActivate {
 
     return this.featureRightsService.hasFeature(coponentName).pipe(
       map(x => {
-        console.log(`${coponentName}: ${x}`);
-        if(!x) {
+        if (!x) {
           return this.router.parseUrl('notfound');
         }
 

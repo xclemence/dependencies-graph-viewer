@@ -17,7 +17,7 @@ export class HeaderUserComponent implements OnInit {
 
     this.userConnected = await this.keycloack.isLoggedIn();
 
-    if(this.userConnected) {
+    if (this.userConnected) {
       this.userName = this.keycloack.getUsername();
     }
   }

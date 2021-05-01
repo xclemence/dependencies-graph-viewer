@@ -3,7 +3,7 @@ import { SecurityModule } from '@app/security/security.module';
 import { removeAssemblyFeature, removeAssemblyRight } from './assembly-security-keys';
 
 const config = {
-  features:[
+  features: [
     { feature: removeAssemblyFeature, rights: [ removeAssemblyRight ] }
   ]
 };

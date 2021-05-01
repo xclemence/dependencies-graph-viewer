@@ -37,6 +37,6 @@ export class HeaderLinksComponent implements OnInit, OnDestroy {
       map(x => x?.rights ?? [])
     ).subscribe(x => {
       this.userLinks = this.allLinks.filter(l => l.roles.length === 0 || l.roles.every(r => x.includes(r)));
-    })
+    });
   }
 }

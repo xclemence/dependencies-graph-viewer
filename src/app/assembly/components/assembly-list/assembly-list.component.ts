@@ -35,7 +35,7 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
   private removeColumnKey = 'remove';
 
 
-  displayedColumns: String[];
+  displayedColumns: string[];
 
   dataSource: MatTableDataSource<AssemblyStat>;
   selection = new SelectionModel<AssemblyStat>(false, []);

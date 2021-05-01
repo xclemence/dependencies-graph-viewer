@@ -51,7 +51,7 @@ describe('AssemblyListComponent', () => {
       busy: {
         actionsInProgress: []
       },
-      security:{
+      security: {
 
       }
     }

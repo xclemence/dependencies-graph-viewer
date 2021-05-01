@@ -7,7 +7,7 @@ const config = {
   features: [
     { feature: TestModuleRightsKey, rights: [ 'test' ] }
   ]
-}
+};
 
 @NgModule({
   imports: [SecurityModule.config(config)],

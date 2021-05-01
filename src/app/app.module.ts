@@ -43,7 +43,7 @@ export function configurationInit(
       loadUserProfileAtStartUp: true
     });
 
-    if(await keycloak.isLoggedIn()) {
+    if (await keycloak.isLoggedIn()) {
       console.log(`rights: ${keycloak.getUserRoles()}`);
       console.log(`rights udpate: ${keycloak.getUserRoles().map(x => rigthsMapping.getApplicationRight(x))}`);
       store.dispatch(setCurrentUserAction({
@@ -51,7 +51,7 @@ export function configurationInit(
         rigths: keycloak.getUserRoles().map(x => rigthsMapping.getApplicationRight(x))
       }));
     }
-  }
+  };
 }
 
 @NgModule({

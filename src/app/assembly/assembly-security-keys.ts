@@ -1,3 +1,3 @@
-export const removeAssemblyFeature = "removeAssemblyFeature";
+export const removeAssemblyFeature = 'removeAssemblyFeature';
 
-export const removeAssemblyRight: string = 'remove-assembly';
+export const removeAssemblyRight = 'remove-assembly';

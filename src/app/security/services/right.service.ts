@@ -25,7 +25,7 @@ export class RightService {
       return false;
     }
 
-    return this.testRights(userRights, featureConfiguration.rights)
+    return this.testRights(userRights, featureConfiguration.rights);
   }
 
   hasFeature(right: string): Observable<boolean> {
@@ -34,7 +34,7 @@ export class RightService {
 
   hasRights(rights: string[]): Observable<boolean> {
 
-    if(!environment.security.enabled) {
+    if (!environment.security.enabled) {
       return of(true);
     }
 

@@ -27,7 +27,6 @@ export class SecurityModule {
   }
 
   constructor(securityRegistrationService: SecurityRegistrationService) {
-    console.log()
     securityRegistrationService.register();
   }
 }

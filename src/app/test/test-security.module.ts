@@ -7,7 +7,7 @@ const config = {
   features: [
     { feature: UserTestComponent.name, rights: [ 'test-user' ] }
   ]
-}
+};
 
 @NgModule({
   imports: [SecurityModule.config(config)],
