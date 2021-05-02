@@ -14,11 +14,11 @@ describe('workspace-project App', () => {
 
     await page.openAssemblyDetails(0);
 
-    expect(await page.getDetailsHeader()).toEqual('Depth View : Software 1 (2.0.0.0)');
+    expect(await page.getDetailsHeader()).toEqual('Depth View : Software 1 (2.0.0)');
 
     await page.closeAssemblyDetails();
     await page.openAssemblyDetails(2);
 
-    expect(await page.getDetailsHeader()).toEqual('Depth View : dll1 name (1.0.0.0)');
+    expect(await page.getDetailsHeader()).toEqual('Depth View : dll1 name (1.0.0)');
   });
 });
