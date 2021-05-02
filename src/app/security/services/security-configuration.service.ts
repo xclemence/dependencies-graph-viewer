@@ -13,7 +13,7 @@ export class SecurityConfigurationService {
   constructor(
     private keycloak: KeycloakService,
     private store: Store,
-    private rigthsMapping: RightMappingService ) {}
+    private rightsMapping: RightMappingService ) {}
 
   async configure(ssoRedirectUri: string) {
     if (!environment.security.enabled) {
@@ -37,7 +37,7 @@ export class SecurityConfigurationService {
     if (await this.keycloak.isLoggedIn()) {
       this.store.dispatch(setCurrentUserAction({
         name: this.keycloak.getUsername(),
-        rigths: this.keycloak.getUserRoles().map(x => this.rigthsMapping.getApplicationRight(x))
+        rights: this.keycloak.getUserRoles().map(x => this.rightsMapping.getApplicationRight(x))
       }));
     }
   }

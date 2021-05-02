@@ -1,11 +1,16 @@
 <div class="flex-panel">
-    <button *ngIf="!userConnected" mat-button (click)="logon()">
-      <mat-icon>vpn_key</mat-icon> Logon
+    <button *ngIf="!userConnected" mat-button (click)="logon()" >
+      <mat-icon>no_accounts</mat-icon>
     </button>
     <div *ngIf="userConnected" class="flex-panel">
-      <button mat-button [matMenuTriggerFor]="menu"><mat-icon>person</mat-icon>  {{userName}}</button>
+      <button mat-button [matMenuTriggerFor]="menu" ><mat-icon>account_circle</mat-icon></button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="logout()">Logout</button>
+        <div class="user-name">  {{userName}}</div>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
       </mat-menu>
     </div>
   </div>

@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { select, Store } from '@ngrx/store';
+import { environment } from 'environments/environment';
 import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
@@ -17,6 +18,8 @@ import { HeaderLink } from './shared/components';
 export class AppComponent implements OnInit, OnDestroy{
   title = 'DependenciesGraph';
   #storeSubscription: Subscription;
+
+  canLogon = environment.security.enabled;
 
   links: Array<HeaderLink> = [
     { path : 'software', label: 'Software', roles: [ ] },

@@ -1,1 +1,1 @@
-export * from './seccurity-config';
+export * from './security-config';

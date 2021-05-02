@@ -29,7 +29,7 @@ export const securityReducer = createReducer(
       ...state,
       currentUser: {
         name: action.name,
-        rights: [...action.rigths]
+        rights: [...action.rights]
       }
     };
   }),

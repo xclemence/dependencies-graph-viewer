@@ -1,7 +1,6 @@
 import { Component, ElementRef, Input, AfterViewChecked, ChangeDetectionStrategy, AfterViewInit, NgZone, OnDestroy } from '@angular/core';
 
-import * as d3 from 'd3';
-import { Simulation } from 'd3';
+import { drag, forceCenter, forceCollide, forceLink, forceManyBody, forceSimulation, select, Simulation, zoom } from 'd3';
 
 import { Graph, GraphNode, GraphLink } from '@app/shared/models';
 
@@ -82,7 +81,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
 
     this.#isInitialized = true;
 
-    this.#svg = d3.select('.graph-svg');
+    this.#svg = select('.graph-svg');
     const size = this.getControlSize();
 
     this.#height = size.height;
@@ -91,11 +90,11 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
     this.#svg.attr('width', this.#width);
     this.#svg.attr('height', this.#height);
 
-    this.#simulation = d3.forceSimulation()
-      .force('link', d3.forceLink().id((d: any) => d.id).distance(150))
-      .force('collide', d3.forceCollide(this.circleSize * 1.5).iterations(20))
-      .force('charge', d3.forceManyBody().strength(-30).distanceMin(10))
-      .force('center', d3.forceCenter(this.#width / 2, this.#height / 2));
+    this.#simulation = forceSimulation()
+      .force('link', forceLink().id((d: any) => d.id).distance(150))
+      .force('collide', forceCollide(this.circleSize * 1.5).iterations(20))
+      .force('charge', forceManyBody().strength(-30).distanceMin(10))
+      .force('center', forceCenter(this.#width / 2, this.#height / 2));
 
     this.#svgGroup = this.#svg.append('g');
 
@@ -114,7 +113,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
       .attr('stroke', 'none')
       .attr('fill', 'DimGray');
 
-    this.#svg.call(d3.zoom().on('zoom', ({ transform }) => this.#svgGroup.attr('transform', transform)));
+    this.#svg.call(zoom().on('zoom', ({ transform }) => this.#svgGroup.attr('transform', transform)));
 
     this.#svgGroup.append('g').attr('class', 'links');
     this.#svgGroup.append('g').attr('class', 'nodes');
@@ -180,7 +179,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
 
     this.#simulation.nodes(this.#graph.nodes).on('tick', () => this.ticked());
 
-    this.#nodes.call(d3.drag().on('start', (event, d) => this.dragStarted(event, d, this.#simulation))
+    this.#nodes.call(drag().on('start', (event, d) => this.dragStarted(event, d, this.#simulation))
       .on('drag', this.dragged)
       .on('end', (event, d) => this.dragEnded(event, d, this.#simulation)));
 
@@ -258,7 +257,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
     this.#svg.attr('width', this.#width);
     this.#svg.attr('height', this.#height);
 
-    this.#simulation = this.#simulation.force('center', d3.forceCenter(this.#width / 2, this.#height / 2));
+    this.#simulation = this.#simulation.force('center', forceCenter(this.#width / 2, this.#height / 2));
     this.#simulation.restart();
   }
 

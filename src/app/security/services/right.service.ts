@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LoggerService } from '@app/core/services';
 import { currentUserSelector, featuresRightsSelector } from '@app/core/store/core.selectors';
-import { CoreState, FeatureRigthsState } from '@app/core/store/models';
+import { CoreState, FeatureRightsState } from '@app/core/store/models';
 import { Store } from '@ngrx/store';
 import { combineLatest, Observable, of } from 'rxjs';
 import { environment } from 'environments/environment';
@@ -18,7 +18,7 @@ export class RightService {
     return featureRights.every(x => userRights.some(r => r === x));
   }
 
-  private hasComponentRight(component: string, configuration: FeatureRigthsState[], userRights: string[]): boolean {
+  private hasComponentRight(component: string, configuration: FeatureRightsState[], userRights: string[]): boolean {
     const featureConfiguration = configuration?.find(f => f.name === component);
 
     if (!featureConfiguration || !userRights) {

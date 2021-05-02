@@ -3,12 +3,12 @@ export interface CurrentUserState {
   rights: string[];
 }
 
-export interface FeatureRigthsState {
+export interface FeatureRightsState {
   name: string;
   rights: string[];
 }
 
 export interface SecurityState {
   currentUser: CurrentUserState;
-  featuresConfiguration: FeatureRigthsState[];
+  featuresConfiguration: FeatureRightsState[];
 }

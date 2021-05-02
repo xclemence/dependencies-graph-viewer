@@ -3,7 +3,8 @@ import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'dgv-header-user',
-  templateUrl: './header-user.component.html'
+  templateUrl: './header-user.component.html',
+  styleUrls: [ './header-user.component.scss']
 })
 export class HeaderUserComponent implements OnInit {
 
@@ -11,22 +12,22 @@ export class HeaderUserComponent implements OnInit {
 
   userName?: string;
 
-  constructor(private keycloack: KeycloakService) {}
+  constructor(private keycloak: KeycloakService) {}
 
   async ngOnInit() {
 
-    this.userConnected = await this.keycloack.isLoggedIn();
+    this.userConnected = await this.keycloak.isLoggedIn();
 
     if (this.userConnected) {
-      this.userName = this.keycloack.getUsername();
+      this.userName = this.keycloak.getUsername();
     }
   }
 
   async logon() {
-    await this.keycloack.login();
+    await this.keycloak.login();
   }
 
   async logout() {
-    await this.keycloack.logout();
+    await this.keycloak.logout();
   }
 }

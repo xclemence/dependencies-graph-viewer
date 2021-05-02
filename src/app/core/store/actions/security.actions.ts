@@ -7,5 +7,5 @@ export const addFeatureConfigurationAction = createAction(
 
 export const setCurrentUserAction = createAction(
   '[Core - Security] Set current user',
-  props<{ name: string, rigths: string[] }>()
+  props<{ name: string, rights: string[] }>()
 );

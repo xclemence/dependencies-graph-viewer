@@ -2,9 +2,9 @@ import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { addFeatureConfigurationAction } from '@app/core/store/actions';
 import { Store } from '@ngrx/store';
 
-import { SecurityConfig } from '../models/seccurity-config';
+import { SecurityConfig } from '../models/security-config';
 
-export const FeatureSecurityToken = new InjectionToken<SecurityConfig>('Configuration for compenents');
+export const FeatureSecurityToken = new InjectionToken<SecurityConfig>('Configuration for components');
 
 @Injectable({
   providedIn: 'root'

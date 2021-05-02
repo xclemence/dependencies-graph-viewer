@@ -1,20 +1,20 @@
 <div class="mat-elevation-z6 header">
-  <div class="header-left">
+  <div class="flex-panel left-panel">
+    <dgv-header-previous></dgv-header-previous>
+    <dgv-header-links [allLinks]="links"></dgv-header-links>
+  </div>
+
+  <div class="header-right">
+    <dgv-header-user *ngIf="canLogon"></dgv-header-user>
     <div class="right-panel">
       <h3 class="header-title flex-panel">Dependencies Graph Viewer</h3>
       <h6 class="header-title flex-panel">{{version}}</h6>
     </div>
-    <div class="flex-panel left-panel">
-      <!-- <dgv-header-previous></dgv-header-previous> -->
-      <dgv-header-links [allLinks]="links"></dgv-header-links>
-    </div>
   </div>
-
-  <dgv-header-user></dgv-header-user>
 </div>
 
 <div class="main-view mat-typography">
   <router-outlet class="main-router" appSecureOutlet></router-outlet>
   <dgv-busy busyKey="Main"></dgv-busy>
-  <dgv-snow class="snow-panel" ></dgv-snow>
+  <dgv-snow class="snow-panel"></dgv-snow>
 </div>

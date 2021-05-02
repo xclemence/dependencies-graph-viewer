@@ -16,14 +16,14 @@ export class ComponentRightsGuard implements CanActivate {
 
   canActivate(next: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
 
-    let coponentName = '';
+    let componentName = '';
     if (next.component instanceof Type) {
-      coponentName = next.component.name;
+      componentName = next.component.name;
     } else {
-      coponentName = next.component;
+      componentName = next.component;
     }
 
-    return this.featureRightsService.hasFeature(coponentName).pipe(
+    return this.featureRightsService.hasFeature(componentName).pipe(
       map(x => {
         if (!x) {
           return this.router.parseUrl('notfound');
