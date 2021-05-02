@@ -27,7 +27,8 @@ describe('ConfigurationService', () => {
     const mockReq = httpMock.expectOne('/assets/config.json');
 
     mockReq.flush({
-      assemblyGraphqlUri: 'http://localhost:12345'
+      assemblyGraphqlUri: 'http://localhost:12345',
+      security: {}
     });
 
     const result = await resultPromise;

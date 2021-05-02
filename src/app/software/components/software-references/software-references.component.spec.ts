@@ -183,15 +183,15 @@ describe('SoftwareReferencesComponent', () => {
       displayLabel: false
     };
 
+    const node2 = { id: '2', label: 'name2 (1.0)', color: AssemblyColors.managed };
+    const node3 = { id: '3', label: 'name3 (1.0)', color: AssemblyColors.native };
+    const node1 = { id: '1', label: 'name1 (1.0)', color: AssemblyColors.main };
+
     const expectedGraph = {
-      nodes: [
-        { id: '2', label: 'name2 (1.0)', color: AssemblyColors.managed },
-        { id: '3', label: 'name3 (1.0)', color: AssemblyColors.native },
-        { id: '1', label: 'name1 (1.0)', color: AssemblyColors.main }
-      ],
+      nodes: [ node2, node3, node1 ],
       links: [
-        new DefaultGraphLink({ source: '1', target: '2' }),
-        new DefaultGraphLink({ source: '1', target: '3' })
+        new DefaultGraphLink({ source: node1, target: node2 }),
+        new DefaultGraphLink({ source: node1, target: node3 })
       ]
     };
 

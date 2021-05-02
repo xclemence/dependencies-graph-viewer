@@ -7,6 +7,6 @@ import { environment } from 'environments/environment';
 export class RightMappingService {
 
   getApplicationRight(right: string): string {
-    return environment.security.rightMapping.find(x => x.server == right)?.app ?? right;
+    return environment.security.rightMapping.find(x => x.server === right)?.app ?? right;
   }
 }

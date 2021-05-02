@@ -13,12 +13,13 @@ export class ConfigurationService {
 
     if (productionMode) {
       try {
-        const config = await this.http.get<any>('/assets/config.json').toPromise()
+        const config = await this.http.get<any>('/assets/config.json').toPromise();
+
         environment.assemblyGraphqlUri = config.assemblyGraphqlUri;
 
         environment.security = {
           ... config.security,
-          rightMapping: [... config.security.rightMapping]
+          rightMapping: [... (config.security.rightMapping ?? [])]
         };
 
       } catch {

@@ -11,7 +11,7 @@ export const environment = {
     realm: 'dependencies',
     clientId: 'graph',
     rightMapping: [
-      {server: 'dg_assembly_remove', application: 'remove-assembly' }
+      {server: 'dg_assembly_remove', app: 'remove-assembly' }
     ]
   },
 

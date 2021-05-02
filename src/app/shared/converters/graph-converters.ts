@@ -12,8 +12,12 @@ export function toGraphNode(assembly: AssemblyBase, forceColor?: string): GraphN
   return { id: assembly.id, label: `${assembly.name} (${assembly.version})`, color };
 }
 
-export function toGraphLink(link: AssemblyLink): GraphLink {
-  return new DefaultGraphLink({ source: link.sourceId, target: link.targetId });
+export function toGraphLink(link: AssemblyLink, nodes: GraphNode[]): GraphLink {
+
+  const source = nodes.find(x => x.id === link.sourceId);
+  const target = nodes.find(x => x.id === link.targetId);
+
+  return new DefaultGraphLink({ source, target });
 }
 
 export function toGraph(assembly: Assembly): Graph {
@@ -25,12 +29,15 @@ export function toGraph(assembly: Assembly): Graph {
 
   nodes.push(toGraphNode(assembly, AssemblyColors.main));
 
-  const links = assembly.links.map(x => toGraphLink(x));
+  const links = assembly.links.map(x => toGraphLink(x, nodes));
+  const filteredLinks = links.filter(l => nodes.some(n => l.source && l.target));
 
-  return { nodes, links };
+  return { nodes, links: filteredLinks };
 }
 
 export function consolidateGraphPosition(newGraph: Graph, oldGraph: Graph): Graph {
+
+  console.log(newGraph);
 
   if (!oldGraph) {
     return newGraph;

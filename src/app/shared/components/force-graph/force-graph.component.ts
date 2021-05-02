@@ -138,10 +138,10 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
     this.#linkedByIndex = {};
 
     this.#graph.links.forEach(d => {
-      this.#linkedByIndex[`${d.source},${d.target}`] = true;
+      this.#linkedByIndex[`${d.source.id},${d.target.id}`] = true;
     });
 
-    const linkData = this.linkSelector.data(this.#graph.links, (x: GraphLink) => `${x.source}|${x.target}`);
+    const linkData = this.linkSelector.data(this.#graph.links, (x: GraphLink) => `${x.source.id}|${x.target.id}`);
 
     linkData.exit().remove();
 

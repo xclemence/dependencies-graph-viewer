@@ -49,11 +49,14 @@ describe('graph converters', () => {
   });
 
   it('convert assembly link to graph link', () => {
-    const expectedLink =  new DefaultGraphLink({ source: '1', target: '2', value: 10 });
-    const link = toGraphLink({ sourceId: '1', targetId: '2' });
+
+    const node1 = { id: '1', label: '1', color: '' };
+    const node2 = { id: '2', label: '2', color: '' };
+
+    const expectedLink =  new DefaultGraphLink({ source: node1, target: node2, value: 10 });
+    const link = toGraphLink({ sourceId: '1', targetId: '2' }, [node1, node2]);
     expect(link).toEqual(expectedLink);
   });
-
 
   it('not consolidation graph position', () => {
     const initialGraph = {
@@ -116,13 +119,13 @@ describe('graph converters', () => {
       ]
     };
 
+    const node2 = { id: '2', label: 'name2 (2.0)', color: AssemblyColors.native };
+    const node1 = { id: '1', label: 'name1 (1.0)', color: AssemblyColors.main };
+
     const expectedGraphData = {
-      nodes: [
-        { id: '2', label: 'name2 (2.0)', color: AssemblyColors.native },
-        { id: '1', label: 'name1 (1.0)', color: AssemblyColors.main },
-      ],
+      nodes: [ node2, node1],
       links: [
-        new DefaultGraphLink({ source: '1', target: '2' })
+        new DefaultGraphLink({ source: node1, target: node2 })
       ]
     };
 
