@@ -37,17 +37,13 @@ export function toGraph(assembly: Assembly): Graph {
 
 export function consolidateGraphPosition(newGraph: Graph, oldGraph: Graph): Graph {
 
-  console.log(newGraph);
+  if (oldGraph) {
+    for (const node of newGraph.nodes) {
+      const oldNode = oldGraph.nodes.find(x => x.id === node.id);
 
-  if (!oldGraph) {
-    return newGraph;
-  }
-
-  for (const node of newGraph.nodes) {
-    const oldNode = oldGraph.nodes.find(x => x.id === node.id);
-
-    node.x = oldNode?.x;
-    node.y = oldNode?.y;
+      node.x = oldNode?.x;
+      node.y = oldNode?.y;
+    }
   }
 
   return newGraph;

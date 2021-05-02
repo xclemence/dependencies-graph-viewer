@@ -3,7 +3,7 @@ import { currentUserSelector } from '@app/core/store/core.selectors';
 import { CoreState } from '@app/core/store/models';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 export class HeaderLink {
   path: string;

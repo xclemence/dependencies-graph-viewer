@@ -1,13 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { select, Store } from '@ngrx/store';
-// import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { Subscription } from 'rxjs';
-import { filter, flatMap, map, mergeMap } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 
-import { TestModuleRightsKey } from './app-security.module';
 import { VersionService } from './core/services/version.service';
-import { errorStateSelector, featuresRightsSelector } from './core/store/core.selectors';
+import { errorStateSelector } from './core/store/core.selectors';
 import { CoreState } from './core/store/models';
 import { HeaderLink } from './shared/components';
 

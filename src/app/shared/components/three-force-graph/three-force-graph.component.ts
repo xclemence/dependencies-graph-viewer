@@ -81,7 +81,8 @@ export class ThreeForceGraphComponent implements AfterViewInit {
     }
 
     this.#graphData.links.forEach(x => {
-      (this.#nodeLink[x.source.id] = this.#nodeLink[x.source.id] || []).push(x.target.id);
+      this.#nodeLink[x.source.id] = this.#nodeLink[x.source.id] || [];
+      this.#nodeLink[x.source.id].push(x.target.id);
     });
   }
 

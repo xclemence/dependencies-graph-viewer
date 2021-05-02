@@ -13,7 +13,7 @@ import { AppStoreModule } from './app-store.module';
 import { AppComponent } from './app.component';
 import { HttpErrorInterceptor } from './core/interceptors/http-error.interceptor';
 import { ConfigurationService } from './core/services/configuration.service';
-import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+import { KeycloakAngularModule } from 'keycloak-angular';
 import { SecurityConfigurationService } from './security/services/security-configuration.service';
 
 export function configurationInit(

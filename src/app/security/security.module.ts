@@ -3,7 +3,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AllMaterialModuleModule, SharedModule } from '@app/shared';
 
-import { FeatureRightsConfig, SecurityConfig, } from './models';
+import { SecurityConfig, } from './models';
 import { FeatureSecurityToken, SecurityRegistrationService } from './services/security-registration.service';
 
 @NgModule({
