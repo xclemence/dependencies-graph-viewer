@@ -7,8 +7,8 @@ describe('RightMappingService', () => {
   it('should find corresponding right', () => {
     const service = new RightMappingService();
     environment.security.rightMapping = [
-      {app: 'app1', server:'s1'}
-    ]
+      {app: 'app1', server: 's1'}
+    ];
 
     const result = service.getApplicationRight('s1');
 
@@ -18,8 +18,8 @@ describe('RightMappingService', () => {
   it('should have no corresponding right', () => {
     const service = new RightMappingService();
     environment.security.rightMapping = [
-      {app: 'app1', server:'s1'}
-    ]
+      {app: 'app1', server: 's1'}
+    ];
 
     const result = service.getApplicationRight('s2');
 

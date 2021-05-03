@@ -60,22 +60,22 @@ describe('HeaderLinksComponent', () => {
 
     testScheduler.run(({ expectObservable }) => {
 
-      const pathNoRole = { path: 'path-no role', label: 'test', roles: [] }
+      const pathNoRole = { path: 'path-no role', label: 'test', roles: [] };
       component.allLinks = [
         pathNoRole,
         { path: 'path', label: 'test', roles: ['test'] },
         { path: 'path2', label: 'test2', roles: ['test2', 'test3'] }
       ];
 
-      expectObservable(component.userLinks).toBe('a', { a: [pathNoRole] })
+      expectObservable(component.userLinks).toBe('a', { a: [pathNoRole] });
     });
   });
 
   it('should display only paths according with user rights', fakeAsync(() => {
 
     testScheduler.run(({ expectObservable }) => {
-      const pathNoRole = { path: 'path-no role', label: 'test', roles: [] }
-      const pathWithRole = { path: 'path2', label: 'test2', roles: ['test2', 'test3'] }
+      const pathNoRole = { path: 'path-no role', label: 'test', roles: [] };
+      const pathWithRole = { path: 'path2', label: 'test2', roles: ['test2', 'test3'] };
       component.allLinks = [
         pathNoRole,
         { path: 'path', label: 'test', roles: ['test'] },
@@ -85,12 +85,12 @@ describe('HeaderLinksComponent', () => {
       userSelector.setResult({
         name: 'user',
         rights: ['test2', 'test3']
-      })
+      });
       mockStore.refreshState();
       fixture.detectChanges();
 
 
-      expectObservable(component.userLinks).toBe('a', { a: [pathNoRole, pathWithRole] })
+      expectObservable(component.userLinks).toBe('a', { a: [pathNoRole, pathWithRole] });
     });
   }));
 

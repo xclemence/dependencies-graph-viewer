@@ -43,7 +43,7 @@ describe('AuthGuard', () => {
     const segements = [
       new UrlSegment('test', {}),
       new UrlSegment('test2', {}),
-    ]
+    ];
 
     const result = await guard.canLoad(undefined, segements);
 

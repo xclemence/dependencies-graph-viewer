@@ -6,7 +6,7 @@ import { RightService } from '../services/right.service';
 import { ComponentRightsGuard } from './component-rights.guard';
 
 @Component({})
-class componentTest{ }
+class TestComponent { }
 
 describe('ComponentRightsGuard', () => {
   let guard: ComponentRightsGuard;
@@ -39,7 +39,7 @@ describe('ComponentRightsGuard', () => {
 
   it('should have component right (with string name)', () => {
 
-    const parameter: any = { component: 'test' }
+    const parameter: any = { component: 'test' };
 
     testScheduler.run(({ cold, expectObservable }) => {
       rightServiceSpy.hasFeature.and.returnValue(cold('a', {a: true}));
@@ -52,7 +52,7 @@ describe('ComponentRightsGuard', () => {
 
   it('should have component right (with component type)', () => {
 
-    const parameter: any = { component: componentTest }
+    const parameter: any = { component: TestComponent };
 
     testScheduler.run(({ cold, expectObservable }) => {
       rightServiceSpy.hasFeature.and.returnValue(cold('a', {a: true}));
@@ -66,8 +66,8 @@ describe('ComponentRightsGuard', () => {
 
   it('should not have component right', () => {
 
-    const parameter: any = { component: 'test' }
-    const urlTree = new UrlTree()
+    const parameter: any = { component: 'test' };
+    const urlTree = new UrlTree();
 
     testScheduler.run(({ cold, expectObservable }) => {
       rightServiceSpy.hasFeature.and.returnValue(cold('a', {a: false}));

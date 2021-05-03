@@ -20,7 +20,7 @@ export class AuthGuard implements CanLoad {
       const fullPath = segments.reduce((path, currentSegment) => `${path}/${currentSegment.path}`, '');
 
       await this.keycloak.login({
-        redirectUri:`${window.location.origin}${fullPath}`,
+        redirectUri: `${window.location.origin}${fullPath}`,
       });
 
       return false;
