@@ -79,7 +79,7 @@ describe('SecurityConfigurationService', () => {
     keycloakServiceSpy.isLoggedIn.and.returnValue(Promise.resolve(true));
     keycloakServiceSpy.getUsername.and.returnValue('name');
     keycloakServiceSpy.getUserRoles.and.returnValue(['test']);
-    mappingServiceSpy.getApplicationRight.and.returnValue('test')
+    mappingServiceSpy.getApplicationRight.and.returnValue('test');
 
     await service.configure('test');
 
