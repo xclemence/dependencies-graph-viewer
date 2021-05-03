@@ -18,7 +18,7 @@ export class ComponentRightsGuard implements CanActivate {
 
     let componentName = '';
     if (next.component instanceof Type) {
-      componentName = next.component.name;
+      componentName = next.component.name.replace('"', '');
     } else {
       componentName = next.component;
     }

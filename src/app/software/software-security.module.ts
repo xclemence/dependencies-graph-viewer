@@ -8,6 +8,5 @@ const config = {
 
 @NgModule({
   imports: [SecurityModule.config(config)],
-  // exports: [SecurityModule]
 })
 export class SoftwareSecurityModule { }

@@ -1,7 +1,7 @@
-import { snowStateSelector } from '@app/core/store/core.selectors';
+import { currentUserSelector, featuresRightsSelector, securityStateSelector, snowStateSelector } from '@app/core/store/core.selectors';
 
 import { busyStateSelector, coreFeatureKey, coreStateSelector, errorStateSelector } from './core.selectors';
-import { BusyState, CoreState, ErrorState } from './models';
+import { BusyState, CoreState, ErrorState, SecurityState } from './models';
 import { SnowState } from './models/snow.state';
 
 describe('core selector', () => {
@@ -60,4 +60,56 @@ describe('core selector', () => {
 
     expect(result).toEqual(snowState);
   });
+
+  it('should extract security state', () => {
+    const securityState = {
+      currentUser: { name: 'name', rights: ['r'] },
+      featuresConfiguration: [
+        { name: 'f', rights: ['r'] }
+      ]
+    };
+
+    const result = securityStateSelector({
+      [coreFeatureKey]: {
+        security: securityState
+      }
+    });
+
+    expect(result).toEqual(securityState);
+  });
+
+  it('should extract current user state', () => {
+    const securityState = {
+      currentUser: { name: 'name', rights: ['r'] },
+      featuresConfiguration: [
+        { name: 'f', rights: ['r'] }
+      ]
+    };
+
+    const result = currentUserSelector({
+      [coreFeatureKey]: {
+        security: securityState
+      }
+    });
+
+    expect(result).toEqual({ name: 'name', rights: ['r'] });
+  });
+
+  it('should extract features rights state', () => {
+    const securityState = {
+      currentUser: { name: 'name', rights: ['r'] },
+      featuresConfiguration: [
+        { name: 'f', rights: ['r'] }
+      ]
+    };
+
+    const result = featuresRightsSelector({
+      [coreFeatureKey]: {
+        security: securityState
+      }
+    });
+
+    expect(result).toEqual([{ name: 'f', rights: ['r'] }]);
+  });
+
 });
