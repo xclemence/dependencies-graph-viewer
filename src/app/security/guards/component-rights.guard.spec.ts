@@ -58,7 +58,7 @@ describe('ComponentRightsGuard', () => {
       rightServiceSpy.hasFeature.and.returnValue(cold('a', {a: true}));
       const result = guard.canActivate(parameter);
 
-      expect(rightServiceSpy.hasFeature).toHaveBeenCalledWith('componentTest');
+      expect(rightServiceSpy.hasFeature).toHaveBeenCalledWith('TestComponent');
 
       expectObservable(result).toBe('a', { a: true });
     });
