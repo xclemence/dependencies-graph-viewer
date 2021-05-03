@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { LoggerService } from '@app/core/services';
 import { currentUserSelector, featuresRightsSelector } from '@app/core/store/core.selectors';
 import { CoreState, FeatureRightsState } from '@app/core/store/models';
 import { Store } from '@ngrx/store';
@@ -12,14 +11,14 @@ import { map } from 'rxjs/operators';
 })
 export class RightService {
 
-  constructor(private store: Store<CoreState>, private loggerService: LoggerService) { }
+  constructor(private store: Store<CoreState>) { }
 
   private testRights(userRights: string[], featureRights: string[]): boolean {
     return featureRights.every(x => userRights.some(r => r === x));
   }
 
-  private hasComponentRight(component: string, configuration: FeatureRightsState[], userRights: string[]): boolean {
-    const featureConfiguration = configuration?.find(f => f.name === component);
+  private hasFeatureRight(feature: string, configuration: FeatureRightsState[], userRights: string[]): boolean {
+    const featureConfiguration = configuration?.find(f => f.name === feature);
 
     if (!featureConfiguration || !userRights) {
       return false;
@@ -39,11 +38,11 @@ export class RightService {
     }
 
     return combineLatest([
-        this.store.select(currentUserSelector),
-        this.store.select(featuresRightsSelector)
-      ]).pipe(
-        map(results => ({user: results[0], features: results[1]})),
-        map(x =>  rights.every(r => this.hasComponentRight(r, x.features, x.user?.rights))),
+      this.store.select(currentUserSelector),
+      this.store.select(featuresRightsSelector)
+    ]).pipe(
+      map(results => ({ user: results[0], features: results[1] })),
+      map(x => rights.every(r => this.hasFeatureRight(r, x.features, x.user?.rights))),
     );
   }
 }
