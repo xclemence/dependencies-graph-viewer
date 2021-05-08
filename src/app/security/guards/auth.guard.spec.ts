@@ -40,12 +40,12 @@ describe('AuthGuard', () => {
   it('should redirect if no connection', async () => {
     keycloakServiceSpy.isLoggedIn.and.returnValue(Promise.resolve(false));
 
-    const segements = [
+    const segments = [
       new UrlSegment('test', {}),
       new UrlSegment('test2', {}),
     ];
 
-    const result = await guard.canLoad(undefined, segements);
+    const result = await guard.canLoad(undefined, segments);
 
     expect(keycloakServiceSpy.login).toHaveBeenCalledWith({ redirectUri: `${window.location.origin}/test/test2` });
 

@@ -47,7 +47,7 @@ describe('securityReducer', () => {
     expect(securityReducer(state, action)).toEqual(expected);
   });
 
-  it('should no ritgh path', () => {
+  it('should no right path', () => {
     const state = { currentUser: undefined, featuresConfiguration: [], noRightPath: ''  };
 
     const expected = { currentUser: undefined, featuresConfiguration: [], noRightPath: 'test' };

@@ -32,7 +32,7 @@ describe('HeaderUserComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should retrive username', async () => {
+  it('should retrieve username', async () => {
     keycloakServiceSpy.isLoggedIn.and.returnValue(Promise.resolve(true));
     keycloakServiceSpy.getUsername.and.returnValue('name');
     await component.ngOnInit();
