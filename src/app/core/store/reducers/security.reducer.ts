@@ -1,11 +1,12 @@
 import { createReducer, on } from '@ngrx/store';
-import { setCurrentUserAction, addFeatureConfigurationAction } from '../actions';
+import { setCurrentUserAction, addFeatureConfigurationAction, setNoRightPathAction } from '../actions';
 
 import { SecurityState } from '../models';
 
 const initialState: SecurityState = {
   currentUser: undefined,
-  featuresConfiguration: []
+  featuresConfiguration: [],
+  noRightPath: undefined
 };
 
 export const securityReducer = createReducer(
@@ -31,6 +32,13 @@ export const securityReducer = createReducer(
         name: action.name,
         rights: [...action.rights]
       }
+    };
+  }),
+
+  on(setNoRightPathAction, (state, action) => {
+    return {
+      ...state,
+      noRightPath: action.path
     };
   }),
 );

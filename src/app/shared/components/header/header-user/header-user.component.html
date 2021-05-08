@@ -1,9 +1,12 @@
 <div class="flex-panel">
     <button *ngIf="!userConnected" mat-button (click)="logon()" >
-      <mat-icon>no_accounts</mat-icon>
+      <mat-icon>account_circle</mat-icon>
     </button>
     <div *ngIf="userConnected" class="flex-panel">
-      <button mat-button [matMenuTriggerFor]="menu" ><mat-icon>account_circle</mat-icon></button>
+      <button mat-button [matMenuTriggerFor]="menu" >
+        <mat-icon>account_circle</mat-icon>
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
       <mat-menu #menu="matMenu">
         <div class="user-name">  {{userName}}</div>
         <mat-divider></mat-divider>

@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AllMaterialModuleModule, SharedModule } from '@app/shared';
 
 import { SecurityConfig, } from './models';
-import { FeatureSecurityToken, SecurityRegistrationService } from './services/security-registration.service';
+import { featureSecurityToken, redirectSecurityToken, SecurityRegistrationService } from './services/security-registration.service';
 
 @NgModule({
   imports: [
@@ -16,12 +16,23 @@ import { FeatureSecurityToken, SecurityRegistrationService } from './services/se
   ]
 })
 export class SecurityModule {
-  static config(configuration: SecurityConfig): ModuleWithProviders<SecurityModule> {
+  static forChild(configuration: SecurityConfig): ModuleWithProviders<SecurityModule> {
     return {
       ngModule: SecurityModule,
       providers: [
         SecurityRegistrationService,
-        { provide: FeatureSecurityToken, multi: true, useValue: configuration },
+        { provide: featureSecurityToken, multi: true, useValue: configuration },
+      ]
+    };
+  }
+
+  static forRoot(redirectPath: string, configuration: SecurityConfig): ModuleWithProviders<SecurityModule> {
+    return {
+      ngModule: SecurityModule,
+      providers: [
+        SecurityRegistrationService,
+        { provide: redirectSecurityToken, multi: false, useValue: redirectPath },
+        { provide: featureSecurityToken, multi: true, useValue: configuration },
       ]
     };
   }

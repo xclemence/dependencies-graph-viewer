@@ -11,4 +11,5 @@ export interface FeatureRightsState {
 export interface SecurityState {
   currentUser: CurrentUserState;
   featuresConfiguration: FeatureRightsState[];
+  noRightPath: string;
 }

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from '@app/shared/components';
 import { AuthGuard } from './security/guards/auth.guard';
+import { NoRightComponent } from './shared/components/no-right/no-right.component';
 
 const routes: Routes = [
   {
@@ -17,16 +18,14 @@ const routes: Routes = [
     loadChildren: () => import('./test/test.module').then(m => m.TestModule),
     canLoad: [AuthGuard]
   },
+
   {
     path: '',
     redirectTo: 'software',
     pathMatch: 'full'
   },
-
-  {
-    path: '**',
-    component: PageNotFoundComponent,
-  }
+  { path: 'no-right', component: NoRightComponent },
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({

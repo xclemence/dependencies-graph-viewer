@@ -2,8 +2,11 @@ import { Injectable, Type } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
 
 import { RightService } from '../services/right.service';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { CoreStoreModule } from '@app/core/core-store.module';
+import { securityStateSelector } from '@app/core/store/core.selectors';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +15,7 @@ export class ComponentRightsGuard implements CanActivate {
 
   constructor(
     private featureRightsService: RightService,
+    private store: Store<CoreStoreModule>,
     private router: Router) { }
 
   canActivate(next: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
@@ -24,13 +28,13 @@ export class ComponentRightsGuard implements CanActivate {
     }
 
     return this.featureRightsService.hasFeature(componentName).pipe(
-      map(x => {
+      switchMap(x => {
         if (!x) {
-          return this.router.parseUrl('notfound');
+          return this.store.select(securityStateSelector).pipe(map(c =>  this.router.parseUrl(c.noRightPath)));
         }
 
-        return true;
-      })
-    );
+        return of(true);
+      }
+     ));
   }
 }

@@ -1,13 +1,10 @@
-import { addFeatureConfigurationAction, setCurrentUserAction } from '../actions';
-import { operationFailure } from '../actions/error.actions';
-import { ErrorState } from '../models';
-import { errorReducer } from './error.reducer';
+import { addFeatureConfigurationAction, setCurrentUserAction, setNoRightPathAction } from '../actions';
 import { securityReducer } from './security.reducer';
 
 describe('securityReducer', () => {
 
   it('should have initial state', () => {
-    const expected = { currentUser: undefined, featuresConfiguration: [] };
+    const expected = { currentUser: undefined, featuresConfiguration: [], noRightPath: undefined };
 
     const action = { type: 'foo' } as any;
 
@@ -15,13 +12,14 @@ describe('securityReducer', () => {
   });
 
   it('should add feature configuration', () => {
-    const state = { currentUser: undefined, featuresConfiguration: [] };
+    const state = { currentUser: undefined, featuresConfiguration: [], noRightPath: ''  };
 
     const expected = {
       currentUser: undefined,
       featuresConfiguration: [
         {name: 'test', rights: [ 'r1', 'r2'] }
-      ]
+      ],
+      noRightPath: ''
     };
 
     const action = addFeatureConfigurationAction({
@@ -33,17 +31,28 @@ describe('securityReducer', () => {
   });
 
   it('should update user', () => {
-    const state = { currentUser: undefined, featuresConfiguration: [] };
+    const state = { currentUser: undefined, featuresConfiguration: [], noRightPath: ''  };
 
     const expected = {
       currentUser: { name: 'test', rights: [ 'r1', 'r2'] },
-      featuresConfiguration: []
+      featuresConfiguration: [],
+      noRightPath: ''
     };
 
     const action = setCurrentUserAction({
       name: 'test',
       rights: [ 'r1', 'r2']
     });
+
+    expect(securityReducer(state, action)).toEqual(expected);
+  });
+
+  it('should no ritgh path', () => {
+    const state = { currentUser: undefined, featuresConfiguration: [], noRightPath: ''  };
+
+    const expected = { currentUser: undefined, featuresConfiguration: [], noRightPath: 'test' };
+
+    const action = setNoRightPathAction({ path: 'test'});
 
     expect(securityReducer(state, action)).toEqual(expected);
   });

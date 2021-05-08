@@ -9,6 +9,6 @@ const config = {
 };
 
 @NgModule({
-  imports: [SecurityModule.config(config)],
+  imports: [SecurityModule.forChild(config)],
 })
 export class AssemblySecurityModule { }

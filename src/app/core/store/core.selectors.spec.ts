@@ -66,7 +66,8 @@ describe('core selector', () => {
       currentUser: { name: 'name', rights: ['r'] },
       featuresConfiguration: [
         { name: 'f', rights: ['r'] }
-      ]
+      ],
+      noRightPath: ''
     };
 
     const result = securityStateSelector({
@@ -83,7 +84,8 @@ describe('core selector', () => {
       currentUser: { name: 'name', rights: ['r'] },
       featuresConfiguration: [
         { name: 'f', rights: ['r'] }
-      ]
+      ],
+      noRightPath: ''
     };
 
     const result = currentUserSelector({
@@ -100,7 +102,8 @@ describe('core selector', () => {
       currentUser: { name: 'name', rights: ['r'] },
       featuresConfiguration: [
         { name: 'f', rights: ['r'] }
-      ]
+      ],
+      noRightPath: ''
     };
 
     const result = featuresRightsSelector({

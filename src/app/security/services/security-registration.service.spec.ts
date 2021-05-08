@@ -8,10 +8,10 @@ describe('SecurityRegistrationService', () => {
     const service = new SecurityRegistrationService([
       { features: [ { feature: 'f1', rights: [ 'r1']} ] },
       { features: [ { feature: 'f2', rights: [ 'r2']} ] },
-    ], storepy);
+    ], 'redirect', storepy);
 
     service.register();
 
-    expect(storepy.dispatch).toHaveBeenCalledTimes(2);
+    expect(storepy.dispatch).toHaveBeenCalledTimes(3);
   });
 });

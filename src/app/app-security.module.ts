@@ -10,6 +10,6 @@ const config = {
 };
 
 @NgModule({
-  imports: [SecurityModule.config(config)],
+  imports: [SecurityModule.forRoot('no-right', config)],
 })
 export class AppSecurityModule { }

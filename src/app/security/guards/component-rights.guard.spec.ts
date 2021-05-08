@@ -1,12 +1,23 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router, UrlTree } from '@angular/router';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TestScheduler } from 'rxjs/testing';
 import { RightService } from '../services/right.service';
 import { ComponentRightsGuard } from './component-rights.guard';
 
 @Component({})
 class TestComponent { }
+
+const initialState = {
+  core: {
+    security: {
+      currentUser: undefined,
+      featuresConfiguration: [],
+      noRightPath: 'redirect'
+    }
+  }
+};
 
 describe('ComponentRightsGuard', () => {
   let guard: ComponentRightsGuard;
@@ -28,6 +39,7 @@ describe('ComponentRightsGuard', () => {
       providers: [
         { provide: RightService, useValue: rightServiceSpy },
         { provide: Router, useValue: routerSpy },
+        provideMockStore({ initialState })
       ]
     });
     guard = TestBed.inject(ComponentRightsGuard);
