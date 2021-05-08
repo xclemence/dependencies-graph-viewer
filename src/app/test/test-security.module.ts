@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
-import { FeatureRightsConfig } from '@app/security/models';
 import { SecurityModule } from '@app/security/security.module';
 
 import { UserTestComponent } from './user-test/user-test.component';
 
-const config: FeatureRightsConfig[] = [
-  { feature: UserTestComponent.name, rights: [ 'admin' ] }
-];
+const config = {
+  features: [
+    { feature: UserTestComponent.name, rights: [ 'test-user' ] }
+  ]
+};
 
 @NgModule({
   imports: [SecurityModule.forChild(config)],

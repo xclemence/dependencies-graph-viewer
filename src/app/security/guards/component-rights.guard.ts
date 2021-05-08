@@ -1,31 +1,40 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { UserSecurityService } from '@app/security/services';
+import { Injectable, Type } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
 
-import { FeatureRightsService } from '../services/feature-rights.service';
+import { RightService } from '../services/right.service';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { CoreStoreModule } from '@app/core/core-store.module';
+import { securityStateSelector } from '@app/core/store/core.selectors';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ComponentRightsGuard implements CanActivate {
 
-  constructor(private securityService: UserSecurityService, private featureRightsService: FeatureRightsService,
+  constructor(
+    private featureRightsService: RightService,
+    private store: Store<CoreStoreModule>,
     private router: Router) { }
 
-  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
+  canActivate(next: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
 
-    const redirect = next.data.redirect as string;
-
-    const component = next.component.toString();
-
-    if (this.featureRightsService.validateComponentRight(component, this.securityService.user)) {
-      return true;
+    let componentName = '';
+    if (next.component instanceof Type) {
+      componentName = next.component.name.replace('"', '');
+    } else {
+      componentName = next.component;
     }
 
-    if (redirect === undefined) {
-      return false;
-    }
+    return this.featureRightsService.hasFeature(componentName).pipe(
+      switchMap(x => {
+        if (!x) {
+          return this.store.select(securityStateSelector).pipe(map(c =>  this.router.parseUrl(c.noRightPath)));
+        }
 
-    return this.router.parseUrl(redirect);
+        return of(true);
+      }
+     ));
   }
 }

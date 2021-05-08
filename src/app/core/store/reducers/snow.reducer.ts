@@ -1,7 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { SnowState } from '../models';
-import { snowActivation } from './../actions/snow.actions';
+import {SnowState } from '../models';
+import { snowActivation } from './../actions';
 
 const initialState: SnowState = {
   activated: false

@@ -13,9 +13,17 @@ import { AppStoreModule } from './app-store.module';
 import { AppComponent } from './app.component';
 import { HttpErrorInterceptor } from './core/interceptors/http-error.interceptor';
 import { ConfigurationService } from './core/services/configuration.service';
+import { KeycloakAngularModule } from 'keycloak-angular';
+import { SecurityConfigurationService } from './security/services/security-configuration.service';
 
-export function configurationInit(config: ConfigurationService) {
-  return () => config.load(environment.production);
+export function configurationInit(
+  config: ConfigurationService,
+  securityConfig: SecurityConfigurationService,
+  ) {
+  return async () => {
+    await config.load(environment.production);
+    await securityConfig.configure(window.location.origin + '/assets/silent-check-sso.html');
+  };
 }
 
 @NgModule({
@@ -32,7 +40,8 @@ export function configurationInit(config: ConfigurationService) {
     AppStoreModule,
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     HttpClientModule,
-    ...environment.modules
+    KeycloakAngularModule,
+    ...environment.modules,
   ],
   providers: [
     {
@@ -44,7 +53,7 @@ export function configurationInit(config: ConfigurationService) {
       provide: APP_INITIALIZER,
       useFactory: configurationInit,
       multi: true,
-      deps: [ConfigurationService]
+      deps: [ConfigurationService, SecurityConfigurationService]
     }
   ],
   bootstrap: [AppComponent]

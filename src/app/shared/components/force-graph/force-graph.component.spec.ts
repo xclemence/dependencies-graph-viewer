@@ -43,13 +43,13 @@ describe('ForceGraphComponent', () => {
   });
 
   it('should create a graph force', () => {
+    const node1 = { id: '1', label: 'node1', color: 'red' };
+    const node2 = { id: '2', label: 'node2', color: 'red' };
+
     const graph = {
-      nodes: [
-        { id: '1', label: 'node1', color: 'red' },
-        { id: '2', label: 'node2', color: 'red' },
-      ],
+      nodes: [ node1, node2 ],
       links: [
-        new DefaultGraphLink({ source: '1', target: '2' })
+        new DefaultGraphLink({ source: node1, target: node2 })
       ]
     };
 
@@ -91,16 +91,16 @@ describe('ForceGraphComponent', () => {
     component.graph = baseGraph;
     fixture.detectChanges();
 
-    const newGraph = {
-      nodes: [
-        { id: '1', label: 'node1', color: 'red' },
-        { id: '2', label: 'node2', color: 'red' },
-      ],
+    const node1 = { id: '1', label: 'node1', color: 'red' };
+    const node2 = { id: '2', label: 'node2', color: 'red' };
+
+    const graph = {
+      nodes: [ node1, node2 ],
       links: [
-        new DefaultGraphLink({ source: '1', target: '2' })
+        new DefaultGraphLink({ source: node1, target: node2 })
       ]
     };
-    component.graph = newGraph;
+    component.graph = graph;
     fixture.detectChanges();
 
     expect(fixture.debugElement.queryAll(By.css('circle')).length).toBe(2);
@@ -119,16 +119,17 @@ describe('ForceGraphComponent', () => {
     component.graph = baseGraph;
     fixture.detectChanges();
 
-    const newGraph = {
-      nodes: [
-        { id: '1', label: 'node1', color: 'red' },
-        { id: '2', label: 'node2', color: 'red' },
-      ],
+    const node1 = { id: '1', label: 'node1', color: 'red' };
+    const node2 = { id: '2', label: 'node2', color: 'red' };
+
+    const graph = {
+      nodes: [ node1, node2 ],
       links: [
-        new DefaultGraphLink({ source: '1', target: '2' })
+        new DefaultGraphLink({ source: node1, target: node2 })
       ]
     };
-    component.graph = newGraph;
+
+    component.graph = graph;
     fixture.detectChanges();
 
     expect(fixture.debugElement.queryAll(By.css('circle')).length).toBe(2);
@@ -227,15 +228,15 @@ describe('ForceGraphComponent', () => {
   });
 
   it('should highlight selected node and referenced nodes', () => {
+    const node1 = { id: '1', label: 'node1', color: 'red' };
+    const node2 = { id: '2', label: 'node2', color: 'red' };
+    const node3 = { id: '3', label: 'node3', color: 'red' };
+
     const baseGraph = {
-      nodes: [
-        { id: '1', label: 'node1', color: 'red' },
-        { id: '2', label: 'node2', color: 'red' },
-        { id: '3', label: 'node3', color: 'red' },
-      ],
+      nodes: [ node1, node2, node3 ],
       links: [
-        new DefaultGraphLink({ source: '1', target: '2' }),
-        new DefaultGraphLink({ source: '2', target: '3' })
+        new DefaultGraphLink({ source: node1, target: node2 }),
+        new DefaultGraphLink({ source: node2, target: node3 })
       ]
     };
 
@@ -249,7 +250,7 @@ describe('ForceGraphComponent', () => {
     const allNodeElements = fixture.debugElement.queryAll(By.css('.nodes>g'));
 
     expect(allNodeElements[0].nativeElement.style.opacity).toBe('1');
-    expect(allNodeElements[1].nativeElement.style.opacity).toBe(`1`);
+    expect(allNodeElements[1].nativeElement.style.opacity).toBe('1');
     expect(allNodeElements[2].nativeElement.style.opacity).toBe(`${component.disableOpacity}`);
 
     const allLinkElements = fixture.debugElement.queryAll(By.css('g.links>line'));

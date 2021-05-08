@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
-import { FeatureRightsConfig } from '@app/security/models';
 import { SecurityModule } from '@app/security/security.module';
 
 export const TestModuleRightsKey = 'TestModuleRights';
 
-const config: FeatureRightsConfig[] = [
-  { feature: TestModuleRightsKey, rights: [ 'admin' ] }
-];
+const config = {
+  features: [
+    { feature: TestModuleRightsKey, rights: [ 'test' ] }
+  ]
+};
 
 @NgModule({
-  imports: [SecurityModule.forRoot({serverUrl: 'http://'}, config)],
+  imports: [SecurityModule.forRoot('no-right', config)],
 })
 export class AppSecurityModule { }

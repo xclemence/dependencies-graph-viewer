@@ -14,6 +14,7 @@ import { ThreeForceGraphComponent } from './components/three-force-graph/three-f
 import { SnowDialogDirective } from './directives/snow-dialog.directive';
 import { SnowInputDirective } from './directives/snow-input.directive';
 import { NameFilterPipe } from './pipe/name-filter.pipe';
+import { NoRightComponent } from './components/no-right/no-right.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { NameFilterPipe } from './pipe/name-filter.pipe';
     HeaderPreviousComponent,
     HeaderUserComponent,
     StateButtonComponent,
-    SnowInputDirective
+    SnowInputDirective,
+    NoRightComponent
   ],
   imports: [
     CommonModule,
@@ -47,7 +49,7 @@ import { NameFilterPipe } from './pipe/name-filter.pipe';
     HeaderLinksComponent,
     HeaderPreviousComponent,
     HeaderUserComponent,
-    SnowInputDirective
+    SnowInputDirective,
   ],
   entryComponents: [
     ConfirmationDialogComponent

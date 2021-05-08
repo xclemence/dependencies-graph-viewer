@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ConnectedGuard, LogonGuard } from '@app/security/guards';
 import { PageNotFoundComponent } from '@app/shared/components';
+import { AuthGuard } from './security/guards/auth.guard';
+import { NoRightComponent } from './shared/components/no-right/no-right.component';
 
 const routes: Routes = [
   {
@@ -10,27 +11,25 @@ const routes: Routes = [
   },
   {
     path: 'assembly',
-    loadChildren: () => import('./assembly/assembly.module').then(m => m.AssemblyModule),
+    loadChildren: () => import('./assembly/assembly.module').then(m => m.AssemblyModule)
   },
   {
     path: 'test',
     loadChildren: () => import('./test/test.module').then(m => m.TestModule),
-    canActivate: [ ConnectedGuard ]
+    canLoad: [AuthGuard]
   },
+
   {
     path: '',
     redirectTo: 'software',
     pathMatch: 'full'
   },
-  {
-    path: '**',
-    component: PageNotFoundComponent,
-    canActivate: [LogonGuard],
-  }
+  { path: 'no-right', component: NoRightComponent },
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

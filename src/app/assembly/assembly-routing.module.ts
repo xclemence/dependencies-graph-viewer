@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AssemblyListComponent } from './components/assembly-list/assembly-list.component';
 
-
 const routes: Routes = [
   { path: '', component: AssemblyListComponent },
   { path: ':id', component: AssemblyListComponent }

@@ -3,8 +3,8 @@ import { ActivatedRoute, Router, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Page1Component, Page2Component, PageMainComponent } from '@app/test/router-test';
 
-import { LoggerService } from './logger.service';
-import { UrlService } from './url.service';
+import { LoggerService } from '../logger.service';
+import { UrlService } from '../url.service';
 
 
 const routes: Routes = [

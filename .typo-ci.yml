@@ -27,6 +27,7 @@ excluded_words:
   - pantoufle
   - pantoufl
   - xoverflow
-  
+  - keycloak
+
 # Would you like filenames to also be spellchecked?
 spellcheck_filenames: true

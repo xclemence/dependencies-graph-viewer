@@ -20,6 +20,8 @@ import { SortDefinitionConverterService } from '../../services/sort-definition-c
 import { assembliesStateSelector } from '../../store/assembly.selectors';
 import { loadAssemblies } from './../../store/actions/assemblies.actions';
 import { AssemblyDetailsComponent } from './../assembly-details/assembly-details.component';
+import { RightService } from '@app/security/services/right.service';
+import { removeAssemblyFeature } from '@app/assembly/assembly-security-keys';
 
 @Component({
   selector: 'asm-assembly-list',
@@ -28,7 +30,12 @@ import { AssemblyDetailsComponent } from './../assembly-details/assembly-details
 })
 export class AssemblyListComponent implements AfterContentInit, AfterViewInit, OnDestroy {
 
-  displayedColumns = ['type', 'name', 'version', 'depth', 'links', 'remove'];
+  baseColumns = ['type', 'name', 'version', 'depth', 'links'];
+
+  private removeColumnKey = 'remove';
+
+
+  displayedColumns: string[];
 
   dataSource: MatTableDataSource<AssemblyStat>;
   selection = new SelectionModel<AssemblyStat>(false, []);
@@ -38,6 +45,7 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
 
   #storeSubscription: Subscription;
   #filterSubscription: Subscription;
+  #hasRightSubscription: Subscription;
   #currentFilter: string;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -49,8 +57,12 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
     private assemblyService: AssemblyService,
     private converterService: SortDefinitionConverterService,
     private urlService: UrlService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private rightService: RightService) {
+
+    this.initializeColumns();
   }
+
 
   ngAfterViewInit(): void {
     this.#filterSubscription = fromEvent(this.searchInput.nativeElement, 'keyup').pipe(
@@ -86,6 +98,15 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
     this.updateAssemblies();
   }
 
+  private initializeColumns(): void {
+    this.#hasRightSubscription = this.rightService.hasFeature(removeAssemblyFeature)
+      .subscribe(x => this.computeColumns(x));
+  }
+
+  private computeColumns(allowRemove: boolean): void {
+    this.displayedColumns = allowRemove ? [...this.baseColumns, this.removeColumnKey] : [... this.baseColumns];
+  }
+
   createDataSource(assemblies: AssemblyStat[]): MatTableDataSource<AssemblyStat> {
     const source = new MatTableDataSource(assemblies ?? []);
     source.sort = this.sort;
@@ -95,6 +116,7 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
   ngOnDestroy(): void {
     this.#storeSubscription?.unsubscribe();
     this.#filterSubscription?.unsubscribe();
+    this.#hasRightSubscription?.unsubscribe();
   }
 
   hasReferences(assemblyStat: AssemblyStat): boolean {

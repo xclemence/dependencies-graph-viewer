@@ -1,7 +1,7 @@
 export const assemblyData = [
     {
         id: 'Soft1',
-        version: '2.0.0.0',
+        version: '2.0.0',
         name: 'Software 1',
         isNative: false,
         isSoftware: true,
@@ -11,7 +11,7 @@ export const assemblyData = [
     },
     {
         id: 'Soft2',
-        version: '3.0.0.0',
+        version: '3.0.0',
         name: 'Software 2',
         isNative: false,
         isSoftware: true,
@@ -21,7 +21,7 @@ export const assemblyData = [
     },
     {
         id: 'dll1',
-        version: '1.0.0.0',
+        version: '1.0.0',
         name: 'dll1 name',
         isNative: false,
         isSoftware: false,
@@ -31,7 +31,7 @@ export const assemblyData = [
     },
     {
         id: 'dll2',
-        version: '2.0.0.0',
+        version: '2.0.0',
         name: 'dll2 name',
         isNative: false,
         isSoftware: false,
@@ -41,7 +41,7 @@ export const assemblyData = [
     },
     {
         id: 'dll3',
-        version: '3.0.0.0',
+        version: '3.0.0',
         name: 'dll3 name',
         isNative: false,
         isSoftware: false,

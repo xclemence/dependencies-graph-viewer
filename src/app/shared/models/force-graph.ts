@@ -7,14 +7,14 @@ export interface GraphNode {
 }
 
 export interface GraphLink {
-  source: string;
-  target: string;
+  source: GraphNode;
+  target: GraphNode;
   value: number;
 }
 
 export class DefaultGraphLink implements GraphLink {
-  source: string;
-  target: string;
+  source: GraphNode;
+  target: GraphNode;
   value = 10;
 
   public constructor(init?: Partial<GraphLink>) {

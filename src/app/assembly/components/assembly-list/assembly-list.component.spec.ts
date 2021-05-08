@@ -50,6 +50,9 @@ describe('AssemblyListComponent', () => {
     core: {
       busy: {
         actionsInProgress: []
+      },
+      security: {
+
       }
     }
   };

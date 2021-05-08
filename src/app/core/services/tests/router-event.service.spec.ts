@@ -6,10 +6,10 @@ import { UrlService } from '@app/core/services';
 import { Page1Component, Page2Component, PageMainComponent } from '@app/test/router-test';
 import { Store } from '@ngrx/store';
 
-import { addBusyIndicatorAction, removeBusyIndicatorAction } from '../store/actions';
-import { CoreState } from '../store/models';
-import { LoggerService } from './logger.service';
-import { RouterEventService } from './router-event.service';
+import { addBusyIndicatorAction, removeBusyIndicatorAction } from '../../store/actions';
+import { CoreState } from '../../store/models';
+import { LoggerService } from '../logger.service';
+import { RouterEventService } from '../router-event.service';
 
 @Injectable()
 export class CancelGuard implements CanActivate {

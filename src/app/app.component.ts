@@ -1,14 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { select, Store } from '@ngrx/store';
+import { environment } from 'environments/environment';
 import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
-import { TestModuleRightsKey } from './app-security.module';
 import { VersionService } from './core/services/version.service';
 import { errorStateSelector } from './core/store/core.selectors';
 import { CoreState } from './core/store/models';
-import { SecurityConfigurationService } from './security/services/security-configuration.service';
 import { HeaderLink } from './shared/components';
 
 @Component({
@@ -20,9 +19,12 @@ export class AppComponent implements OnInit, OnDestroy{
   title = 'DependenciesGraph';
   #storeSubscription: Subscription;
 
+  canLogon = environment.security.enabled;
+
   links: Array<HeaderLink> = [
     { path : 'software', label: 'Software', roles: [ ] },
     { path : 'assembly', label: 'Assembly', roles: [ ] },
+    { path : 'test', label: 'Test', roles: [ 'test' ] },
   ];
 
   get version(): string {
@@ -30,13 +32,10 @@ export class AppComponent implements OnInit, OnDestroy{
   }
 
   constructor(
-    securityConfigurationService: SecurityConfigurationService,
     private store: Store<CoreState>,
     private snackBar: MatSnackBar,
-    private versionService: VersionService) {
-    const testModuleRights = securityConfigurationService.getRights(TestModuleRightsKey);
-
-    this.links.push({ path: 'test', label: 'Test', roles: testModuleRights.rights});
+    private versionService: VersionService,
+    ) {
   }
 
   ngOnInit(): void {

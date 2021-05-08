@@ -1,42 +1,33 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { User } from '@app/core/models';
-import { AuthenticationService, UserSecurityService } from '@app/security/services';
-import { Subscription } from 'rxjs';
-
+import { Component, OnInit } from '@angular/core';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'dgv-header-user',
-  templateUrl: './header-user.component.html'
+  templateUrl: './header-user.component.html',
+  styleUrls: [ './header-user.component.scss']
 })
-export class HeaderUserComponent implements OnInit, OnDestroy {
+export class HeaderUserComponent implements OnInit {
 
-  #user: User = null;
-  #userSubscription: Subscription;
+  userConnected = false;
 
-  get userConnected(): boolean {
-    return this.#user !== null && this.#user !== undefined;
+  userName?: string;
+
+  constructor(private keycloak: KeycloakService) {}
+
+  async ngOnInit() {
+
+    this.userConnected = await this.keycloak.isLoggedIn();
+
+    if (this.userConnected) {
+      this.userName = this.keycloak.getUsername();
+    }
   }
 
-  get userName(): string {
-    return this.#user.name;
+  async logon() {
+    await this.keycloak.login();
   }
 
-  constructor(private router: Router, private userService: UserSecurityService, private authenticationService: AuthenticationService) { }
-
-  ngOnInit() {
-    this.#userSubscription = this.userService.observe().subscribe(x => this.#user = x);
-  }
-
-  ngOnDestroy(): void {
-    this.#userSubscription.unsubscribe();
-  }
-
-  logon() {
-    this.router.navigateByUrl('/logon');
-  }
-
-  logout() {
-    this.authenticationService.logout();
+  async logout() {
+    await this.keycloak.logout();
   }
 }

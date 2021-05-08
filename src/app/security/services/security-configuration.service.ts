@@ -1,37 +1,44 @@
-import { Inject, Injectable, InjectionToken } from '@angular/core';
-import { LoggerService } from '@app/core/services';
-
-import { FeatureRightsConfig } from '../models/SeccurityConfig';
-import { ModuleSecurityConfig } from './../models/SeccurityConfig';
-
-export const FeatureSecurityToken = new InjectionToken<FeatureRightsConfig[]>('Configuration for compenents');
-export const ModuleSecurityToken = new InjectionToken<ModuleSecurityConfig>('Configuration for security module');
-
+import { Injectable } from '@angular/core';
+import { setCurrentUserAction } from '@app/core/store/actions';
+import { Store } from '@ngrx/store';
+import { environment } from 'environments/environment';
+import { KeycloakService } from 'keycloak-angular';
+import { RightMappingService } from './right-mapping.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SecurityConfigurationService {
 
-  #featureConfig = new Array<FeatureRightsConfig>();
+  constructor(
+    private keycloak: KeycloakService,
+    private store: Store,
+    private rightsMapping: RightMappingService ) {}
 
-  get FeatureRights(): FeatureRightsConfig[] {
-    this.logger.log(JSON.stringify(this.#featureConfig));
-    return this.#featureConfig;
-  }
+  async configure(ssoRedirectUri: string) {
+    if (!environment.security.enabled) {
+      return;
+    }
 
-  constructor(@Inject(ModuleSecurityToken) private moduleConfig: ModuleSecurityConfig,
-              private logger: LoggerService) {}
+    await this.keycloak.init({
+      config: {
+        url: environment.security.server,
+        realm: environment.security.realm,
+        clientId: environment.security.clientId,
+      },
+      initOptions: {
+        onLoad: 'check-sso',
+        silentCheckSsoRedirectUri: ssoRedirectUri,
+        enableLogging: true,
+      },
+      loadUserProfileAtStartUp: true
+    });
 
-  addFeatureRights(rights: FeatureRightsConfig[]) {
-    this.#featureConfig.push(...rights);
-  }
-
-  getServer() {
-    return this.moduleConfig.serverUrl;
-  }
-
-  getRights(configKey: string): FeatureRightsConfig  {
-    return this.#featureConfig.filter(x => x.feature === configKey)[0];
+    if (await this.keycloak.isLoggedIn()) {
+      this.store.dispatch(setCurrentUserAction({
+        name: this.keycloak.getUsername(),
+        rights: this.keycloak.getUserRoles().map(x => this.rightsMapping.getApplicationRight(x))
+      }));
+    }
   }
 }

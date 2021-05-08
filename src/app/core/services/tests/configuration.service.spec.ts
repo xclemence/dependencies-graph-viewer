@@ -2,7 +2,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { environment } from 'environments/environment';
 
-import { ConfigurationService } from './configuration.service';
+import { ConfigurationService } from '../configuration.service';
 
 describe('ConfigurationService', () => {
   let service: ConfigurationService;
@@ -27,7 +27,8 @@ describe('ConfigurationService', () => {
     const mockReq = httpMock.expectOne('/assets/config.json');
 
     mockReq.flush({
-      assemblyGraphqlUri: 'http://localhost:12345'
+      assemblyGraphqlUri: 'http://localhost:12345',
+      security: {}
     });
 
     const result = await resultPromise;

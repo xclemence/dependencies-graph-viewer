@@ -1,11 +1,14 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { UserSecurityService } from '@app/security/services';
-import { Subscription } from 'rxjs';
+import { currentUserSelector } from '@app/core/store/core.selectors';
+import { CoreState } from '@app/core/store/models';
+import { Store } from '@ngrx/store';
+import { Subscription, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-export class HeaderLink {
+export interface HeaderLink {
   path: string;
   label: string;
-  roles: Array<string>;
+  roles: string[];
 }
 
 @Component({
@@ -14,26 +17,24 @@ export class HeaderLink {
   styleUrls: ['./header-links.component.scss']
 })
 export class HeaderLinksComponent implements OnInit, OnDestroy {
-  @Input() allLinks: Array<HeaderLink>;
-  userLinks: Array<HeaderLink> = [];
-  #serviceSubscription: Subscription;
+  @Input() allLinks: HeaderLink[];
+  userLinks: Observable<HeaderLink[]>;
+  #storeSubscription: Subscription;
 
-  constructor(private userService: UserSecurityService) {
-  }
+  constructor(private store: Store<CoreState>) { }
 
-  ngOnInit() {
-    this.#serviceSubscription = this.userService.observe().subscribe(x => this.updateUserLinks());
+  ngOnInit(): void {
+    this.updateUserLinks();
   }
 
   ngOnDestroy(): void {
-    this.#serviceSubscription.unsubscribe();
+    this.#storeSubscription?.unsubscribe();
   }
 
-  hasRoles(roles: Array<string>) {
-    return roles.every(x => this.userService.hasRight(x));
-  }
-
-  private updateUserLinks() {
-    this.userLinks = this.allLinks.filter(l => l.roles.length === 0 || this.hasRoles(l.roles));
+  private updateUserLinks(): void {
+    this.userLinks = this.store.select(currentUserSelector).pipe(
+      map(x => x?.rights ?? []),
+      map(x => this.allLinks?.filter(l => l.roles.length === 0 || l.roles.every(r => x.includes(r)))),
+    );
   }
 }

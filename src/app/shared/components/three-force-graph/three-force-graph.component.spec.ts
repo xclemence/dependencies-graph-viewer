@@ -36,13 +36,13 @@ describe('ThreeForceGraphComponent', () => {
   });
 
   it('should create graph with data', () => {
+    const node1 = { id: '1', label: 'node1', color: 'red' };
+    const node2 = { id: '2', label: 'node2', color: 'red' };
+
     const graph = {
-      nodes: [
-        { id: '1', label: 'node1', color: 'red' },
-        { id: '2', label: 'node2', color: 'red' },
-      ],
+      nodes: [ node1, node2 ],
       links: [
-        new DefaultGraphLink({ source: '1', target: '2' })
+        new DefaultGraphLink({ source: node1, target: node2 })
       ]
     };
 
@@ -53,13 +53,14 @@ describe('ThreeForceGraphComponent', () => {
   });
 
   it('should create graph with filtered node', () => {
+
+    const node1 = { id: '1', label: 'node1', color: 'red' };
+    const node2 = { id: '2', label: 'node2', color: 'red' };
+
     const graph = {
-      nodes: [
-        { id: '1', label: 'node1', color: 'red' },
-        { id: '2', label: 'node2', color: 'red' },
-      ],
+      nodes: [ node1, node2 ],
       links: [
-        new DefaultGraphLink({ source: '1', target: '2' })
+        new DefaultGraphLink({ source: node1, target: node2 })
       ]
     };
 
@@ -93,13 +94,13 @@ describe('ThreeForceGraphComponent', () => {
   });
 
   it('should mask labels', fakeAsync(() => {
+    const node1 = { id: '1', label: 'node1', color: 'red' };
+    const node2 = { id: '2', label: 'node2', color: 'red' };
+
     const graph = {
-      nodes: [
-        { id: '1', label: 'node1', color: 'red' },
-        { id: '2', label: 'node2', color: 'red' },
-      ],
+      nodes: [ node1, node2 ],
       links: [
-        new DefaultGraphLink({ source: '1', target: '2' })
+        new DefaultGraphLink({ source: node1, target: node2 })
       ]
     };
 
@@ -112,13 +113,13 @@ describe('ThreeForceGraphComponent', () => {
   }));
 
   it('should update hover node', () => {
+    const node1 = { id: '1', label: 'node1', color: 'red' };
+    const node2 = { id: '2', label: 'node2', color: 'red' };
+
     const graph = {
-      nodes: [
-        { id: '1', label: 'node1', color: 'red' },
-        { id: '2', label: 'node2', color: 'red' },
-      ],
+      nodes: [ node1, node2 ],
       links: [
-        new DefaultGraphLink({ source: '1', target: '2' })
+        new DefaultGraphLink({ source: node1, target: node2 })
       ]
     };
 
