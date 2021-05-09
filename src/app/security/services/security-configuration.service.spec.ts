@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { setCurrentUserAction } from '@app/core/store/actions';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { environment } from 'environments/environment';
 import { KeycloakService } from 'keycloak-angular';
+import { setCurrentUserAction } from '../store/actions';
 import { RightMappingService } from './right-mapping.service';
 
 import { SecurityConfigurationService } from './security-configuration.service';
@@ -24,10 +24,8 @@ describe('SecurityConfigurationService', () => {
       busy: {
         actionsInProgress: []
       },
-      security: {
-
-      }
-    }
+    },
+    security: { }
   };
 
   beforeEach(() => {

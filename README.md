@@ -8,13 +8,29 @@
 [![dependencies Status][node-dependencies-badge]][node-dependencies]
 [![devDependencies Status][node-dev-dependencies-badge]][node-dev-dependencies]
 
-This software provides a view to explore assemblies dependencies store by [Dependencies Graph Services]().
+Dependencies Graph View (DGV) provides a view to explore assemblies dependencies store by [Dependencies Graph Services]().
 
 # Features available
 - View Software assemblies
 - View Assembly dependencies
+- Security
 
 <img src="doc/images/viewer.png"/>
+
+## Security
+
+DGV can be connected to Keycloak for authentication. To enable this feature, you need to set environment variables on the docker container.
+
+The security inside DGV is managed by feature, each feature needs one or many rights to be accessible.
+
+Rights are spécifics to DGV, you can define the same rights (name) in Keycloak or use rights mapping to link Keycloak rights and software rights.
+
+Software rights:
+
+|        Rigths       |       Description        |
+| --------------------|------------------------- |
+| remove-assembly     | can remove assembly      |
+
 
 # How to use
 ## Build sources (Angular CLI)
@@ -33,21 +49,26 @@ This image is base on **Linux**.
 
 You can configure container by setting environment variables.
 
-| Environment variable     |          Comment           |   default value     |
-|------------------------- | :--------------------------|-------------------- |
-| DEPENDENCIES_GRAPHQL_URI | Graphql services uri       |                     |
+| Environment variable     |          Comment           |   Example     |
+|------------------------- | :--------------------------|--------------------           |
+| DEPENDENCIES_GRAPHQL_URI | Graphql services uri       | http://localhost:4001/graphql |
+| SECURITY_ENABLED         | Activate  authentication    | true                    |
+| SECURITY_SERVER          | Keycloak server            | http://localhost:9080/auth |
+| SECURITY_REALM           | Keycloak relam             | dependencies                    |
+| SECURITY_CLIENT_ID       | Keycloak client id         | graph                    |
+| SECURITY_RIGHT_MAPPING   | Mapping between Keycloak rights and application rights  | {server: 'rs1', app: 'ra1' }, {server: 'rs2', app: 'ra2' }                    |
 
 Port exposed by Container:
 
 |        Name        |       Description        |
 | -------------------|------------------------- |
-| 4200               | HTTP port for web site   |
+| 80                 | HTTP port for web site   |
 
 You can start a Dependencies Graph Viewer container like this:
 
 ```
 docker run \
-    --publish=4200:4200 \
+    --publish=80:80 \
     dependencies-graph-viewer:tag
 ```
 
@@ -64,6 +85,7 @@ docker run \
 - [D3](https://d3js.org/)
 - [NgRx](https://ngrx.io/)
 - [Apollo](https://www.apollographql.com/docs/angular/)
+- [Angular keycloack](https://github.com/mauriciovigolo/keycloak-angular)
 
 
 [github-actions]:                   https://github.com/xclemence/Dependencies-graph-viewer/actions

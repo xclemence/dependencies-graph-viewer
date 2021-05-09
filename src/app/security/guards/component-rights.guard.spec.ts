@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router, UrlTree } from '@angular/router';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { TestScheduler } from 'rxjs/testing';
 import { RightService } from '../services/right.service';
 import { ComponentRightsGuard } from './component-rights.guard';
@@ -10,12 +10,10 @@ import { ComponentRightsGuard } from './component-rights.guard';
 class TestComponent { }
 
 const initialState = {
-  core: {
-    security: {
-      currentUser: undefined,
-      featuresConfiguration: [],
-      noRightPath: 'redirect'
-    }
+  security: {
+    currentUser: undefined,
+    featuresConfiguration: [],
+    noRightPath: 'redirect'
   }
 };
 

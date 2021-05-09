@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AllMaterialModuleModule, SharedModule } from '@app/shared';
 
 import { SecurityConfig, } from './models';
+import { SecurityStoreModule } from './security-store.module';
 import { featureSecurityToken, redirectSecurityToken, SecurityRegistrationService } from './services/security-registration.service';
 
 @NgModule({
@@ -13,6 +14,7 @@ import { featureSecurityToken, redirectSecurityToken, SecurityRegistrationServic
     ReactiveFormsModule,
     FormsModule,
     SharedModule,
+    SecurityStoreModule
   ]
 })
 export class SecurityModule {
@@ -33,7 +35,7 @@ export class SecurityModule {
         SecurityRegistrationService,
         { provide: redirectSecurityToken, multi: false, useValue: redirectPath },
         { provide: featureSecurityToken, multi: true, useValue: configuration },
-      ]
+      ],
     };
   }
 

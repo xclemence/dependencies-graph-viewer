@@ -1,15 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { currentUserSelector, featuresRightsSelector } from '@app/core/store/core.selectors';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { environment } from 'environments/environment';
 import { TestScheduler } from 'rxjs/testing';
+import { currentUserSelector, featuresRightsSelector } from '../store/security.selectors';
 
 import { RightService } from './right.service';
 
 const initialState = {
-  core: {
-    security: { },
-  }
+  security: { },
 };
 
 describe('RightService', () => {

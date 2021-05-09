@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { currentUserSelector, featuresRightsSelector } from '@app/core/store/core.selectors';
-import { CoreState, FeatureRightsState } from '@app/core/store/models';
+import { CoreState } from '@app/core/store/models';
 import { Store } from '@ngrx/store';
 import { combineLatest, Observable, of } from 'rxjs';
 import { environment } from 'environments/environment';
 import { map } from 'rxjs/operators';
+import { FeatureRightsState } from '../store/models';
+import { currentUserSelector, featuresRightsSelector } from '../store/security.selectors';
 
 @Injectable({
   providedIn: 'root'

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { setCurrentUserAction } from '@app/core/store/actions';
 import { Store } from '@ngrx/store';
 import { environment } from 'environments/environment';
 import { KeycloakService } from 'keycloak-angular';
+import { setCurrentUserAction } from '../store/actions';
 import { RightMappingService } from './right-mapping.service';
 
 @Injectable({
