@@ -1,18 +1,16 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterTestingModule } from '@angular/router/testing';
-import { currentUserSelector } from '@app/core/store/core.selectors';
-import { CurrentUserState, SecurityState } from '@app/core/store/models';
+import { CurrentUserState, SecurityState } from '@app/security/store/models';
+import { currentUserSelector } from '@app/security/store/security.selectors';
 import { MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TestScheduler } from 'rxjs/testing';
 import { HeaderLinksComponent } from './header-links.component';
 
 const initialState = {
-  core: {
-    security: {
-      currentUser: { activated: false },
-    }
+  security: {
+    currentUser: { activated: false },
   }
 };
 

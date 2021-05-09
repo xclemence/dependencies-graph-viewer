@@ -50,11 +50,9 @@ describe('AssemblyListComponent', () => {
     core: {
       busy: {
         actionsInProgress: []
-      },
-      security: {
-
       }
-    }
+    },
+    security: {}
   };
 
   const viewAssembly = {

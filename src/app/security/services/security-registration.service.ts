@@ -1,8 +1,8 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
-import { addFeatureConfigurationAction, setNoRightPathAction } from '@app/core/store/actions';
 import { Store } from '@ngrx/store';
 
 import { SecurityConfig } from '../models/security-config';
+import { addFeatureConfigurationAction, setNoRightPathAction } from '../store/actions';
 
 export const featureSecurityToken = new InjectionToken<SecurityConfig>('Configuration for components');
 export const redirectSecurityToken = new InjectionToken<string>('redirect url if no right');

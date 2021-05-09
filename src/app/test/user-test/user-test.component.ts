@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { securityStateSelector } from '@app/core/store/core.selectors';
 import { CoreState } from '@app/core/store/models';
+import { securityStateSelector } from '@app/security/store/security.selectors';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 

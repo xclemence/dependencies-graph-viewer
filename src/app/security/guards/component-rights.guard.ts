@@ -6,7 +6,7 @@ import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { CoreStoreModule } from '@app/core/core-store.module';
-import { securityStateSelector } from '@app/core/store/core.selectors';
+import { securityStateSelector } from '../store/security.selectors';
 
 @Injectable({
   providedIn: 'root'

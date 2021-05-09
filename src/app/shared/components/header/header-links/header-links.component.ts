@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { currentUserSelector } from '@app/core/store/core.selectors';
 import { CoreState } from '@app/core/store/models';
+import { currentUserSelector } from '@app/security/store/security.selectors';
 import { Store } from '@ngrx/store';
 import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
