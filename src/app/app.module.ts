@@ -15,6 +15,7 @@ import { HttpErrorInterceptor } from './core/interceptors/http-error.interceptor
 import { ConfigurationService } from './core/services/configuration.service';
 import { KeycloakAngularModule } from 'keycloak-angular';
 import { SecurityConfigurationService } from './security/services/security-configuration.service';
+import { TokenInterceptor } from './security/interceptors/token.interceptor';
 
 export function configurationInit(
   config: ConfigurationService,
@@ -44,11 +45,8 @@ export function configurationInit(
     ...environment.modules,
   ],
   providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HttpErrorInterceptor,
-      multi: true
-    },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor,  multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor,  multi: true },
     {
       provide: APP_INITIALIZER,
       useFactory: configurationInit,
