@@ -21,4 +21,6 @@ COPY --from=builder /usr/angular-workdir/dist/dependencies-graph/ /usr/share/ngi
 
 COPY docker/replace-env.sh /docker-entrypoint.d/
 
+COPY src/assets/config.json /usr/share/template/config.json
+
 RUN chmod -R 775 /docker-entrypoint.d/replace-env.sh
