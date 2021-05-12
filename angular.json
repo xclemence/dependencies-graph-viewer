@@ -108,7 +108,7 @@
             ],
             "scripts": [],
             "assets": [
-              "src/silent-renew.html",
+              "src/silent-check-sso.html",
               "src/application.ico",
               "src/assets"
             ]

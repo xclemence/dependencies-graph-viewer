@@ -1,5 +1,4 @@
 import { Assembly, AssemblyBase, AssemblyColors, AssemblyLink } from '@app/core/models';
-import { GraphLink } from '@app/shared/models';
 
 import { Graph, GraphNode } from '../models/force-graph';
 

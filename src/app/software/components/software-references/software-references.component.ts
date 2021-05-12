@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { toGraph } from '@app/shared/converters';
 import { Graph } from '@app/shared/models';
 import { isNotNullOrUndefined } from '@app/shared/type-guards';
