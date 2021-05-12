@@ -33,7 +33,7 @@ describe('TokenInterceptor', () => {
 
   it('should add Authorization', () => {
 
-    keycloakServiceSpy.getKeycloakInstance.and.returnValue({token: 'teststs'} as any);
+    keycloakServiceSpy.getKeycloakInstance.and.returnValue({token: 'test'} as any);
 
     httpClient.get('api/test').subscribe();
 
