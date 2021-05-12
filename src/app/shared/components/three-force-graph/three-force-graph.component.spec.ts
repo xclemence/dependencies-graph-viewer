@@ -148,7 +148,7 @@ describe('ThreeForceGraphComponent', () => {
     component.toggleNodesVisibility();
 
     expect(emitSpy).toHaveBeenCalledWith(true);
-    expect(component.getdisplayNodeLabel()).toBeTrue();
+    expect(component.getDisplayNodeLabel()).toBeTrue();
   });
 
 });

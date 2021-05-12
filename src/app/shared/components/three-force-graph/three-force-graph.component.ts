@@ -66,7 +66,7 @@ export class ThreeForceGraphComponent implements AfterViewInit {
 
   @Output() labelVisibilityChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  getdisplayNodeLabel(): boolean {
+  getDisplayNodeLabel(): boolean {
     return this.#displayNodeLabel;
   }
 
@@ -99,6 +99,10 @@ export class ThreeForceGraphComponent implements AfterViewInit {
 
   private getNodeExtendObject(node: any): Object3D {
 
+    if (!this.#displayNodeLabel) {
+      return null as any; // add no object
+    }
+
     const sprite = new SpriteText(node.label, 5, 'lightgray');
     sprite.translateY(6);
     return sprite;
@@ -129,7 +133,7 @@ export class ThreeForceGraphComponent implements AfterViewInit {
       .showNavInfo(false)
       .nodeRelSize(3)
       .nodeVisibility(x => !this.#filteredNodes.includes(x.id?.toString() ?? ''))
-      .nodeLabel((x: any) => this.#displayNodeLabel ? undefined : x.label)
+      .nodeLabel((x: any) => this.getNodeLabel(x))
       .nodeColor((node: any) => this.getNodeColor(node))
       .nodeThreeObjectExtend(true)
       .nodeThreeObject((node: any) => this.getNodeExtendObject(node))

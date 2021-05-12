@@ -1,6 +1,4 @@
 #!/usr/bin/env sh
 set -eu
 
-envsubst < /usr/share/nginx/html/assets/config.json > /usr/share/nginx/html/assets/config.json
-
-exec "$@"
+envsubst < /usr/share/template/config.json > /usr/share/nginx/html/assets/config.json
