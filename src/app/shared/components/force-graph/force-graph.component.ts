@@ -54,7 +54,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
     return this.#svgGroup.select('.links').selectAll('line');
   }
 
-  constructor(private container: ElementRef, private zone: NgZone) { }
+  constructor(private readonly container: ElementRef, private readonly zone: NgZone) { }
 
   ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {

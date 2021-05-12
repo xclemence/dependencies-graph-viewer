@@ -14,7 +14,7 @@ export class SnowComponent implements OnInit, OnDestroy {
   activated = false;
   #storeSubscription?: Subscription;
 
-  constructor(private coreStore: Store<CoreState>) { }
+  constructor(private readonly coreStore: Store<CoreState>) { }
 
   ngOnInit(): void {
     this.#storeSubscription = this.coreStore.pipe(
@@ -31,6 +31,6 @@ export class SnowComponent implements OnInit, OnDestroy {
   }
 
   duckNumber(): number[] {
-    return new Array(10);
+    return [...Array(10).keys()];
   }
 }

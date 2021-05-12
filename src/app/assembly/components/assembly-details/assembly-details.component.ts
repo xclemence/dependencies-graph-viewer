@@ -50,7 +50,7 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<AssemblyDetailsComponent>,
-    private store: Store<AssemblyState>,
+    private readonly store: Store<AssemblyState>,
     @Inject(MAT_DIALOG_DATA) data: { id: string }) {
 
     this.assemblyId = data.id;

@@ -10,7 +10,7 @@ import { CoreState } from '../store/models';
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
 
-  constructor(private store: Store<CoreState>) {}
+  constructor(private readonly store: Store<CoreState>) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request)

@@ -26,7 +26,7 @@ export class SoftwareReferencesComponent {
   visibilityPanelOpened = false;
   hoveredNode?: string;
 
-  constructor(private store: Store<SoftwareState>) {
+  constructor(private readonly store: Store<SoftwareState>) {
     this.graph = this.store.pipe(
       select(softwareSelector),
       map(x => x ? toGraph(x) : undefined),

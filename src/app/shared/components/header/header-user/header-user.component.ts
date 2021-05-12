@@ -12,7 +12,7 @@ export class HeaderUserComponent implements OnInit {
 
   userName?: string;
 
-  constructor(private keycloak: KeycloakService) {}
+  constructor(private readonly keycloak: KeycloakService) {}
 
   async ngOnInit(): Promise<void> {
 

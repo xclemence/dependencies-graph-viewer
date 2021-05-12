@@ -54,12 +54,12 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
 
   constructor(
     public dialog: MatDialog,
-    private store: Store,
-    private assemblyService: AssemblyService,
-    private converterService: SortDefinitionConverterService,
-    private urlService: UrlService,
-    private route: ActivatedRoute,
-    private rightService: RightService) {
+    private readonly store: Store,
+    private readonly assemblyService: AssemblyService,
+    private readonly converterService: SortDefinitionConverterService,
+    private readonly urlService: UrlService,
+    private readonly route: ActivatedRoute,
+    private readonly rightService: RightService) {
 
     this.initializeColumns();
   }

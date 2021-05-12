@@ -12,7 +12,7 @@ import { currentUserSelector, featuresRightsSelector } from '../store/security.s
 })
 export class RightService {
 
-  constructor(private store: Store<CoreState>) { }
+  constructor(private readonly store: Store<CoreState>) { }
 
   private testRights(userRights: string[], featureRights: string[]): boolean {
     return featureRights.every(x => userRights.some(r => r === x));

@@ -32,9 +32,9 @@ export class AppComponent implements OnInit, OnDestroy{
   }
 
   constructor(
-    private store: Store<CoreState>,
-    private snackBar: MatSnackBar,
-    private versionService: VersionService,
+    private readonly store: Store<CoreState>,
+    private readonly snackBar: MatSnackBar,
+    private readonly versionService: VersionService,
     ) {
   }
 

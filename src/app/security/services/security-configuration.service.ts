@@ -12,9 +12,9 @@ import { RightMappingService } from './right-mapping.service';
 export class SecurityConfigurationService {
 
   constructor(
-    private keycloak: KeycloakService,
-    private store: Store,
-    private rightsMapping: RightMappingService ) {}
+      private readonly keycloak: KeycloakService,
+      private readonly store: Store,
+      private readonly rightsMapping: RightMappingService ) {}
 
   async configure(ssoRedirectUri: string): Promise<void> {
     if (!environment.security.enabled) {
