@@ -13,9 +13,9 @@ export const redirectSecurityToken = new InjectionToken<string>('redirect url if
 export class SecurityRegistrationService {
 
   constructor(
-    @Inject(featureSecurityToken) private config: SecurityConfig[],
-    @Inject(redirectSecurityToken) private redirectPath: string,
-    private store: Store,
+    @Inject(featureSecurityToken) private readonly config: SecurityConfig[],
+    @Inject(redirectSecurityToken) private readonly redirectPath: string,
+    private readonly store: Store,
     ) {
   }
 

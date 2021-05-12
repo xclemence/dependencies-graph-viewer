@@ -14,9 +14,9 @@ import { securityStateSelector } from '../store/security.selectors';
 export class ComponentRightsGuard implements CanActivate {
 
   constructor(
-    private featureRightsService: RightService,
-    private store: Store<CoreStoreModule>,
-    private router: Router) { }
+    private readonly featureRightsService: RightService,
+    private readonly store: Store<CoreStoreModule>,
+    private readonly router: Router) { }
 
   canActivate(next: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
 

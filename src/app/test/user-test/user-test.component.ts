@@ -12,7 +12,7 @@ export class UserTestComponent {
 
   result: Observable<any>;
 
-  constructor(private store: Store<CoreState>) {
+  constructor(readonly store: Store<CoreState>) {
     this.result = this.store.select(securityStateSelector);
   }
 }

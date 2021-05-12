@@ -49,7 +49,7 @@ export class ThreeForceGraphComponent implements AfterViewInit {
     this.updateGraphWithData();
   }
 
-  constructor(private zone: NgZone) { }
+  constructor(private readonly zone: NgZone) { }
 
   @ViewChild('container') container!: ElementRef;
 

@@ -23,7 +23,7 @@ export class SoftwareStatisticsComponent implements OnInit {
 
   values?: Observable<StatValue[]>;
 
-  constructor(private store: Store<SoftwareState>) { }
+  constructor(private readonly store: Store<SoftwareState>) { }
 
   ngOnInit(): void {
     this.values = this.store.pipe(

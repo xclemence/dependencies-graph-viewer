@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 })
 export class HeaderPreviousComponent {
 
-  constructor(private location: Location) { }
+  constructor(private readonly location: Location) { }
 
   back(): void {
     this.location.back();

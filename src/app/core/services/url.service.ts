@@ -9,7 +9,10 @@ import { LoggerService } from './logger.service';
 })
 export class UrlService {
 
-  constructor(private router: Router, private location: Location, private logService: LoggerService) { }
+  constructor(
+    private readonly router: Router,
+    private readonly location: Location,
+    private readonly logService: LoggerService) { }
 
   replaceSegment(index: number, value: string, currentRoute: ActivatedRoute): void {
 

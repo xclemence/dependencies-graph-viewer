@@ -13,7 +13,7 @@ export class SnowDialogDirective implements OnInit, OnDestroy {
 
   @HostBinding('class') hostClass = '';
 
-  constructor(private coreStore: Store<CoreState>) {
+  constructor(private readonly coreStore: Store<CoreState>) {
   }
 
   ngOnInit(): void {

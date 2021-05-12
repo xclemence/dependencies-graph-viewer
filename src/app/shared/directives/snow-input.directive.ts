@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 })
 export class SnowInputDirective {
 
-  constructor(private elementRef: ElementRef, private store: Store) { }
+  constructor(private readonly elementRef: ElementRef, private readonly store: Store) { }
 
   @HostListener('keydown', ['$event'])
   onKeyDown(e: KeyboardEvent): void {

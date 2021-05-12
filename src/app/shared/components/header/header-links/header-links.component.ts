@@ -21,7 +21,7 @@ export class HeaderLinksComponent implements OnInit {
   @Input() allLinks?: HeaderLink[];
   userLinks?: Observable<HeaderLink[]>;
 
-  constructor(private store: Store<CoreState>) { }
+  constructor(private readonly store: Store<CoreState>) { }
 
   ngOnInit(): void {
     this.updateUserLinks();

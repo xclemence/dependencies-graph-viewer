@@ -1,11 +1,13 @@
+const placeHolder = '[Placeholder]';
+
 export const environment = {
   production: true,
-  assemblyGraphqlUri: '[Placeholder]',
+  assemblyGraphqlUri: placeHolder,
   security: {
     enabled: false,
-    server: '[Placeholder]',
-    realm: '[Placeholder]',
-    clientId: '[Placeholder]',
+    server: placeHolder,
+    realm: placeHolder,
+    clientId: placeHolder,
     rightMapping: [] as { server: string; app: string; }[]
   },
   modules: [],

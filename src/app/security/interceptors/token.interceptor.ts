@@ -11,7 +11,7 @@ import { KeycloakService } from 'keycloak-angular';
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-  constructor(private keycloakService: KeycloakService) { }
+  constructor(private readonly keycloakService: KeycloakService) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 

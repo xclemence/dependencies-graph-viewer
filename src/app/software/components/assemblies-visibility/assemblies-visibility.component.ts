@@ -28,7 +28,7 @@ export class AssembliesVisibilityComponent implements OnInit {
   @Output() closed: EventEmitter<void> = new EventEmitter();
   @Output() hoveredItem: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(private store: Store<SoftwareState>) { }
+  constructor(private readonly store: Store<SoftwareState>) { }
 
   ngOnInit(): void {
     this.store.pipe(

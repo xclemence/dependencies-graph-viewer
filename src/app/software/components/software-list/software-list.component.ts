@@ -22,7 +22,7 @@ export class SoftwareListComponent implements OnInit, OnDestroy {
 
   softwareNames?: AssemblyBase[];
 
-  selectedSoftwares = new Array<AssemblyBase>();
+  selectedSoftwares: AssemblyBase[] = [];
 
   get selectedId(): string | undefined {
     return this.#selectedId;
@@ -37,7 +37,7 @@ export class SoftwareListComponent implements OnInit, OnDestroy {
     this.selectSoftwareById();
   }
 
-  constructor(private store: Store<SoftwareState>) { }
+  constructor(private readonly store: Store<SoftwareState>) { }
 
   ngOnInit(): void {
     this.#storeSubscription = this.store.pipe(

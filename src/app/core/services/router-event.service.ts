@@ -20,7 +20,11 @@ export class RouterEventService {
     [NavigationError.name, () => this.stopBusy()]
   ]);
 
-  constructor(private router: Router, private store: Store<CoreState>, private urlService: UrlService) {
+  constructor(
+    private readonly router: Router,
+    private readonly store: Store<CoreState>,
+    private readonly urlService: UrlService) {
+
     this.router.events.subscribe(x => {
 
       const action = this.map.get(x.constructor.name);
@@ -32,11 +36,11 @@ export class RouterEventService {
   }
 
   private startBusy(): void {
-    this.store.dispatch(addBusyIndicatorAction({ key: 'Main'}));
+    this.store.dispatch(addBusyIndicatorAction({ key: 'Main' }));
   }
 
   private stopBusy(): void {
-    this.store.dispatch(removeBusyIndicatorAction({ key: 'Main'}));
+    this.store.dispatch(removeBusyIndicatorAction({ key: 'Main' }));
   }
 
   private proceedNavigationStart(): void {

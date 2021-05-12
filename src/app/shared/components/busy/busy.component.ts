@@ -23,7 +23,7 @@ export class BusyComponent implements OnInit, OnDestroy {
     return !this.displayed;
   }
 
-  constructor(private store: Store<CoreState>, private changeDetector: ChangeDetectorRef) {}
+  constructor(private readonly store: Store<CoreState>, private readonly changeDetector: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.#subscription = this.store.pipe(
