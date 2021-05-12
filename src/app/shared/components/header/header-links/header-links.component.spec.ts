@@ -62,7 +62,7 @@ describe('HeaderLinksComponent', () => {
       ];
 
       if (!component.userLinks) {
-        fail('userLinks sould not be undefined');
+        fail('userLinks should not be undefined');
       } else {
         expectObservable(component.userLinks).toBe('a', { a: [pathNoRole] });
       }
@@ -91,7 +91,7 @@ describe('HeaderLinksComponent', () => {
       fixture.detectChanges();
 
       if (!component.userLinks) {
-        fail('userLinks sould not be undefined');
+        fail('userLinks should not be undefined');
       } else {
         expectObservable(component.userLinks).toBe('a', { a: [pathNoRole, pathWithRole] });
       }
