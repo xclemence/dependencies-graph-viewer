@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CoreState } from '@app/core/store/models';
 import { securityStateSelector } from '@app/security/store/security.selectors';
 import { Store } from '@ngrx/store';

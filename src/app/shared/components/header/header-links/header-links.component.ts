@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CoreState } from '@app/core/store/models';
 import { currentUserSelector } from '@app/security/store/security.selectors';
 import { isNotNullOrUndefined } from '@app/shared/type-guards';
