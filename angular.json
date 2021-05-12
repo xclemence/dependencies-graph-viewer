@@ -25,7 +25,8 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/application.ico",
-              "src/assets"
+              "src/assets",
+              "src/silent-check-sso.html"
             ],
             "styles": [
               "src/styles/styles.scss",
@@ -108,7 +109,6 @@
             ],
             "scripts": [],
             "assets": [
-              "src/silent-check-sso.html",
               "src/application.ico",
               "src/assets"
             ]
