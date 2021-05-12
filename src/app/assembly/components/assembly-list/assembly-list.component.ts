@@ -33,7 +33,7 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
 
   baseColumns = ['type', 'name', 'version', 'depth', 'links'];
 
-  private removeColumnKey = 'remove';
+  private readonly removeColumnKey = 'remove';
 
 
   displayedColumns: string[] = [];
