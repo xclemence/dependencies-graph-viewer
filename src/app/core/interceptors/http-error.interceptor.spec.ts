@@ -29,7 +29,7 @@ describe('HttpErrorInterceptor with ErrorEvent', () => {
 
     errorInterceptor.intercept(httpRequestSpy, httpHandlerSpy)
       .subscribe(
-        () => fail('sould generate error'),
+        () => fail('should generate error'),
         err => {
           expect(err).toEqual('Error (404): test-error');
           expect(storeSpy.dispatch).toHaveBeenCalledWith(expectedActionOnError);
@@ -49,7 +49,7 @@ describe('HttpErrorInterceptor with ErrorEvent', () => {
 
     errorInterceptor.intercept(httpRequestSpy, httpHandlerSpy)
       .subscribe(
-        () => fail('sould generate error'),
+        () => fail('should generate error'),
         err => {
           expect(err).toEqual(expectedErrorMessage);
           expect(storeSpy.dispatch).toHaveBeenCalledWith(expectedActionOnError);
