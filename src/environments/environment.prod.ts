@@ -6,7 +6,7 @@ export const environment = {
     server: '[Placeholder]',
     realm: '[Placeholder]',
     clientId: '[Placeholder]',
-    rightMapping: []
+    rightMapping: [] as { server: string; app: string; }[]
   },
   modules: [],
 };

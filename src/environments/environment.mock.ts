@@ -8,7 +8,7 @@ export const environment = {
     server: '',
     realm: '',
     clientId: '',
-    rightMapping: []
+    rightMapping: [] as { server: string; app: string; }[]
   },
 
   modules: [ MockModule ],
