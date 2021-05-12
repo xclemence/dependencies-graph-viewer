@@ -13,7 +13,7 @@ export class RouterEventService {
 
   #originUrl?: string;
 
-  private map = new Map<string, () => void>([
+  private readonly map = new Map<string, () => void>([
     [NavigationStart.name, () => this.proceedNavigationStart()],
     [NavigationEnd.name, () => this.stopBusy()],
     [NavigationCancel.name, () => this.proceedNavigationCancel()],
