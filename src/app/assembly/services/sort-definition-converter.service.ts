@@ -23,7 +23,6 @@ export class SortDefinitionConverterService {
     const currentField = field ?? 'name';
     const currentOrder = order ?? 'asc';
 
-    console.log(`order ${currentOrder} / ${order}`);
     return this.generateFinalOrder(this.#fieldMapping[currentField], this.#sortTypeMapping[currentOrder]);
   }
 

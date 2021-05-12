@@ -36,7 +36,6 @@ export class SecurityConfigurationService {
         loadUserProfileAtStartUp: true
       });
 
-      console.log('test');
       if (await this.keycloak.isLoggedIn()) {
         this.store.dispatch(setCurrentUserAction({
           name: this.keycloak.getUsername(),
