@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Assembly, AssemblyStat } from '@app/core/models';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 import { assemblyData } from './assembly-data';
@@ -15,7 +15,7 @@ export class AssemblyMockService {
     : Observable<{ assemblies: AssemblyStat[], count: number }> {
 
     const items = assemblyData.filter(x => !namefilter || x.name.includes(namefilter))
-                              .sort(x => x[order])
+                              .sort(x => (x as any)[order])
                               .slice(pageSize * page, pageSize * page + pageSize)
                               .map(x => ({ ...x }) as AssemblyStat);
 
@@ -43,6 +43,9 @@ export class AssemblyMockService {
   assemblyDepthMax(id: string): Observable<{id: string, value: number}> {
     const baseAssembly = assemblyData.find(x => x.id === id);
 
+    if (!baseAssembly) {
+      return throwError(new Error(`assembly not found: ${id}`));
+    }
     return of({ id, value: baseAssembly.depthMax});
   }
 
