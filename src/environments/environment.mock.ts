@@ -1,7 +1,7 @@
 import { MockModule } from './../app/test/mock.module';
 
 export const environment = {
-  production: true,
+  production: false,
   assemblyGraphqlUri: '[Placeholder]',
   security: {
     enabled: false,
