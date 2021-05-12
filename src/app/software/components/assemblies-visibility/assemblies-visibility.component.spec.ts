@@ -15,7 +15,6 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
 import { updateFilteredAssemblies } from '../../store/actions';
 import { softwareAssembliesStateSelector } from '../../store/software.selectors';
-import { displayLabel } from './../../store/actions/software-assemblies.actions';
 import { AssembliesVisibilityComponent } from './assemblies-visibility.component';
 
 describe('SoftwareAssembliesComponent', () => {
@@ -27,8 +26,9 @@ describe('SoftwareAssembliesComponent', () => {
   const initialState = {
     software: {
       assemblies: {
-        software: {},
-        filteredAssemblies: []
+        software: undefined,
+        filteredAssemblies: [],
+        displayLabel: false
       },
       name: {
         softwareNames: []
@@ -73,11 +73,6 @@ describe('SoftwareAssembliesComponent', () => {
     expect(component).toBeTruthy();
   });
 
-
-  it('should return no indeterminate when collection is null', () => {
-    expect(component.isIndeterminateResult(undefined)).toBeFalse();
-  });
-
   it('should return no indeterminate when collection has 1 item', () => {
     expect(component.isIndeterminateResult([{ isVisible: true, name: 'name', id: '1' }])).toBeFalse();
   });
@@ -116,10 +111,6 @@ describe('SoftwareAssembliesComponent', () => {
     ];
 
     expect(component.isAllVisibleFilterResult(assemblies)).toBeFalse();
-  });
-
-  it('should not all visible when undefined', () => {
-    expect(component.isAllVisibleFilterResult(undefined)).toBeFalse();
   });
 
   it('should change selected item visibility', () => {
@@ -165,7 +156,7 @@ describe('SoftwareAssembliesComponent', () => {
 
   it('should load data on component', fakeAsync(() => {
 
-    const softwareAssembliesStateSelectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, undefined);
+    const SelectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, initialState.software.assemblies);
 
     const inputStore = {
       software: {
@@ -184,7 +175,7 @@ describe('SoftwareAssembliesComponent', () => {
       displayLabel: false
     };
 
-    softwareAssembliesStateSelectorMock.setResult(inputStore);
+    SelectorMock.setResult(inputStore);
     mockStore.refreshState();
     tick();
 
@@ -199,7 +190,7 @@ describe('SoftwareAssembliesComponent', () => {
 
   it('should load data on template', async () => {
 
-    const softwareAssembliesStateSelectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, undefined);
+    const selectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, initialState.software.assemblies);
 
     const inputStore = {
       software: {
@@ -218,7 +209,7 @@ describe('SoftwareAssembliesComponent', () => {
       displayLabel: false
     };
 
-    softwareAssembliesStateSelectorMock.setResult(inputStore);
+    selectorMock.setResult(inputStore);
     mockStore.refreshState();
     fixture.detectChanges();
 
@@ -229,7 +220,7 @@ describe('SoftwareAssembliesComponent', () => {
 
   it('should clear data when undefined software', fakeAsync(() => {
 
-    const softwareAssembliesStateSelectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, undefined);
+    const selectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, initialState.software.assemblies);
 
     const inputStore = {
       software:  undefined,
@@ -237,17 +228,18 @@ describe('SoftwareAssembliesComponent', () => {
       displayLabel: false
     };
 
-    softwareAssembliesStateSelectorMock.setResult(inputStore);
+    selectorMock.setResult(inputStore);
+
     mockStore.refreshState();
     flush();
 
-    expect(component.assemblies).toBeFalsy();
+    expect(component.assemblies).toEqual([]);
 
   }));
 
   it('should clear data when undefined assemblies', fakeAsync(() => {
 
-    const softwareAssembliesStateSelectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, undefined);
+    const selectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, initialState.software.assemblies);
 
     const inputStore = {
       software: {
@@ -257,17 +249,17 @@ describe('SoftwareAssembliesComponent', () => {
         isNative: false,
         isSoftware: false,
         links: [],
-        referencedAssemblies: undefined
+        referencedAssemblies: []
       },
       filteredAssemblies: [],
       displayLabel: false
     };
 
-    softwareAssembliesStateSelectorMock.setResult(inputStore);
+    selectorMock.setResult(inputStore);
     mockStore.refreshState();
     flush();
 
-    expect(component.assemblies).toBeFalsy();
+    expect(component.assemblies).toEqual([]);
 
   }));
 

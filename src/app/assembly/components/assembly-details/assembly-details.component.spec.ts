@@ -11,7 +11,7 @@ import { ForceGraphComponent } from '@app/shared/components';
 import { BusyComponent } from '@app/shared/components/busy/busy.component';
 import { toGraph } from '@app/shared/converters';
 import { SnowDialogDirective } from '@app/shared/directives/snow-dialog.directive';
-import { MemoizedSelector } from '@ngrx/store';
+import { DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
 import { loadAssemblyDepth } from '../../store/actions';
@@ -34,8 +34,6 @@ const initialState = {
 describe('AssemblyDetailsComponent', () => {
   let component: AssemblyDetailsComponent;
   let fixture: ComponentFixture<AssemblyDetailsComponent>;
-  let mockAssemblyDepthSelector: MemoizedSelector<AssemblyState, Assembly>;
-  let mockAssemblyDepthMaxSelector: MemoizedSelector<AssemblyState, { assemblyId: string, value: number }>;
   let mockStore: MockStore;
 
   beforeEach(waitForAsync(() => {
@@ -66,9 +64,6 @@ describe('AssemblyDetailsComponent', () => {
     fixture.detectChanges();
 
     mockStore = TestBed.inject(MockStore);
-
-    mockAssemblyDepthSelector = mockStore.overrideSelector(assemblyDepthStateSelector, undefined);
-    mockAssemblyDepthMaxSelector = mockStore.overrideSelector(assemblyDepthMaxStateSelector, undefined);
   });
 
   it('should create', () => {
@@ -76,6 +71,7 @@ describe('AssemblyDetailsComponent', () => {
   });
 
   it('should update depth max', () => {
+    const mockAssemblyDepthMaxSelector = mockStore.overrideSelector(assemblyDepthMaxStateSelector, undefined);
 
     mockAssemblyDepthMaxSelector.setResult({ assemblyId: 'test', value: 10});
     mockStore.refreshState();
@@ -118,6 +114,8 @@ describe('AssemblyDetailsComponent', () => {
       referencedAssemblies: []
     };
 
+    const mockAssemblyDepthSelector = mockStore.overrideSelector(assemblyDepthStateSelector, undefined);
+
     mockAssemblyDepthSelector.setResult(inputAssembly);
     mockStore.refreshState();
 
@@ -135,6 +133,8 @@ describe('AssemblyDetailsComponent', () => {
       links: [],
       referencedAssemblies: []
     };
+
+    const mockAssemblyDepthSelector = mockStore.overrideSelector(assemblyDepthStateSelector, undefined);
 
     mockAssemblyDepthSelector.setResult(inputAssembly);
     mockStore.refreshState();

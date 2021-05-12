@@ -22,6 +22,7 @@ import { loadAssemblies } from './../../store/actions/assemblies.actions';
 import { AssemblyDetailsComponent } from './../assembly-details/assembly-details.component';
 import { RightService } from '@app/security/services/right.service';
 import { removeAssemblyFeature } from '@app/assembly/assembly-security-keys';
+import { isNotNullOrUndefined } from '@app/shared/type-guards';
 
 @Component({
   selector: 'asm-assembly-list',
@@ -35,21 +36,21 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
   private removeColumnKey = 'remove';
 
 
-  displayedColumns: string[];
+  displayedColumns: string[] = [];
 
-  dataSource: MatTableDataSource<AssemblyStat>;
+  dataSource = new MatTableDataSource<AssemblyStat>();
   selection = new SelectionModel<AssemblyStat>(false, []);
   pageSize = 20;
   assemblyCount = 0;
   currentPage = 0;
 
-  #storeSubscription: Subscription;
-  #filterSubscription: Subscription;
-  #hasRightSubscription: Subscription;
-  #currentFilter: string;
+  #storeSubscription?: Subscription;
+  #filterSubscription?: Subscription;
+  #hasRightSubscription?: Subscription;
+  #currentFilter = '';
 
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild('searchInput') searchInput: ElementRef;
+  @ViewChild(MatSort, { static: true }) sort?: MatSort;
+  @ViewChild('searchInput') searchInput?: ElementRef;
 
   constructor(
     public dialog: MatDialog,
@@ -65,23 +66,26 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
 
 
   ngAfterViewInit(): void {
-    this.#filterSubscription = fromEvent(this.searchInput.nativeElement, 'keyup').pipe(
-      map((event: any) => event.target.value),
-      debounceTime(400),
-      distinctUntilChanged()
-    ).subscribe({
-      next: x => {
-        this.currentPage = 0;
-        this.#currentFilter = x;
-        this.updateAssemblies();
-      }
-    });
+    if (this.searchInput) {
+      this.#filterSubscription = fromEvent(this.searchInput.nativeElement, 'keyup').pipe(
+        map((event: any) => event.target.value),
+        debounceTime(400),
+        distinctUntilChanged()
+      ).subscribe({
+        next: x => {
+          this.currentPage = 0;
+          this.#currentFilter = x;
+          this.updateAssemblies();
+        }
+      });
+    }
   }
 
   ngAfterContentInit(): void {
     this.route.paramMap.pipe(
       filter(x => x.has('id')),
-      map(x => x.get('id'))
+      map(x => x.get('id')),
+      filter(isNotNullOrUndefined)
     ).subscribe(x => {
       this.openDetails(x);
     });
@@ -107,9 +111,11 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
     this.displayedColumns = allowRemove ? [...this.baseColumns, this.removeColumnKey] : [... this.baseColumns];
   }
 
-  createDataSource(assemblies: AssemblyStat[]): MatTableDataSource<AssemblyStat> {
+  createDataSource(assemblies: AssemblyStat[] | undefined): MatTableDataSource<AssemblyStat> {
     const source = new MatTableDataSource(assemblies ?? []);
-    source.sort = this.sort;
+    if (this.sort) {
+      source.sort = this.sort;
+    }
     return source;
   }
 
@@ -131,7 +137,7 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
     return assemblyStat.isNative ? AssemblyColors.native : AssemblyColors.managed;
   }
 
-  openDetails(assemblyId: string) {
+  openDetails(assemblyId: string): void {
     const dialogRef = this.dialog.open(AssemblyDetailsComponent, {
       width: '98%',
       height: '98%',
@@ -148,7 +154,7 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
     });
   }
 
-  removeAssembly(assembly: AssemblyStat, event: any) {
+  removeAssembly(assembly: AssemblyStat, event: any): void {
     event?.stopPropagation();
 
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -164,22 +170,22 @@ export class AssemblyListComponent implements AfterContentInit, AfterViewInit, O
     });
   }
 
-  private updateAssemblies() {
+  private updateAssemblies(): void {
     this.store.dispatch(ActionBusyAppender.executeWithBusy(loadAssemblies({
       take: this.pageSize,
       page: this.currentPage,
       filter: this.#currentFilter,
-      order: this.converterService.getAssemblyServiceOrder(this.sort.active, this.sort.direction)
+      order: this.converterService.getAssemblyServiceOrder(this.sort?.active, this.sort?.direction)
     }), 'AssemblyList'));
   }
 
-  handlePageChanged(event: PageEvent) {
+  handlePageChanged(event: PageEvent): void {
     this.currentPage = event.pageIndex;
     this.pageSize = event.pageSize;
     this.updateAssemblies();
   }
 
-  handleSortChanged(event: Sort) {
+  handleSortChanged(): void {
     this.updateAssemblies();
   }
 }

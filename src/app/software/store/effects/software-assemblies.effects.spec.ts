@@ -123,7 +123,7 @@ describe('SoftwareAssembliesEffects', () => {
         ]
       });
 
-      serviceSpy.software.and.returnValue(cold('#', null, new Error('new error')));
+      serviceSpy.software.and.returnValue(cold('#', undefined, new Error('new error')));
 
       const effects = TestBed.inject(SoftwareAssembliesEffects);
 
@@ -149,7 +149,7 @@ describe('SoftwareAssembliesEffects', () => {
         ]
       });
 
-      serviceSpy.software.and.returnValue(cold('#', null, new Error('new error')));
+      serviceSpy.software.and.returnValue(cold('#', undefined, new Error('new error')));
 
       const effects = TestBed.inject(SoftwareAssembliesEffects);
 

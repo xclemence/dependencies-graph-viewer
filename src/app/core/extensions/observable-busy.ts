@@ -22,6 +22,6 @@ function executeWithMainBusy<T>(operation: Observable<T>, store: Store): Observa
   );
 }
 
-Observable.prototype.executeWithMainBusy = function(x) {
+Observable.prototype.executeWithMainBusy = function(x): Observable<any> {
   return executeWithMainBusy(this, x);
 };

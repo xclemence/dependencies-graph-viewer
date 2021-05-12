@@ -8,10 +8,10 @@ import { ThemePalette } from '@angular/material/core';
 })
 export class StateButtonComponent {
 
-  @Input() value: boolean;
+  @Input() value = false;
 
-  @Input() description: string;
-  @Input() tooltip: string;
+  @Input() description?: string;
+  @Input() tooltip = '';
 
   @Output() valueChange = new EventEmitter<boolean>();
 
@@ -19,7 +19,7 @@ export class StateButtonComponent {
     return this.value ? 'primary' : undefined;
   }
 
-  onClick() {
+  onClick(): void {
     this.value = !this.value;
     this.valueChange.emit(this.value);
   }

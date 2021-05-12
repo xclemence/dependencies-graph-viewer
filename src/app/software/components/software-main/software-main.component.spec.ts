@@ -19,7 +19,7 @@ class SoftwareListStubComponent {
   @Output() selectionChange: EventEmitter<AssemblyBase> = new EventEmitter();
   @Output() refreshSoftwaresRequest = new EventEmitter();
 
-  @Input() selectedId: string;
+  @Input() selectedId?: string;
 }
 
 @Component({ selector: 'app-software-references', template: '' })

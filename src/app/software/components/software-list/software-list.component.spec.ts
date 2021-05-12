@@ -73,7 +73,7 @@ describe('SoftwareListComponent', () => {
 
   it('should load data from store', fakeAsync(() => {
 
-    const softwareNameStateSelectorMock = mockStore.overrideSelector(softwareNameStateSelector, undefined);
+    const softwareNameStateSelectorMock = mockStore.overrideSelector(softwareNameStateSelector, initialState.software.name);
 
     const inputStore = {
       softwareNames: [

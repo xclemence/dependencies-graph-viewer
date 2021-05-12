@@ -54,7 +54,7 @@ describe('assemblyReducer', () => {
     const action = loadAssembliesSuccess({
       data: assemblies,
       assembliesCount: assemblyCount,
-      origin: undefined
+      origin: loadAssemblies({} as any)
     });
 
     const expectedValue = {
@@ -92,7 +92,7 @@ describe('assemblyReducer', () => {
 
     const action = loadAssemblyDepthSuccess({
       data: assembly,
-      origin: undefined
+      origin: loadAssemblyDepth({assemblyId: '1', depth: 1})
     });
 
     const expectedValue = {
@@ -117,7 +117,7 @@ describe('assemblyReducer', () => {
     const action = loadAssemblyDepthMaxSuccess({
       assemblyId: '1',
       depthMax: 123,
-      origin: undefined
+      origin: loadAssemblyDepthMax({assemblyId: '1'})
     });
 
     const expectedValue = {

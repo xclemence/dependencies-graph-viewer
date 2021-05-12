@@ -6,7 +6,7 @@ import { SecurityState } from '../models';
 const initialState: SecurityState = {
   currentUser: undefined,
   featuresConfiguration: [],
-  noRightPath: undefined
+  noRightPath: ''
 };
 
 export const securityReducer = createReducer(

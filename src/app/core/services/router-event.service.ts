@@ -11,7 +11,7 @@ import { UrlService } from './url.service';
 })
 export class RouterEventService {
 
-  #originUrl: string;
+  #originUrl?: string;
 
   private map = new Map<string, () => void>([
     [NavigationStart.name, () => this.proceedNavigationStart()],
@@ -31,21 +31,23 @@ export class RouterEventService {
     });
   }
 
-  private startBusy() {
+  private startBusy(): void {
     this.store.dispatch(addBusyIndicatorAction({ key: 'Main'}));
   }
 
-  private stopBusy() {
+  private stopBusy(): void {
     this.store.dispatch(removeBusyIndicatorAction({ key: 'Main'}));
   }
 
-  private proceedNavigationStart() {
+  private proceedNavigationStart(): void {
     this.#originUrl = this.urlService.getCurrentPath();
     this.startBusy();
   }
 
-  private proceedNavigationCancel() {
+  private proceedNavigationCancel(): void {
     this.stopBusy();
-    this.urlService.moveSegment(this.#originUrl);
+    if (this.#originUrl) {
+      this.urlService.moveSegment(this.#originUrl);
+    }
   }
 }

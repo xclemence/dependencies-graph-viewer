@@ -32,7 +32,7 @@ describe('softwareNameReducer', () => {
 
     const action = loadSoftwareNamesSuccess({
       data: assemblies,
-      origin: undefined
+      origin: loadSoftwareNames()
     });
 
     const expectedValue = {

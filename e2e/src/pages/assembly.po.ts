@@ -1,23 +1,23 @@
-import { $, $$, browser, protractor } from 'protractor';
+import { $, $$, browser, promise, protractor } from 'protractor';
 
 export class AssemblyPage {
-  navigateTo() {
+  navigateTo(): promise.Promise<any> {
     return browser.get('/assembly');
   }
 
-  getAssemblyCount() {
+  getAssemblyCount(): promise.Promise<number> {
     return $$('.cdk-row').count();
   }
 
-  openAssemblyDetails(index: number) {
+  openAssemblyDetails(index: number): promise.Promise<void> {
     return $$('.cdk-row').get(index).click();
   }
 
-  getDetailsHeader() {
+  getDetailsHeader(): promise.Promise<string> {
     return $('.assembly-details-header').getText();
   }
 
-  closeAssemblyDetails() {
+  closeAssemblyDetails(): promise.Promise<void> {
     return browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
   }
 }

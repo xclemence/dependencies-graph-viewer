@@ -15,19 +15,19 @@ export type GraphUpdateMode = 'Update' | 'ClearAndAdd';
 export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnDestroy {
 
   #isInitialized = false;
-  #simulation: Simulation<{}, undefined>;
+  #simulation?: Simulation<{}, undefined>;
 
-  #graph: Graph;
-  #linkedByIndex = {};
+  #graph?: Graph;
+  #linkedByIndex: { [char: string]: boolean } = {};
 
-  #nodes: any = null;
-  #links: any;
+  #nodes?: any = null;
+  #links?: any;
 
-  #svg: any;
-  #svgGroup: any;
+  #svg?: any;
+  #svgGroup?: any;
 
-  #height: number;
-  #width: number;
+  #height?: number;
+  #width?: number;
 
   @Input() public disableOpacity = 0.3;
   @Input() public markerSize = 12;
@@ -35,7 +35,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
   @Input() public circleSize = 6;
   @Input() public updateMode: GraphUpdateMode = 'Update';
 
-  @Input() set graph(value: Graph) {
+  @Input() set graph(value: Graph | undefined) {
     if (value === this.#graph) {
       return;
     }
@@ -56,7 +56,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
 
   constructor(private container: ElementRef, private zone: NgZone) { }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {
       this.initializeGraph();
     });
@@ -68,12 +68,12 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
 
   ngOnDestroy(): void {
     this.clearData();
-    this.#simulation.stop();
+    this.#simulation?.stop();
 
     this.#svg.selectAll('*').remove();
   }
 
-  private initializeGraph() {
+  private initializeGraph(): void {
 
     if (this.#isInitialized) {
       return;
@@ -113,23 +113,27 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
       .attr('stroke', 'none')
       .attr('fill', 'DimGray');
 
-    this.#svg.call(zoom().on('zoom', ({ transform }) => this.#svgGroup.attr('transform', transform)));
+    this.#svg.call(zoom().on('zoom', ({ transform }: any) => this.#svgGroup.attr('transform', transform)));
 
     this.#svgGroup.append('g').attr('class', 'links');
     this.#svgGroup.append('g').attr('class', 'nodes');
 
   }
 
-  private updateGraphData() {
+  private updateGraphData(): void {
     if (!this.#isInitialized) {
       this.initializeGraph();
     }
 
-    if (this.#graph == null || this.updateMode === 'ClearAndAdd') {
+    if (!this.#simulation) {
+      return;
+    }
+
+    if (!this.#graph || this.updateMode === 'ClearAndAdd') {
       this.clearData();
     }
 
-    if (this.#graph == null) {
+    if (!this.#graph) {
       this.#simulation.restart();
       return;
     }
@@ -183,20 +187,20 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
       .on('drag', this.dragged)
       .on('end', (event, d) => this.dragEnded(event, d, this.#simulation)));
 
-    this.#simulation.force<d3.ForceLink<any, any>>('link').links(this.#graph.links);
+    this.#simulation.force<d3.ForceLink<any, any>>('link')?.links(this.#graph.links);
     this.#simulation.alpha(0).alphaTarget(0.3).restart();
 
     this.#nodes = this.nodeSelector;
   }
 
-  private clearData() {
+  private clearData(): void {
     if (this.nodeSelector != null) {
       this.nodeSelector.data({}).exit().remove();
       this.linkSelector.data({}).exit().remove();
     }
   }
 
-  private ticked() {
+  private ticked(): void {
     this.#links
       .attr('x1', (d: any) => d.source.x)
       .attr('y1', (d: any) => d.source.y)
@@ -206,11 +210,11 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
     this.#nodes.attr('transform', (d: any) => `translate(${d.x}, ${d.y})`);
   }
 
-  private isConnected(a: GraphNode, b: GraphNode) {
+  private isConnected(a: GraphNode, b: GraphNode): boolean {
     return this.#linkedByIndex[`${a.id},${b.id}`] || a.id === b.id;
   }
 
-  private fade(opacity: number) {
+  private fade(opacity: number): (_: any, d: any) => void {
     return (_: any, d: any) => {
       this.#nodes.style('opacity', (o: any) => this.isConnected(d, o) ? 1 : opacity);
       this.#links.style('opacity', (o: any) => (o.source === d ? 1 : opacity));
@@ -240,7 +244,7 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
     d.fy = null;
   }
 
-  onResize() {
+  onResize(): void {
     if (!this.#isInitialized) {
       return;
     }
@@ -257,8 +261,8 @@ export class ForceGraphComponent implements AfterViewInit, AfterViewChecked, OnD
     this.#svg.attr('width', this.#width);
     this.#svg.attr('height', this.#height);
 
-    this.#simulation = this.#simulation.force('center', forceCenter(this.#width / 2, this.#height / 2));
-    this.#simulation.restart();
+    this.#simulation = this.#simulation?.force('center', forceCenter(this.#width / 2, this.#height / 2));
+    this.#simulation?.restart();
   }
 
   private getControlSize(): { width: number, height: number } {

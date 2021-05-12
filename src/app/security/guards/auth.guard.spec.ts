@@ -32,7 +32,7 @@ describe('AuthGuard', () => {
 
   it('should return true if user is connected', async () => {
     keycloakServiceSpy.isLoggedIn.and.returnValue(Promise.resolve(true));
-    const result = await guard.canLoad(undefined, undefined);
+    const result = await guard.canLoad(undefined as any, []);
 
     expect(result).toBeTrue();
   });
@@ -45,7 +45,7 @@ describe('AuthGuard', () => {
       new UrlSegment('test2', {}),
     ];
 
-    const result = await guard.canLoad(undefined, segments);
+    const result = await guard.canLoad(undefined as any, segments);
 
     expect(keycloakServiceSpy.login).toHaveBeenCalledWith({ redirectUri: `${window.location.origin}/test/test2` });
 

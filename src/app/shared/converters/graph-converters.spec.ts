@@ -1,7 +1,6 @@
 import { AssemblyColors } from '@app/core/models';
 
 import { consolidateGraphPosition, toGraphLink, toGraphNode } from '.';
-import { DefaultGraphLink } from '../models';
 import { toGraph } from './graph-converters';
 
 describe('graph converters', () => {
@@ -53,15 +52,15 @@ describe('graph converters', () => {
     const node1 = { id: '1', label: '1', color: '' };
     const node2 = { id: '2', label: '2', color: '' };
 
-    const expectedLink =  new DefaultGraphLink({ source: node1, target: node2, value: 10 });
-    const link = toGraphLink({ sourceId: '1', targetId: '2' }, [node1, node2]);
+    const expectedLink = { source: node1, target: node2 };
+    const link = toGraphLink({ sourceId: '1', targetId: '2'}, [node1, node2]);
     expect(link).toEqual(expectedLink);
   });
 
   it('not consolidation graph position', () => {
     const initialGraph = {
-      nodes: [ { id: 'dll1', label: 'name (1)', color: 'black' } ],
-      links: [ ]
+      nodes: [{ id: 'dll1', label: 'name (1)', color: 'black' }],
+      links: []
     };
 
     const result = consolidateGraphPosition(initialGraph, undefined);
@@ -73,29 +72,29 @@ describe('graph converters', () => {
 
   it('consolidation graph position', () => {
     const initialGraph = {
-      nodes: [ { id: 'dll1', label: 'name (1)', color: 'black'  } ],
-      links: [ ]
+      nodes: [{ id: 'dll1', label: 'name (1)', color: 'black' }],
+      links: []
     };
 
     const oldGraphGraph = {
-      nodes: [ { id: 'dll1', label: '', color: 'black', x: 123, y: 2  } ],
-      links: [ ]
+      nodes: [{ id: 'dll1', label: '', color: 'black', x: 123, y: 2 }],
+      links: []
     };
 
     const result = consolidateGraphPosition(initialGraph, oldGraphGraph);
 
-    expect(result.nodes[0]).toEqual( { id: 'dll1', label: 'name (1)', color: 'black', x: 123, y: 2 });
+    expect(result.nodes[0]).toEqual({ id: 'dll1', label: 'name (1)', color: 'black', x: 123, y: 2 });
   });
 
   it('should not update new node position', () => {
     const initialGraph = {
-      nodes: [ { id: 'dll1', label: 'name (1)', color: 'black'  } ],
-      links: [ ]
+      nodes: [{ id: 'dll1', label: 'name (1)', color: 'black' }],
+      links: []
     };
 
     const oldGraphGraph = {
-      nodes: [ { id: 'dll2', label: '', color: 'black', x: 123, y: 2  }],
-      links: [ ]
+      nodes: [{ id: 'dll2', label: '', color: 'black', x: 123, y: 2 }],
+      links: []
     };
 
     const result = consolidateGraphPosition(initialGraph, oldGraphGraph);
@@ -123,9 +122,9 @@ describe('graph converters', () => {
     const node1 = { id: '1', label: 'name1 (1.0)', color: AssemblyColors.main };
 
     const expectedGraphData = {
-      nodes: [ node2, node1],
+      nodes: [node2, node1],
       links: [
-        new DefaultGraphLink({ source: node1, target: node2 })
+        { source: node1, target: node2, value: 10 }
       ]
     };
 
@@ -153,11 +152,6 @@ describe('graph converters', () => {
 
     const graphData = toGraph(inputAssembly);
     expect(graphData).toEqual(expectedGraphData);
-  });
-
-  it('should null graph', () => {
-    const graphData = toGraph(undefined);
-    expect(graphData).toBeFalsy();
   });
 
 });

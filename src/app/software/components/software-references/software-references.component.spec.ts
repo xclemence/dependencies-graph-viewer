@@ -9,7 +9,7 @@ import { MatDrawerHarness } from '@angular/material/sidenav/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AssemblyColors } from '@app/core/models';
-import { DefaultGraphLink, Graph } from '@app/shared/models';
+import { Graph } from '@app/shared/models';
 import { displayLabel } from '@app/software/store/actions';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TestScheduler } from 'rxjs/testing';
@@ -27,16 +27,18 @@ class SoftwareStatisticsStubComponent { }
 
 @Component({ selector: 'dgv-busy', template: '' })
 class BusyStubComponent {
-  @Input() opacity: number;
-  @Input() busyKey: string;
+  @Input() displayed = false;
+  @Input() message = 'Loading...';
+  @Input() opacity = 1.0;
+  @Input() busyKey = 'busy';
 }
 
 @Component({ selector: 'dgv-three-force-graph', template: '' })
 class ForceGraphStubComponent {
-  @Input() graph: Graph;
-  @Input() hoverNodeId: string;
-  @Input() filteredNodes: string[];
-  @Input() displayNodeLabel: boolean;
+  @Input() graph?: Graph | null;
+  @Input() hoverNodeId?: string;
+  @Input() filteredNodes?: string[] | null;
+  @Input() displayNodeLabel: boolean | null = null;
 }
 
 describe('SoftwareReferencesComponent', () => {
@@ -50,7 +52,8 @@ describe('SoftwareReferencesComponent', () => {
     software: {
       assemblies: {
         software: undefined,
-        filteredAssemblies: []
+        filteredAssemblies: [],
+        displayLabel: false
       },
       name: {
         softwareNames: []
@@ -125,7 +128,7 @@ describe('SoftwareReferencesComponent', () => {
 
   it('should generate graph with one assembly', () => {
 
-    const softwareAssembliesStateSelectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, undefined);
+    const selectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, initialState.software.assemblies);
 
     const forceGraphComponent = fixture.debugElement.query(By.directive(ForceGraphStubComponent)).componentInstance;
 
@@ -146,7 +149,7 @@ describe('SoftwareReferencesComponent', () => {
       displayLabel: false
     };
 
-    softwareAssembliesStateSelectorMock.setResult(inputStore);
+    selectorMock.setResult(inputStore);
     mockStore.refreshState();
     fixture.detectChanges();
 
@@ -159,7 +162,7 @@ describe('SoftwareReferencesComponent', () => {
 
   it('should generate graph with references', () => {
 
-    const softwareAssembliesStateSelectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, undefined);
+    const selectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, initialState.software.assemblies);
 
     const forceGraphComponent = fixture.debugElement.query(By.directive(ForceGraphStubComponent)).componentInstance;
 
@@ -190,12 +193,12 @@ describe('SoftwareReferencesComponent', () => {
     const expectedGraph = {
       nodes: [ node2, node3, node1 ],
       links: [
-        new DefaultGraphLink({ source: node1, target: node2 }),
-        new DefaultGraphLink({ source: node1, target: node3 })
+        { source: node1, target: node2, value: 10 },
+        { source: node1, target: node3, value: 10 }
       ]
     };
 
-    softwareAssembliesStateSelectorMock.setResult(inputStore);
+    selectorMock.setResult(inputStore);
     mockStore.refreshState();
     fixture.detectChanges();
 
@@ -205,7 +208,7 @@ describe('SoftwareReferencesComponent', () => {
 
   it('should generate undefine graph', () => {
 
-    const softwareAssembliesStateSelectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, undefined);
+    const selectorMock = mockStore.overrideSelector(softwareAssembliesStateSelector, initialState.software.assemblies);
     const forceGraphComponent = fixture.debugElement.query(By.directive(ForceGraphStubComponent)).componentInstance;
 
     const inputStore = {
@@ -214,7 +217,7 @@ describe('SoftwareReferencesComponent', () => {
       displayLabel: false
     };
 
-    softwareAssembliesStateSelectorMock.setResult(inputStore);
+    selectorMock.setResult(inputStore);
     mockStore.refreshState();
     fixture.detectChanges();
 

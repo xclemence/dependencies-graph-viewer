@@ -13,9 +13,8 @@ import { RouterEventService } from '../router-event.service';
 
 @Injectable()
 export class CancelGuard implements CanActivate {
-    canActivate() {
-        console.log('cancel navigation');
-        return false;
+    canActivate(): boolean {
+      return false;
     }
 }
 

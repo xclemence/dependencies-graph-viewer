@@ -17,7 +17,6 @@ import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { AssemblyColors } from '@app/core/models';
 import { UrlService } from '@app/core/services';
 import { BusyComponent } from '@app/shared/components';
-import { MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { of, Subject } from 'rxjs';
 
@@ -25,13 +24,11 @@ import { AssemblyService } from '../../services/assembly.service';
 import { SortDefinitionConverterService } from '../../services/sort-definition-converter.service';
 import { loadAssemblies } from '../../store/actions';
 import { assembliesStateSelector } from '../../store/assembly.selectors';
-import { AssemblyFiltered, AssemblyState } from '../../store/models';
 import { AssemblyListComponent } from './assembly-list.component';
 
 describe('AssemblyListComponent', () => {
   let component: AssemblyListComponent;
   let fixture: ComponentFixture<AssemblyListComponent>;
-  let assembliesStateSelectorMock: MemoizedSelector<AssemblyState, AssemblyFiltered>;
   let mockStore: MockStore;
   let assemblyServiceSpy: jasmine.SpyObj<AssemblyService>;
   let converterServiceSpy: jasmine.SpyObj<SortDefinitionConverterService>;
@@ -117,7 +114,6 @@ describe('AssemblyListComponent', () => {
 
     mockStore = TestBed.inject(MockStore);
 
-    assembliesStateSelectorMock = mockStore.overrideSelector(assembliesStateSelector, undefined);
   });
 
   it('should create', () => {
@@ -150,6 +146,8 @@ describe('AssemblyListComponent', () => {
   });
 
   it('should load assemblies data', async () => {
+    const assembliesStateSelectorMock = mockStore.overrideSelector(assembliesStateSelector, undefined);
+
     assembliesStateSelectorMock.setResult({
       filtered: [
         { ...viewAssembly },
@@ -167,6 +165,8 @@ describe('AssemblyListComponent', () => {
   });
 
   it('should update paginator label', fakeAsync(() => {
+    const assembliesStateSelectorMock = mockStore.overrideSelector(assembliesStateSelector, undefined);
+
     assembliesStateSelectorMock.setResult({
       filtered: [
         { ...viewAssembly }
@@ -184,7 +184,7 @@ describe('AssemblyListComponent', () => {
   it('should ask for reload on sort changed', fakeAsync(() => {
 
     const dispatchSpy = spyOn(mockStore, 'dispatch');
-    component.handleSortChanged(undefined);
+    component.handleSortChanged();
     expect(dispatchSpy).toHaveBeenCalledTimes(1);
   }));
 
@@ -266,6 +266,8 @@ describe('AssemblyListComponent', () => {
 
   it('should refresh view with filter', fakeAsync(() => {
 
+    converterServiceSpy.getAssemblyServiceOrder.and.returnValue('order');
+
     const dispatchSpy = spyOn(mockStore, 'dispatch');
 
     const searchElements = fixture.debugElement.query(By.css('#searchInput'));
@@ -274,7 +276,7 @@ describe('AssemblyListComponent', () => {
       take: component.pageSize,
       page: component.currentPage,
       filter: 'test',
-      order: undefined
+      order: 'order'
     }), 'AssemblyList');
 
     searchElements.nativeElement.value = 'test';

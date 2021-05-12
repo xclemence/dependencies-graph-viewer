@@ -9,7 +9,7 @@ export class HeaderPreviousComponent {
 
   constructor(private location: Location) { }
 
-  back() {
+  back(): void {
     this.location.back();
   }
 }

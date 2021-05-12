@@ -1,9 +1,7 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CurrentUserState, SecurityState } from '@app/security/store/models';
 import { currentUserSelector } from '@app/security/store/security.selectors';
-import { MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TestScheduler } from 'rxjs/testing';
 import { HeaderLinksComponent } from './header-links.component';
@@ -18,7 +16,6 @@ describe('HeaderLinksComponent', () => {
   let component: HeaderLinksComponent;
   let fixture: ComponentFixture<HeaderLinksComponent>;
   let mockStore: MockStore;
-  let userSelector: MemoizedSelector<SecurityState, CurrentUserState>;
   let testScheduler: TestScheduler;
 
   beforeEach(() => {
@@ -47,7 +44,6 @@ describe('HeaderLinksComponent', () => {
     fixture.detectChanges();
 
     mockStore = TestBed.inject(MockStore);
-    userSelector = mockStore.overrideSelector(currentUserSelector, undefined);
   });
 
   it('should create', () => {
@@ -65,13 +61,20 @@ describe('HeaderLinksComponent', () => {
         { path: 'path2', label: 'test2', roles: ['test2', 'test3'] }
       ];
 
-      expectObservable(component.userLinks).toBe('a', { a: [pathNoRole] });
+      if (!component.userLinks) {
+        fail('userLinks sould not be undefined');
+      } else {
+        expectObservable(component.userLinks).toBe('a', { a: [pathNoRole] });
+      }
     });
   });
 
   it('should display only paths according with user rights', fakeAsync(() => {
 
     testScheduler.run(({ expectObservable }) => {
+      const userSelector = mockStore.overrideSelector(currentUserSelector, undefined);
+
+
       const pathNoRole = { path: 'path-no role', label: 'test', roles: [] };
       const pathWithRole = { path: 'path2', label: 'test2', roles: ['test2', 'test3'] };
       component.allLinks = [
@@ -87,8 +90,11 @@ describe('HeaderLinksComponent', () => {
       mockStore.refreshState();
       fixture.detectChanges();
 
-
-      expectObservable(component.userLinks).toBe('a', { a: [pathNoRole, pathWithRole] });
+      if (!component.userLinks) {
+        fail('userLinks sould not be undefined');
+      } else {
+        expectObservable(component.userLinks).toBe('a', { a: [pathNoRole, pathWithRole] });
+      }
     });
   }));
 

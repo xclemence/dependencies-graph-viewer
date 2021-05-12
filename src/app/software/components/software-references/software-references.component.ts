@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { toGraph } from '@app/shared/converters';
 import { Graph } from '@app/shared/models';
+import { isNotNullOrUndefined } from '@app/shared/type-guards';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 
 import { SoftwareState } from '../../store/models';
 import { filteredAssembliesStateSelector, softwareSelector } from '../../store/software.selectors';
@@ -16,36 +17,34 @@ import { displayLabelSelector } from './../../store/software.selectors';
   styleUrls: ['./software-references.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SoftwareReferencesComponent implements OnInit {
+export class SoftwareReferencesComponent {
 
-  graph: Observable<Graph>;
-  filteredAssemblies: Observable<string[]>;
+  graph: Observable<Graph | undefined>;
+  filteredAssemblies: Observable<string[] | undefined>;
   displayLabel: Observable<boolean>;
 
   visibilityPanelOpened = false;
-  hoveredNode = null;
+  hoveredNode?: string;
 
-  constructor(private store: Store<SoftwareState>) { }
-
-  ngOnInit() {
+  constructor(private store: Store<SoftwareState>) {
     this.graph = this.store.pipe(
       select(softwareSelector),
-      map(x => toGraph(x))
+      map(x => x ? toGraph(x) : undefined),
     );
 
     this.filteredAssemblies = this.store.pipe(select(filteredAssembliesStateSelector));
-    this.displayLabel = this.store.pipe(select(displayLabelSelector));
+    this.displayLabel = this.store.pipe(select(displayLabelSelector), filter(isNotNullOrUndefined));
   }
 
-  openVisibilityPanel() {
+  openVisibilityPanel(): void {
     this.visibilityPanelOpened = true;
   }
 
-  closeVisibilityPanel() {
+  closeVisibilityPanel(): void {
     this.visibilityPanelOpened = false;
   }
 
-  onLabelVisibilityChanged(value: boolean) {
+  onLabelVisibilityChanged(value: boolean): void {
     this.store.dispatch(displayLabel({value}));
   }
 }

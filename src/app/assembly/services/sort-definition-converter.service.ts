@@ -4,28 +4,26 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class SortDefinitionConverterService {
-  #fieldMapping = {
+  #fieldMapping: { [char: string]: string } = {
     ['type']: 'isNative',
     ['name']: 'shortName',
     ['version']: 'version',
     ['depth']: 'maxDepth',
-    ['links']: 'directReferenceCount'
+    ['links']: 'directReferenceCount',
+    ['']: 'shortName'
   };
 
-  #sortTypeMapping = {
+  #sortTypeMapping: { [char: string]: string } = {
     ['asc']: 'asc',
     ['desc']: 'desc',
+    ['']: 'asc',
   };
 
-  getAssemblyServiceOrder(field: string, order: string): string {
-    let currentField = field;
-    let currentOrder = order;
+  getAssemblyServiceOrder(field: string | undefined , order: string | undefined): string {
+    const currentField = field ?? 'name';
+    const currentOrder = order ?? 'asc';
 
-    if (!order){
-      currentOrder = 'asc';
-      currentField = 'name';
-    }
-
+    console.log(`order ${currentOrder} / ${order}`);
     return this.generateFinalOrder(this.#fieldMapping[currentField], this.#sortTypeMapping[currentOrder]);
   }
 

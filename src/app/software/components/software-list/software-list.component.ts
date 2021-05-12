@@ -14,21 +14,21 @@ import { softwareNameStateSelector } from '../../store/software.selectors';
 })
 export class SoftwareListComponent implements OnInit, OnDestroy {
 
-  #selectedId: string;
-  #storeSubscription: Subscription;
+  #selectedId?: string;
+  #storeSubscription?: Subscription;
 
   @Output() selectionChange: EventEmitter<string> = new EventEmitter();
   @Output() refreshSoftwaresRequest = new EventEmitter();
 
-  softwareNames: AssemblyBase[];
+  softwareNames?: AssemblyBase[];
 
   selectedSoftwares = new Array<AssemblyBase>();
 
-  get selectedId(): string {
+  get selectedId(): string | undefined {
     return this.#selectedId;
   }
 
-  @Input() set selectedId(value: string) {
+  @Input() set selectedId(value: string | undefined) {
     if (value === this.#selectedId) {
       return;
     }
@@ -39,7 +39,7 @@ export class SoftwareListComponent implements OnInit, OnDestroy {
 
   constructor(private store: Store<SoftwareState>) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.#storeSubscription = this.store.pipe(
       select(softwareNameStateSelector),
       map(x => x.softwareNames),
@@ -53,20 +53,20 @@ export class SoftwareListComponent implements OnInit, OnDestroy {
     this.#storeSubscription?.unsubscribe();
   }
 
-  private selectSoftwareById() {
+  private selectSoftwareById(): void {
     if (!this.softwareNames) {
-      this.selectedSoftwares = undefined;
+      this.selectedSoftwares = [];
       return;
     }
 
     this.selectedSoftwares = this.softwareNames.filter(s => s.id === this.selectedId);
   }
 
-  refreshSoftwares() {
+  refreshSoftwares(): void {
     this.refreshSoftwaresRequest.emit();
   }
 
-  selectionChanged() {
+  selectionChanged(): void {
     this.selectionChange.emit(this.selectedSoftwares[0]?.id);
   }
 }

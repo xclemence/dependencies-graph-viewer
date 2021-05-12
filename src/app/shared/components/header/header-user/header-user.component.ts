@@ -14,7 +14,7 @@ export class HeaderUserComponent implements OnInit {
 
   constructor(private keycloak: KeycloakService) {}
 
-  async ngOnInit() {
+  async ngOnInit(): Promise<void> {
 
     this.userConnected = await this.keycloak.isLoggedIn();
 
@@ -23,11 +23,11 @@ export class HeaderUserComponent implements OnInit {
     }
   }
 
-  async logon() {
+  async logon(): Promise<void> {
     await this.keycloak.login();
   }
 
-  async logout() {
+  async logout(): Promise<void> {
     await this.keycloak.logout();
   }
 }

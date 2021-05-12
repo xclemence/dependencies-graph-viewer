@@ -10,7 +10,7 @@ export class SnowInputDirective {
   constructor(private elementRef: ElementRef, private store: Store) { }
 
   @HostListener('keydown', ['$event'])
-  onKeyDown(e: KeyboardEvent) {
+  onKeyDown(e: KeyboardEvent): void {
     const value = `${this.elementRef.nativeElement.value}${e.key}`.toLocaleLowerCase();
     if (value.toLocaleLowerCase() === 'pantoufle') {
       this.store.dispatch(snowActivation());

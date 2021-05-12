@@ -17,7 +17,7 @@ import { HeaderLink } from './shared/components';
 })
 export class AppComponent implements OnInit, OnDestroy{
   title = 'DependenciesGraph';
-  #storeSubscription: Subscription;
+  #storeSubscription?: Subscription;
 
   canLogon = environment.security.enabled;
 
@@ -42,7 +42,7 @@ export class AppComponent implements OnInit, OnDestroy{
     this.#storeSubscription = this.store.pipe(
       select(errorStateSelector),
       filter(x => x.lastError),
-      map(x => JSON.stringify(x.lastError))
+      map(x => x.lastError)
     ).subscribe(x => this.snackBar.open(x, 'Close'));
   }
 

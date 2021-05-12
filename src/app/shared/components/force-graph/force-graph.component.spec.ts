@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { DefaultGraphLink, GraphNode } from '@app/shared/models';
 
-import { ForceGraphComponent, GraphUpdateMode } from './force-graph.component';
+import { ForceGraphComponent } from './force-graph.component';
+
+declare const viewport: any;
 
 describe('ForceGraphComponent', () => {
   let component: ForceGraphComponent;
@@ -49,7 +50,7 @@ describe('ForceGraphComponent', () => {
     const graph = {
       nodes: [ node1, node2 ],
       links: [
-        new DefaultGraphLink({ source: node1, target: node2 })
+        { source: node1, target: node2, value: 10 }
       ]
     };
 
@@ -97,7 +98,7 @@ describe('ForceGraphComponent', () => {
     const graph = {
       nodes: [ node1, node2 ],
       links: [
-        new DefaultGraphLink({ source: node1, target: node2 })
+        { source: node1, target: node2, value: 10 }
       ]
     };
     component.graph = graph;
@@ -125,7 +126,7 @@ describe('ForceGraphComponent', () => {
     const graph = {
       nodes: [ node1, node2 ],
       links: [
-        new DefaultGraphLink({ source: node1, target: node2 })
+        { source: node1, target: node2, value: 10 }
       ]
     };
 
@@ -147,7 +148,7 @@ describe('ForceGraphComponent', () => {
     component.graph = baseGraph;
     fixture.detectChanges();
 
-    component.graph = null;
+    component.graph = undefined;
     fixture.detectChanges();
 
     expect(fixture.debugElement.queryAll(By.css('circle')).length).toBe(0);
@@ -235,8 +236,8 @@ describe('ForceGraphComponent', () => {
     const baseGraph = {
       nodes: [ node1, node2, node3 ],
       links: [
-        new DefaultGraphLink({ source: node1, target: node2 }),
-        new DefaultGraphLink({ source: node2, target: node3 })
+        { source: node1, target: node2, value: 10 },
+        { source: node2, target: node3, value: 10 }
       ]
     };
 

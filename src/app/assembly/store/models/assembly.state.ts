@@ -1,12 +1,12 @@
 import { Assembly, AssemblyStat } from '@app/core/models/assembly';
 
 export interface AssemblyState {
-  assemblies: AssemblyFiltered;
-  assemblyDepth: Assembly;
+  assemblies: AssemblyFiltered | undefined;
+  assemblyDepth: Assembly | undefined;
   assemblyDepthMax: {
     assemblyId: string,
     value: number
-  };
+  } | undefined;
 }
 
 export interface AssemblyFiltered {

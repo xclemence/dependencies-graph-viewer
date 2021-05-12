@@ -9,8 +9,7 @@ import { Subscription } from 'rxjs';
 })
 export class SnowDialogDirective implements OnInit, OnDestroy {
 
-  activated: boolean;
-  #storeSubscription: Subscription;
+  #storeSubscription?: Subscription;
 
   @HostBinding('class') hostClass = '';
 

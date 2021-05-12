@@ -15,33 +15,33 @@ import { SoftwareState } from '../../store/models';
 })
 export class SoftwareMainComponent implements OnInit {
 
-  selectedSoftwareId: string;
+  selectedSoftwareId?: string;
 
   constructor(
     private urlService: UrlService,
     private route: ActivatedRoute,
     private store: Store<SoftwareState>) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.route.paramMap.subscribe(params => this.onParameterChanged(params));
 
     this.refreshSoftwares();
   }
 
-  private onParameterChanged(params: ParamMap) {
+  private onParameterChanged(params: ParamMap): void {
     if (params.has('id')) {
-      this.selectedSoftwareId = params.get('id');
+      this.selectedSoftwareId = params.get('id') ?? undefined;
       this.selectedSoftwareChanged(this.selectedSoftwareId);
     } else {
       this.store.dispatch(clearSoftwareAssemblies());
     }
   }
 
-  refreshSoftwares() {
+  refreshSoftwares(): void {
     this.store.dispatch(ActionBusyAppender.executeWithMainBusy(loadSoftwareNames()));
   }
 
-  selectedSoftwareChanged(softwareId: string) {
+  selectedSoftwareChanged(softwareId?: string): void {
     if (!softwareId) {
       return;
     }

@@ -75,7 +75,7 @@ describe('SoftwareNameEffects', () => {
 
       const serviceSpy = jasmine.createSpyObj<SoftwareService>('service', ['names']);
 
-      serviceSpy.names.and.returnValue(cold('#', null, new Error('new error')));
+      serviceSpy.names.and.returnValue(cold('#', undefined, new Error('new error')));
 
       const actions = new Actions(actionProvider);
       const effects = new SoftwareNameEffects(actions, serviceSpy);
