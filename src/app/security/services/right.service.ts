@@ -18,7 +18,7 @@ export class RightService {
     return featureRights.every(x => userRights.some(r => r === x));
   }
 
-  private hasFeatureRight(feature: string, configuration: FeatureRightsState[], userRights: string[]): boolean {
+  private hasFeatureRight(feature: string, configuration: FeatureRightsState[], userRights?: string[]): boolean {
     const featureConfiguration = configuration?.find(f => f.name === feature);
 
     if (!featureConfiguration || !userRights) {

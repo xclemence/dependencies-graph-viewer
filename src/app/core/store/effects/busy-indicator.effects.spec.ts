@@ -46,7 +46,7 @@ describe('BusyIndicatorEffects', () => {
   it('should not generate add busy action due to undefined action ', () => {
     testScheduler.run(({ hot, expectObservable }) => {
       const actionProvider = hot('-a', {
-        a: undefined
+        a: {} as any
       });
 
       const actions = new Actions(actionProvider);
@@ -82,7 +82,7 @@ describe('BusyIndicatorEffects', () => {
   it('should not generate remove busy action due to undefined action ', () => {
     testScheduler.run(({ hot, expectObservable }) => {
       const actionProvider = hot('-a', {
-        a: undefined
+        a: {} as any
       });
 
       const actions = new Actions(actionProvider);

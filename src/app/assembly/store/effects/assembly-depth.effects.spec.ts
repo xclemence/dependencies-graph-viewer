@@ -81,7 +81,7 @@ describe('AssemblyDepthEffects', () => {
 
       const serviceSpy = jasmine.createSpyObj<AssemblyService>('service', [ 'references']);
 
-      serviceSpy.references.and.returnValue(cold('#', null, new Error('new error')));
+      serviceSpy.references.and.returnValue(cold('#', undefined, new Error('new error')));
 
       const actions = new Actions(actionProvider);
       const effects = new AssemblyDepthEffects(actions, serviceSpy);

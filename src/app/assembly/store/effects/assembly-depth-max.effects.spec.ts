@@ -80,7 +80,7 @@ describe('AssemblyDepthMaxEffects', () => {
 
       const serviceSpy = jasmine.createSpyObj<AssemblyService>('service', [ 'assemblyDepthMax']);
 
-      serviceSpy.assemblyDepthMax.and.returnValue(cold('#', null, new Error('new error')));
+      serviceSpy.assemblyDepthMax.and.returnValue(cold('#', undefined, new Error('new error')));
 
       const actions = new Actions(actionProvider);
       const effects = new AssemblyDepthMaxEffects(actions, serviceSpy);

@@ -3,7 +3,7 @@ import { TypedAction } from '@ngrx/store/src/models';
 import { ActionBusyAppender } from './action-busy-appender';
 
 class TestAction implements TypedAction<string> {
-  type: string;
+  type = 'test';
 }
 
 describe('ActionBusyAppender', () => {

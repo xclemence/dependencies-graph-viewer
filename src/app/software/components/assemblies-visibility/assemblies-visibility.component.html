@@ -22,7 +22,7 @@
       <section class="flex-one results-section">
         <mat-list>
           <mat-list-item *ngFor="let item of filteredAssemblies" (mouseover)="onOverItem(item.id)"
-            (mouseleave)="onOverItem(null)">
+            (mouseleave)="onOverItem()">
             <mat-checkbox [checked]="item.isVisible" (change)="toggleVisibility(item)">{{item.name}}</mat-checkbox>
           </mat-list-item>
         </mat-list>

@@ -15,13 +15,8 @@ describe('SortDefinitionConverterService', () => {
     expect(order).toBe('isNative_asc');
   });
 
-  it('should retrieve default value from undefined', () => {
-    const order = service.getAssemblyServiceOrder(undefined, undefined);
-    expect(order).toBe('shortName_asc');
-  });
-
   it('should retrieve default value from null', () => {
-    const order = service.getAssemblyServiceOrder(null, null);
+    const order = service.getAssemblyServiceOrder(undefined, undefined);
     expect(order).toBe('shortName_asc');
   });
 

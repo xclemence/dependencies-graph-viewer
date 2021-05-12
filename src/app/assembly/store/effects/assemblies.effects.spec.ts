@@ -86,7 +86,7 @@ describe('AssembliesEffects', () => {
 
       const serviceSpy = jasmine.createSpyObj<AssemblyService>('service', ['assemblyStatistics']);
 
-      serviceSpy.assemblyStatistics.and.returnValue(cold('#', null, new Error('new error')));
+      serviceSpy.assemblyStatistics.and.returnValue(cold('#', undefined, new Error('new error')));
 
       const actions = new Actions(actionProvider);
       const effects = new AssembliesEffects(actions, serviceSpy);

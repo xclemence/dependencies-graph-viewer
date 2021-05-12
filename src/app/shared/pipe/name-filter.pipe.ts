@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class NameFilterPipe implements PipeTransform {
 
   transform<T extends {name: string}>(value: T[], nameCriteria: string): T[] {
-    if (!nameCriteria) {
+    if (nameCriteria === '') {
       return value;
     }
 

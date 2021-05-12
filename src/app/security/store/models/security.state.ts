@@ -9,7 +9,7 @@ export interface FeatureRightsState {
 }
 
 export interface SecurityState {
-  currentUser: CurrentUserState;
+  currentUser?: CurrentUserState;
   featuresConfiguration: FeatureRightsState[];
   noRightPath: string;
 }

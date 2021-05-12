@@ -4,6 +4,7 @@ import { loadAssemblyDepthMax } from '@app/assembly/store/actions/assembly-depth
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { consolidateGraphPosition, toGraph } from '@app/shared/converters';
 import { Graph } from '@app/shared/models';
+import { isNotNullOrUndefined } from '@app/shared/type-guards';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
@@ -19,15 +20,15 @@ import { AssemblyState } from '../../store/models';
 })
 export class AssemblyDetailsComponent implements OnInit, OnDestroy {
 
-  assemblyName: string;
+  assemblyName = '';
   depthMax = 10;
-  graph: Graph;
+  graph?: Graph;
 
   #selectedDepth = 1;
   #depthChanged: BehaviorSubject<number>;
-  #depthSubscription: Subscription;
-  #storeSubscription: Subscription;
-  #storeDepthMaxSubscription: Subscription;
+  #depthSubscription?: Subscription;
+  #storeSubscription?: Subscription;
+  #storeDepthMaxSubscription?: Subscription;
 
   assemblyId: string;
 
@@ -58,16 +59,16 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
     this.#depthChanged = new BehaviorSubject(this.selectedDepth);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
 
     this.#storeDepthMaxSubscription = this.store.select(assemblyDepthMaxStateSelector).pipe(
-      filter(x => x !== undefined),
+      filter(isNotNullOrUndefined),
     ).subscribe(x => {
-      this.depthMax = x.value;
+      this.depthMax = x.value ?? 0;
     });
 
     this.#storeSubscription = this.store.select(assemblyDepthStateSelector).pipe(
-      filter(x => x !== undefined),
+      filter(isNotNullOrUndefined),
     ).subscribe(x => {
       const newGraph = toGraph(x);
       this.graph = consolidateGraphPosition(newGraph, this.graph);
@@ -81,16 +82,16 @@ export class AssemblyDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.#depthSubscription.unsubscribe();
-    this.#storeSubscription.unsubscribe();
-    this.#storeDepthMaxSubscription.unsubscribe();
+    this.#depthSubscription?.unsubscribe();
+    this.#storeSubscription?.unsubscribe();
+    this.#storeDepthMaxSubscription?.unsubscribe();
   }
 
-  private loadDepth(value: number) {
+  private loadDepth(value: number): void {
     this.#depthChanged.next(value);
   }
 
-  close() {
+  close(): void {
     this.dialogRef.close();
   }
 }

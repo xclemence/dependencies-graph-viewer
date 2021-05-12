@@ -12,7 +12,7 @@ export class AssemblyConverter {
 
         assembly.referencedAssemblies = item.allReferencedAssemblies.map((x: any) => this.toAssemblyBase<AssemblyBase>(x));
 
-        const links = item.allReferencedAssembliesLinks.map(x => ({ sourceId: x.source, targetId: x.target }));
+        const links = item.allReferencedAssembliesLinks.map((x: any) => ({ sourceId: x.source, targetId: x.target }));
 
         assembly.links = AssemblyConverter.filterBadLinks(links, assembly.referencedAssemblies);
 
@@ -34,6 +34,6 @@ export class AssemblyConverter {
     }
 
     static toAssemblyLinks(sourceId: any, items: any): AssemblyLink[] {
-        return items.map(x => ({ sourceId, targetId: x.name }));
+        return items.map((x: any) => ({ sourceId, targetId: x.name }));
     }
 }

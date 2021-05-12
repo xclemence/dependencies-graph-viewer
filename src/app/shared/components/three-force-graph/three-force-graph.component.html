@@ -4,7 +4,7 @@
     <mat-card class="menu-card">
       <div class="button-container">
 
-        <dgv-state-button description="Managed assembly name visibility" [value]="displayNodeLabel"
+        <dgv-state-button description="Managed assembly name visibility" [value]="getdisplayNodeLabel()"
           (valueChange)="toggleNodesVisibility()" tooltip="Display assembly name">
           <mat-icon>speaker_notes</mat-icon>
         </dgv-state-button>

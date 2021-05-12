@@ -11,7 +11,7 @@ describe('NameFilterPipe', () => {
       {name: 'test2'}
     ];
 
-    const result = pipe.transform(inputValues, undefined);
+    const result = pipe.transform(inputValues, '');
 
     expect(result).toEqual(inputValues);
   });

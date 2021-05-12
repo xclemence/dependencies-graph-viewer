@@ -8,14 +8,11 @@ import { Observable } from 'rxjs';
   selector: 'app-user-test',
   templateUrl: './user-test.component.html'
 })
-export class UserTestComponent implements OnInit {
+export class UserTestComponent {
 
   result: Observable<any>;
 
-  constructor(private store: Store<CoreState>) { }
-
-  ngOnInit() {
+  constructor(private store: Store<CoreState>) {
     this.result = this.store.select(securityStateSelector);
   }
-
 }

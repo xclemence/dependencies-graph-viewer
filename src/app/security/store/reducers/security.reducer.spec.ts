@@ -4,7 +4,7 @@ import { securityReducer } from './security.reducer';
 describe('securityReducer', () => {
 
   it('should have initial state', () => {
-    const expected = { currentUser: undefined, featuresConfiguration: [], noRightPath: undefined };
+    const expected = { currentUser: undefined, featuresConfiguration: [], noRightPath: '' };
 
     const action = { type: 'foo' } as any;
 

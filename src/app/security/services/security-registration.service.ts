@@ -19,7 +19,7 @@ export class SecurityRegistrationService {
     ) {
   }
 
-  register() {
+  register(): void {
 
     this.store.dispatch(setNoRightPathAction({ path: this.redirectPath }));
 

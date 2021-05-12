@@ -21,9 +21,9 @@ export interface SelectableAssembly {
 export class AssembliesVisibilityComponent implements OnInit {
 
   assemblies: SelectableAssembly[] = [];
-  #currentSoftware: Assembly;
+  #currentSoftware?: Assembly;
 
-  #hoveredItemCode: string;
+  #hoveredItemCode?: string;
 
   @Output() closed: EventEmitter<void> = new EventEmitter();
   @Output() hoveredItem: EventEmitter<string> = new EventEmitter<string>();
@@ -36,10 +36,10 @@ export class AssembliesVisibilityComponent implements OnInit {
       filter(x => x.software !== this.#currentSoftware),
       tap(x => this.#currentSoftware = x.software),
       map(x => x.software?.referencedAssemblies?.map(y => ({ isVisible: !x.filteredAssemblies.includes(y.id), name: y.name, id: y.id })))
-    ).subscribe(x => this.assemblies = x);
+    ).subscribe(x => this.assemblies = x ?? []);
   }
 
-  toggleVisibility(assembly: SelectableAssembly) {
+  toggleVisibility(assembly: SelectableAssembly): void {
     assembly.isVisible = !assembly.isVisible;
 
     const filteredAssemblyIds = this.assemblies.filter(x => !x.isVisible).map(x => x.id);
@@ -47,9 +47,6 @@ export class AssembliesVisibilityComponent implements OnInit {
   }
 
   isIndeterminateResult(collection: SelectableAssembly[]): boolean {
-    if (!collection) {
-      return false;
-    }
 
     if (collection.length < 2) {
       return false;
@@ -61,17 +58,17 @@ export class AssembliesVisibilityComponent implements OnInit {
   }
 
   isAllVisibleFilterResult(collection: SelectableAssembly[]): boolean {
-    return collection?.every(x => x.isVisible) ?? false;
+    return collection.every(x => x.isVisible) ?? false;
   }
 
-  changeVisibility(collection: SelectableAssembly[], newValue: boolean) {
+  changeVisibility(collection: SelectableAssembly[], newValue: boolean): void {
     collection.forEach(x => x.isVisible = newValue);
 
     const filteredAssemblyIds = this.assemblies.filter(x => !x.isVisible).map(x => x.id);
     this.store.dispatch(updateFilteredAssemblies({ assemblyIds: filteredAssemblyIds }));
   }
 
-  onOverItem(value: string) {
+  onOverItem(value?: string): void {
     if (this.#hoveredItemCode === value) {
       return;
     }
@@ -80,7 +77,7 @@ export class AssembliesVisibilityComponent implements OnInit {
     this.hoveredItem.emit(value);
   }
 
-  close() {
+  close(): void {
     this.closed.emit();
   }
 }

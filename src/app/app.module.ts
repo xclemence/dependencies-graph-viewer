@@ -20,10 +20,10 @@ import { TokenInterceptor } from './security/interceptors/token.interceptor';
 export function configurationInit(
   config: ConfigurationService,
   securityConfig: SecurityConfigurationService,
-  ) {
+  ): () => Promise<void> {
   return async () => {
     await config.load(environment.production);
-    await securityConfig.configure(window.location.origin + '/assets/silent-check-sso.html');
+    await securityConfig.configure(window.location.origin + '/silent-check-sso.html');
   };
 }
 

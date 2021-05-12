@@ -8,7 +8,7 @@ describe('core selector', () => {
     const coreState: CoreState = {
       busy: { actionsInProgress: [] },
       error: { lastError: 'test ' },
-      snow: undefined,
+      snow: { activated: false},
     };
 
     const extractState = coreStateSelector({

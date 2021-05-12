@@ -15,9 +15,9 @@ export class BusyComponent implements OnInit, OnDestroy {
   @Input() displayed = false;
   @Input() message = 'Loading...';
   @Input() opacity = 1.0;
-  @Input() busyKey: string;
+  @Input() busyKey = 'busy';
 
-  subscription: Subscription;
+  #subscription?: Subscription;
 
   @HostBinding('class.collapse') get hidden(): boolean {
     return !this.displayed;
@@ -25,8 +25,8 @@ export class BusyComponent implements OnInit, OnDestroy {
 
   constructor(private store: Store<CoreState>, private changeDetector: ChangeDetectorRef) {}
 
-  ngOnInit() {
-    this.subscription = this.store.pipe(
+  ngOnInit(): void {
+    this.#subscription = this.store.pipe(
       select(busyStateSelector),
       map(x => x.actionsInProgress.includes(this.busyKey)),
     ).subscribe(x => {
@@ -36,6 +36,6 @@ export class BusyComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
+    this.#subscription?.unsubscribe();
   }
 }

@@ -43,17 +43,6 @@ describe('TokenInterceptor', () => {
     expect(request.request.headers.get('Authorization')).toBeDefined();
   });
 
-  it('should not add Authorization (no configuration)', () => {
-
-    keycloakServiceSpy.getKeycloakInstance.and.returnValue(undefined);
-
-    httpClient.get('api/test').subscribe();
-    const request = httpTestingController.expectOne('api/test');
-    request.flush([]);
-
-    expect(request.request.headers.get('Authorization')).toBeNull();
-  });
-
   it('should not add Authorization (no token)', () => {
 
     keycloakServiceSpy.getKeycloakInstance.and.returnValue({token: undefined} as any);

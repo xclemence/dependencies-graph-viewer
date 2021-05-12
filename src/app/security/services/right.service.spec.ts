@@ -56,7 +56,7 @@ describe('RightService', () => {
     environment.security.enabled = true;
     testScheduler.run(({ expectObservable }) => {
 
-      const featuresRightsSelectorMock = mockStore.overrideSelector(featuresRightsSelector, undefined);
+      const featuresRightsSelectorMock = mockStore.overrideSelector(featuresRightsSelector, []);
 
       featuresRightsSelectorMock.setResult([
         { name: 'test ', rights: ['right'] }
@@ -91,7 +91,7 @@ describe('RightService', () => {
     testScheduler.run(({ expectObservable }) => {
 
       const currentUserSelectorMock = mockStore.overrideSelector(currentUserSelector, undefined);
-      const featuresRightsSelectorMock = mockStore.overrideSelector(featuresRightsSelector, undefined);
+      const featuresRightsSelectorMock = mockStore.overrideSelector(featuresRightsSelector, []);
 
       currentUserSelectorMock.setResult({ name: 'user', rights: ['right'] });
       featuresRightsSelectorMock.setResult([{ name: 'test', rights: ['right'] }]);
@@ -109,7 +109,7 @@ describe('RightService', () => {
     testScheduler.run(({ expectObservable }) => {
 
       const currentUserSelectorMock = mockStore.overrideSelector(currentUserSelector, undefined);
-      const featuresRightsSelectorMock = mockStore.overrideSelector(featuresRightsSelector, undefined);
+      const featuresRightsSelectorMock = mockStore.overrideSelector(featuresRightsSelector, []);
 
       currentUserSelectorMock.setResult({ name: 'user', rights: ['right'] });
       featuresRightsSelectorMock.setResult([{ name: 'test', rights: ['right2'] }]);
@@ -127,7 +127,7 @@ describe('RightService', () => {
     testScheduler.run(({ expectObservable }) => {
 
       const currentUserSelectorMock = mockStore.overrideSelector(currentUserSelector, undefined);
-      const featuresRightsSelectorMock = mockStore.overrideSelector(featuresRightsSelector, undefined);
+      const featuresRightsSelectorMock = mockStore.overrideSelector(featuresRightsSelector, []);
 
       currentUserSelectorMock.setResult({ name: 'user', rights: ['right'] });
       featuresRightsSelectorMock.setResult([{ name: 'test', rights: ['right', 'right2'] }]);

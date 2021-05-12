@@ -4,7 +4,7 @@ import { APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { environment } from 'environments/environment';
 
-export function createApollo(httpLink: HttpLink) {
+export function createApollo(httpLink: HttpLink): any {
   return {
     link: httpLink.create({uri: environment.assemblyGraphqlUri}),
     cache: new InMemoryCache(),

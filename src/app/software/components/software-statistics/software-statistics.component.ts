@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Assembly, AssemblyColors } from '@app/core/models/assembly';
+import { Assembly, AssemblyBase, AssemblyColors } from '@app/core/models/assembly';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -7,14 +7,10 @@ import { map } from 'rxjs/operators';
 import { SoftwareState } from '../../store/models';
 import { softwareSelector } from '../../store/software.selectors';
 
-export class StatValue {
+export interface StatValue {
   label: string;
   value: number;
-  color?: string = null;
-
-  public constructor(init?: Partial<StatValue>) {
-    Object.assign(this, init);
-  }
+  color?: string;
 }
 
 @Component({
@@ -25,20 +21,20 @@ export class StatValue {
 })
 export class SoftwareStatisticsComponent implements OnInit {
 
-  values: Observable<StatValue[]>;
+  values?: Observable<StatValue[]>;
 
   constructor(private store: Store<SoftwareState>) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.values = this.store.pipe(
       select(softwareSelector),
       map(x => this.calculateStatistics(x)),
     );
   }
 
-  calculateStatistics(assembly: Assembly): StatValue[] {
+  calculateStatistics(assembly?: Assembly): StatValue[] {
 
-    if (assembly == null) {
+    if (!assembly) {
       return [];
     }
 
@@ -51,7 +47,7 @@ export class SoftwareStatisticsComponent implements OnInit {
     ];
   }
 
-  private countAssemblies(assembly: Assembly, predicate: (x: Assembly) => boolean): number {
+  private countAssemblies(assembly: Assembly, predicate: (x: AssemblyBase) => boolean): number {
     let value = assembly.referencedAssemblies.filter(predicate).length;
     value += predicate(assembly) ? 1 : 0;
 

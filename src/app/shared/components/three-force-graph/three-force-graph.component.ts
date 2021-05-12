@@ -1,6 +1,6 @@
 import ForceGraph3D, { ForceGraph3DInstance } from '3d-force-graph';
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, NgZone, Output, ViewChild } from '@angular/core';
-import { Graph } from '@app/shared/models';
+import { Graph, GraphNode } from '@app/shared/models';
 import { first } from 'rxjs/operators';
 import { MOUSE, Object3D } from 'three';
 import SpriteText from 'three-spritetext';
@@ -13,29 +13,16 @@ import SpriteText from 'three-spritetext';
 })
 export class ThreeForceGraphComponent implements AfterViewInit {
 
-  @ViewChild('container') container!: ElementRef;
-
-  #selectionColor = 'rgba(175, 180, 43, 1)';
-  #linkSelectionColor = 'rgba(255, 160, 0, 0.6)';
-
-  #graphInstance: ForceGraph3DInstance;
-  #isInitialized = false;
-  #graphData: Graph;
-  #hoverNode = null;
-  #nodeLink = {};
-  #filteredNodes: string[] = [];
-  #displayNodeLabel = true;
-
-  @Input() set hoverNodeId(id: string) {
-    this.#hoverNode = id ? this.#graphData?.nodes.find(x => x.id === id) : null;
+  @Input() set hoverNodeId(id: string | undefined) {
+    this.#hoverNode = id ? this.#graphData?.nodes.find(x => x.id === id) : undefined;
     this.zone.runOutsideAngular(() => this.refreshGraphData());
   }
 
-  @Input() set displayNodeLabel(value: boolean) {
+  @Input() set displayNodeLabel(value: boolean | null) {
     if (this.#displayNodeLabel === value) {
       return;
     }
-    this.#displayNodeLabel = value;
+    this.#displayNodeLabel = value ?? false;
 
     this.zone.runOutsideAngular(() => {
       this.#graphInstance?.nodeLabel((node: any) => this.getNodeLabel(node))
@@ -43,38 +30,51 @@ export class ThreeForceGraphComponent implements AfterViewInit {
     });
   }
 
-  get displayNodeLabel(): boolean {
-    return this.#displayNodeLabel;
-  }
-
-  @Input() set filteredNodes(value: string[]) {
+  @Input() set filteredNodes(value: string[] | null | undefined) {
     if (this.#filteredNodes === value) {
       return;
     }
-    this.#filteredNodes = value;
+    this.#filteredNodes = value ?? [];
     this.zone.runOutsideAngular(() => this.refreshGraphData());
   }
 
-  @Input() set graph(value: Graph) {
+  @Input() set graph(value: Graph | null | undefined) {
     if (value === this.#graphData) {
       return;
     }
 
-    this.#graphData = value;
+    this.#graphData = value ?? undefined;
 
     this.prepareNodeLink();
     this.updateGraphWithData();
   }
 
+  constructor(private zone: NgZone) { }
+
+  @ViewChild('container') container!: ElementRef;
+
+  #selectionColor = 'rgba(175, 180, 43, 1)';
+  #linkSelectionColor = 'rgba(255, 160, 0, 0.6)';
+
+  #graphInstance?: ForceGraph3DInstance;
+  #isInitialized = false;
+  #graphData?: Graph;
+  #hoverNode?: GraphNode;
+  #nodeLink: { [char: string]: string[] } = {};
+  #filteredNodes: string[] = [];
+  #displayNodeLabel = true;
+
   @Output() labelVisibilityChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private zone: NgZone) { }
+  getdisplayNodeLabel(): boolean {
+    return this.#displayNodeLabel;
+  }
 
   ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => this.initializeGraph());
   }
 
-  private prepareNodeLink() {
+  private prepareNodeLink(): void {
     if (!this.#graphData?.links) {
       this.#nodeLink = {};
       return;
@@ -86,8 +86,8 @@ export class ThreeForceGraphComponent implements AfterViewInit {
     });
   }
 
-  private getNodeColor(node: any) {
-    if (!this.isHighlightNodes(this.#hoverNode?.id, node.id)) {
+  private getNodeColor(node: any): any {
+    if (!this.isHighlightNodes(this.#hoverNode?.id ?? '', node.id)) {
       return node.color;
     }
     return node === this.#hoverNode ? this.#selectionColor : this.#linkSelectionColor;
@@ -98,40 +98,37 @@ export class ThreeForceGraphComponent implements AfterViewInit {
   }
 
   private getNodeExtendObject(node: any): Object3D {
-    if (!this.#displayNodeLabel) {
-      return null;
-    }
 
     const sprite = new SpriteText(node.label, 5, 'lightgray');
     sprite.translateY(6);
     return sprite;
   }
 
-  private onNodeHover(node: any) {
+  private onNodeHover(node: any): void {
     this.container.nativeElement.style.cursor = node ? 'pointer' : null;
     this.#hoverNode = node || null;
 
     this.refreshGraphData();
   }
 
-  private onNodeClick(node: any) {
+  private onNodeClick(node: any): void {
     const distance = 250;
     const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
 
-    this.#graphInstance.cameraPosition(
+    this.#graphInstance?.cameraPosition(
       { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }, // new position
       node, // lookAt ({ x, y, z })
       3000  // ms transition duration
     );
   }
 
-  private initializeGraph() {
+  private initializeGraph(): void {
     this.#graphInstance = ForceGraph3D( { controlType: 'orbit' });
     this.#graphInstance(this.container.nativeElement)
       .backgroundColor('rgba(0,0,0,0)')
       .showNavInfo(false)
       .nodeRelSize(3)
-      .nodeVisibility(x => !this.#filteredNodes.includes(x.id.toString()))
+      .nodeVisibility(x => !this.#filteredNodes.includes(x.id?.toString() ?? ''))
       .nodeLabel((x: any) => this.#displayNodeLabel ? undefined : x.label)
       .nodeColor((node: any) => this.getNodeColor(node))
       .nodeThreeObjectExtend(true)
@@ -154,8 +151,8 @@ export class ThreeForceGraphComponent implements AfterViewInit {
     this.zone.onStable.pipe(first()).subscribe(x => this.onResize());
   }
 
-  private configureControls() {
-    const orbitControl = this.#graphInstance.controls() as any;
+  private configureControls(): void {
+    const orbitControl = this.#graphInstance?.controls() as any;
 
     orbitControl.zoomSpeed = 3;
 
@@ -166,8 +163,14 @@ export class ThreeForceGraphComponent implements AfterViewInit {
     };
   }
 
-  private updateGraphWithData() {
-    this.zone.runOutsideAngular(() => this.#graphInstance?.graphData(this.#graphData));
+  private updateGraphWithData(): void {
+    this.zone.runOutsideAngular(() => {
+      if (!this.#graphData) {
+        return;
+      }
+
+      this.#graphInstance?.graphData(this.#graphData);
+    });
   }
 
   private isHighlightLink(link: any): boolean {
@@ -187,7 +190,7 @@ export class ThreeForceGraphComponent implements AfterViewInit {
     return this.#nodeLink[selectedNodeId]?.includes(testNodeid) ?? false;
   }
 
-  private refreshGraphData() {
+  private refreshGraphData(): void {
 
     this.#graphInstance?.nodeColor(this.#graphInstance.nodeColor())
       .linkWidth(this.#graphInstance.linkWidth())
@@ -195,12 +198,12 @@ export class ThreeForceGraphComponent implements AfterViewInit {
 
   }
 
-  onResize() {
+  onResize(): void {
     this.zone.runOutsideAngular(() => this.resizeGraph());
   }
 
-  resizeGraph() {
-    if (!this.#isInitialized) {
+  resizeGraph(): void {
+    if (!this.#isInitialized || !this.#graphInstance) {
       return;
     }
 
@@ -217,12 +220,12 @@ export class ThreeForceGraphComponent implements AfterViewInit {
     return { width, height };
   }
 
-  toggleNodesVisibility() {
+  toggleNodesVisibility(): void {
     this.displayNodeLabel = !this.#displayNodeLabel;
     this.labelVisibilityChange.emit(this.#displayNodeLabel);
   }
 
-  zoomToFit() {
-    this.#graphInstance.zoomToFit();
+  zoomToFit(): void {
+    this.#graphInstance?.zoomToFit();
   }
 }

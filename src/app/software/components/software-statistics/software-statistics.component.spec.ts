@@ -1,19 +1,16 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { By } from '@angular/platform-browser';
-import { Assembly, AssemblyColors } from '@app/core/models';
-import { MemoizedSelector } from '@ngrx/store';
+import { AssemblyColors } from '@app/core/models';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
-import { SoftwareState } from '../../store/models';
 import { softwareSelector } from '../../store/software.selectors';
-import { SoftwareStatisticsComponent, StatValue } from './software-statistics.component';
+import { SoftwareStatisticsComponent } from './software-statistics.component';
 
 describe('SoftwareStatisticsComponent', () => {
   let component: SoftwareStatisticsComponent;
   let fixture: ComponentFixture<SoftwareStatisticsComponent>;
   let mockStore: MockStore;
-  let softwareSelectorMock: MemoizedSelector<SoftwareState, Assembly>;
 
   const initialState = {
     software: {
@@ -44,7 +41,6 @@ describe('SoftwareStatisticsComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
 
-    softwareSelectorMock = mockStore.overrideSelector(softwareSelector, undefined);
   });
 
   it('should create', () => {
@@ -53,16 +49,18 @@ describe('SoftwareStatisticsComponent', () => {
   });
 
   it('should return display for no color', () => {
-    const display = component.statVisibility(new StatValue({ label: 'test' }));
+    const display = component.statVisibility({ label: 'test', value: 1 });
     expect(display).toBe('none');
   });
 
   it('should return display for color', () => {
-    const display = component.statVisibility(new StatValue({ label: 'test', color: 'red' }));
+    const display = component.statVisibility({ label: 'test', value: 1, color: 'red' });
     expect(display).toBe('inline-block');
   });
 
   it('should display assembly statistics', () => {
+    const softwareSelectorMock = mockStore.overrideSelector(softwareSelector, undefined);
+
     softwareSelectorMock.setResult({
       id: 'Dependencies Viewer, Version=2.0.0.0',
       name: 'Dependencies Viewer',

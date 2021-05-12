@@ -49,7 +49,7 @@ describe('softwareAssembliesReducer', () => {
 
     const action = loadSoftwareAssembliesSuccess({
       data: resultAssembly,
-      origin: undefined
+      origin: loadSoftwareAssemblies({assemblyId: 'test'})
     });
 
     const expectedValue = {

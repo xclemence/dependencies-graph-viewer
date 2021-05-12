@@ -3,7 +3,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { DefaultGraphLink } from '@app/shared/models';
 
 import { StateButtonComponent } from './../state-button/state-button.component';
 import { ThreeForceGraphComponent } from './three-force-graph.component';
@@ -42,7 +41,7 @@ describe('ThreeForceGraphComponent', () => {
     const graph = {
       nodes: [ node1, node2 ],
       links: [
-        new DefaultGraphLink({ source: node1, target: node2 })
+        { source: node1, target: node2, value: 10 }
       ]
     };
 
@@ -60,7 +59,7 @@ describe('ThreeForceGraphComponent', () => {
     const graph = {
       nodes: [ node1, node2 ],
       links: [
-        new DefaultGraphLink({ source: node1, target: node2 })
+        { source: node1, target: node2, value: 10 }
       ]
     };
 
@@ -100,7 +99,7 @@ describe('ThreeForceGraphComponent', () => {
     const graph = {
       nodes: [ node1, node2 ],
       links: [
-        new DefaultGraphLink({ source: node1, target: node2 })
+        { source: node1, target: node2, value: 10 }
       ]
     };
 
@@ -119,7 +118,7 @@ describe('ThreeForceGraphComponent', () => {
     const graph = {
       nodes: [ node1, node2 ],
       links: [
-        new DefaultGraphLink({ source: node1, target: node2 })
+        { source: node1, target: node2, value: 10 }
       ]
     };
 
@@ -149,7 +148,7 @@ describe('ThreeForceGraphComponent', () => {
     component.toggleNodesVisibility();
 
     expect(emitSpy).toHaveBeenCalledWith(true);
-    expect(component.displayNodeLabel).toBeTrue();
+    expect(component.getdisplayNodeLabel()).toBeTrue();
   });
 
 });

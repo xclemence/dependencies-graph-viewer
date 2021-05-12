@@ -51,8 +51,5 @@ import { NoRightComponent } from './components/no-right/no-right.component';
     HeaderUserComponent,
     SnowInputDirective,
   ],
-  entryComponents: [
-    ConfirmationDialogComponent
-  ]
 })
 export class SharedModule { }

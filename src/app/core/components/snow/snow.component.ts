@@ -11,11 +11,10 @@ import { Subscription } from 'rxjs';
 })
 export class SnowComponent implements OnInit, OnDestroy {
 
-  activated: boolean;
-  #storeSubscription: Subscription;
+  activated = false;
+  #storeSubscription?: Subscription;
 
-  constructor(private coreStore: Store<CoreState>) {
-  }
+  constructor(private coreStore: Store<CoreState>) { }
 
   ngOnInit(): void {
     this.#storeSubscription = this.coreStore.pipe(
@@ -34,5 +33,4 @@ export class SnowComponent implements OnInit, OnDestroy {
   duckNumber(): number[] {
     return new Array(10);
   }
-
 }

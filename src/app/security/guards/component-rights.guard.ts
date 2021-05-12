@@ -24,7 +24,7 @@ export class ComponentRightsGuard implements CanActivate {
     if (next.component instanceof Type) {
       componentName = next.component.name.replace('"', '');
     } else {
-      componentName = next.component;
+      componentName = next.component ?? '';
     }
 
     return this.featureRightsService.hasFeature(componentName).pipe(

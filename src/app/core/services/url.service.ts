@@ -11,7 +11,7 @@ export class UrlService {
 
   constructor(private router: Router, private location: Location, private logService: LoggerService) { }
 
-  replaceSegment(index: number, value: string, currentRoute: ActivatedRoute) {
+  replaceSegment(index: number, value: string, currentRoute: ActivatedRoute): void {
 
     const { group: segmentGroup, tree: treeUrl } = this.getUrlSegments(currentRoute);
 
@@ -26,11 +26,11 @@ export class UrlService {
     this.location.replaceState(url);
   }
 
-  moveSegment(url: string) {
+  moveSegment(url: string): void {
     this.location.replaceState(url);
   }
 
-  removeAt(index: number, currentRoute: ActivatedRoute) {
+  removeAt(index: number, currentRoute: ActivatedRoute): void {
     const { group: segmentGroup, tree: treeUrl } = this.getUrlSegments(currentRoute);
 
     if (segmentGroup.segments.length >= index) {

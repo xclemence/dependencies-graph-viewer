@@ -134,7 +134,7 @@ describe('AssemblyService', () => {
 
     const expectedResultAssemblies = expectedAssemblies.map(x => AssemblyConverter.toAssemblyStat(x));
 
-    service.assemblyStatistics(10, 2, undefined, 'order').subscribe({
+    service.assemblyStatistics(10, 2, '', 'order').subscribe({
       next: ({assemblies, count }) => {
         expect(assemblies).toEqual(expectedResultAssemblies);
         expect(count).toBe(2);
