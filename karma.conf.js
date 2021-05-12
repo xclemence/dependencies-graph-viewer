@@ -19,12 +19,12 @@ module.exports = function (config) {
     client: {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
-    overageReporter: {
+    coverageReporter: {
       dir: require('path').join(__dirname, './coverage/'),
       subdir: '.',
       reporters: [
-        { type: 'html' },
-        { type: 'text-summary' }
+        { type: 'html', subdir: 'report-html' },
+        { type: 'lcov', subdir: 'report-lcov' },
       ]
     },
     reporters: ['progress', 'kjhtml'],
