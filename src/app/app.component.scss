@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import '~styles/app-colors';
 
 .main-view {
@@ -25,7 +26,7 @@
   flex-wrap: wrap;
   align-items: center;
   padding: 0px 16px;
-  background: mat-color($primary);
+  background: mat.get-color-from-palette($primary);
   justify-content: space-between;
   z-index: 200;
 }

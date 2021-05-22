@@ -1,7 +1,8 @@
+@use '~@angular/material' as mat;
 @import '~styles/app-colors';
 
 $foreground : map-get($app-theme, foreground);
-$text-color: mat-color($foreground, text);
+$text-color: mat.get-color-from-palette($foreground, text);
 
 :host {
 	position: absolute;
@@ -22,7 +23,7 @@ $text-color: mat-color($foreground, text);
 .background-busy {
 	position: absolute;
 	flex: 1;
-	background-color:  mat-color($primary, 900);
+	background-color:  mat.get-color-from-palette($primary, 900);
 }
 
 .busy-text {
