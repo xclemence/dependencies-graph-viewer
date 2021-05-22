@@ -4,6 +4,7 @@ import { select, Store } from '@ngrx/store';
 import { environment } from 'environments/environment';
 import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+import { ConfigurationService } from './core/services/configuration.service';
 
 import { VersionService } from './core/services/version.service';
 import { errorStateSelector } from './core/store/core.selectors';
@@ -19,7 +20,7 @@ export class AppComponent implements OnInit, OnDestroy{
   title = 'DependenciesGraph';
   #storeSubscription?: Subscription;
 
-  canLogon = environment.security.enabled;
+  canLogon: boolean;
 
   links: Array<HeaderLink> = [
     { path : 'software', label: 'Software', roles: [ ] },
@@ -35,7 +36,9 @@ export class AppComponent implements OnInit, OnDestroy{
     private readonly store: Store<CoreState>,
     private readonly snackBar: MatSnackBar,
     private readonly versionService: VersionService,
+    readonly configService: ConfigurationService
     ) {
+    this.canLogon = configService.configuration.security.enabled;
   }
 
   ngOnInit(): void {

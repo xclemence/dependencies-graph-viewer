@@ -22,7 +22,6 @@ export function configurationInit(
   securityConfig: SecurityConfigurationService,
   ): () => Promise<void> {
   return async () => {
-    await config.load(environment.production);
     await securityConfig.configure(window.location.origin + '/silent-check-sso.html');
   };
 }

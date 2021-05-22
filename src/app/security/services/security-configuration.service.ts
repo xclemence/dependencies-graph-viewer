@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
+import { LoggerService } from '@app/core/services';
+import { ConfigurationService } from '@app/core/services/configuration.service';
 import { operationFailure } from '@app/core/store/actions';
 import { Store } from '@ngrx/store';
-import { environment } from 'environments/environment';
 import { KeycloakService } from 'keycloak-angular';
 import { setCurrentUserAction } from '../store/actions';
 import { RightMappingService } from './right-mapping.service';
@@ -14,19 +15,23 @@ export class SecurityConfigurationService {
   constructor(
       private readonly keycloak: KeycloakService,
       private readonly store: Store,
-      private readonly rightsMapping: RightMappingService ) {}
+      private readonly rightsMapping: RightMappingService,
+      private readonly logger: LoggerService,
+      private readonly configService: ConfigurationService) {}
 
   async configure(ssoRedirectUri: string): Promise<void> {
-    if (!environment.security.enabled) {
+    const config = this.configService.configuration;
+
+    if (!config.security.enabled) {
       return;
     }
 
     try {
       await this.keycloak.init({
         config: {
-          url: environment.security.server,
-          realm: environment.security.realm,
-          clientId: environment.security.clientId,
+          url: config.security.server,
+          realm: config.security.realm,
+          clientId: config.security.clientId,
         },
         initOptions: {
           onLoad: 'check-sso',
@@ -37,6 +42,11 @@ export class SecurityConfigurationService {
       });
 
       if (await this.keycloak.isLoggedIn()) {
+
+        const value = await this.keycloak.loadUserProfile();
+
+        console.log(value);
+
         this.store.dispatch(setCurrentUserAction({
           name: this.keycloak.getUsername(),
           rights: this.keycloak.getUserRoles().map(x => this.rightsMapping.getApplicationRight(x))
@@ -44,7 +54,8 @@ export class SecurityConfigurationService {
       }
     }
     catch (error: any) {
-      environment.security.enabled = false;
+      this.logger.error(error);
+      this.configService.configuration.security.enabled = false;
       this.store.dispatch(operationFailure({error: `Error during security configuration: ${error}`, origin: undefined}));
     }
 

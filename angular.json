@@ -26,17 +26,24 @@
             "assets": [
               "src/application.ico",
               "src/assets",
-              "src/silent-check-sso.html"
+              "src/silent-check-sso.html",
+              { "glob": "config.js", "input": "src/configurations/dev/", "output": "configurations" }
             ],
             "styles": [
               "src/styles/styles.scss",
               "src/styles/app-theme.scss",
-              "src/styles/snow.scss"
+              "src/styles/snow.scss",
             ],
             "scripts": []
           },
           "configurations": {
             "production": {
+              "assets": [
+                "src/application.ico",
+                "src/assets",
+                "src/silent-check-sso.html",
+                { "glob": "config.js", "input": "src/configurations/prod/", "output": "configurations" }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -64,6 +71,12 @@
               ]
             },
             "mock" : {
+              "assets": [
+                "src/application.ico",
+                "src/assets",
+                "src/silent-check-sso.html",
+                { "glob": "config.js", "input": "src/configurations/mock/", "output": "configurations" }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
