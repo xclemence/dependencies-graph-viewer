@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
+import { ConfigurationService } from '@app/core/services/configuration.service';
+import { ConfigurationServiceMock } from '@app/core/services/configuration.service.mock';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { environment } from 'environments/environment';
 import { KeycloakService } from 'keycloak-angular';
 import { setCurrentUserAction } from '../store/actions';
 import { RightMappingService } from './right-mapping.service';
@@ -12,6 +13,7 @@ describe('SecurityConfigurationService', () => {
   let keycloakServiceSpy: jasmine.SpyObj<KeycloakService>;
   let mappingServiceSpy: jasmine.SpyObj<RightMappingService>;
   let mockStore: MockStore;
+  let configService: ConfigurationService;
 
   const initialState = {
     assembly: {
@@ -36,11 +38,14 @@ describe('SecurityConfigurationService', () => {
       providers: [
         { provide: KeycloakService, useValue: keycloakServiceSpy },
         { provide: RightMappingService, useValue: mappingServiceSpy },
+        { provide: ConfigurationService, useClass: ConfigurationServiceMock },
+
         provideMockStore({ initialState })
       ]
     });
     service = TestBed.inject(SecurityConfigurationService);
     mockStore = TestBed.inject(MockStore);
+    configService = TestBed.inject(ConfigurationService);
   });
 
   it('should be created', () => {
@@ -48,7 +53,7 @@ describe('SecurityConfigurationService', () => {
   });
 
   it('should not initialise security if not enabled', async () => {
-    environment.security.enabled = false;
+    configService.configuration.security.enabled = false;
 
     await service.configure('test');
 
@@ -57,7 +62,7 @@ describe('SecurityConfigurationService', () => {
   });
 
   it('should initialise security without user', async () => {
-    environment.security.enabled = true;
+    configService.configuration.security.enabled = true;
 
     const dispatchSpy = spyOn(mockStore, 'dispatch');
     keycloakServiceSpy.isLoggedIn.and.returnValue(Promise.resolve(false));
@@ -70,7 +75,7 @@ describe('SecurityConfigurationService', () => {
   });
 
   it('should initialise security and user', async () => {
-    environment.security.enabled = true;
+    configService.configuration.security.enabled = true;
 
     const dispatchSpy = spyOn(mockStore, 'dispatch');
 

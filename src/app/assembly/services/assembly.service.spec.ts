@@ -1,6 +1,6 @@
 import { fakeAsync, TestBed } from '@angular/core/testing';
+import { ApolloClient, NormalizedCacheObject } from '@apollo/client/core';
 import { AssemblyConverter } from '@app/core/converters';
-import { ApolloTestingController, ApolloTestingModule } from 'apollo-angular/testing';
 
 import {
   AssemblyService,
@@ -14,19 +14,17 @@ import {
 describe('AssemblyService', () => {
 
   let service: AssemblyService;
-
-  let controller: ApolloTestingController;
+  let apolloClientSpy: jasmine.SpyObj<ApolloClient<NormalizedCacheObject>>;
 
   beforeEach(() => {
+    apolloClientSpy = jasmine.createSpyObj<ApolloClient<NormalizedCacheObject>>('apollo', ['query', 'mutate']);
+
     TestBed.configureTestingModule({
-      imports: [ApolloTestingModule],
+      providers: [
+        { provide: ApolloClient, useValue: apolloClientSpy },
+      ]
     });
     service = TestBed.inject(AssemblyService);
-    controller = TestBed.inject(ApolloTestingController);
-  });
-
-  afterEach(() => {
-    controller.verify();
   });
 
   it('should load assembly and references', fakeAsync(() => {
@@ -43,6 +41,15 @@ describe('AssemblyService', () => {
         { source: 'test1', target: 'test2' }
       ]
     };
+    apolloClientSpy.query.and.returnValue(Promise.resolve({
+      data: {
+        Assembly: [
+          expectedAssembly
+        ]
+      },
+      loading: false,
+      networkStatus: 3
+    }));
 
     service.references('1', 10).subscribe({
       next: x => {
@@ -50,18 +57,13 @@ describe('AssemblyService', () => {
       }
     });
 
-    const mockOperation = controller.expectOne(getAssemblyDepthQuery);
-
-    mockOperation.flush({
-      data: {
-        Assembly: [
-          expectedAssembly
-        ]
+    expect(apolloClientSpy.query).toHaveBeenCalledWith({
+      query: getAssemblyDepthQuery,
+      variables: {
+        assemblyId: '1',
+        depth: 10
       }
     });
-
-    expect(mockOperation.operation.variables.assemblyId).toEqual('1');
-    expect(mockOperation.operation.variables.depth).toEqual(10);
 
   }));
 
@@ -88,26 +90,31 @@ describe('AssemblyService', () => {
 
     const expectedResultAssemblies = expectedAssemblies.map(x => AssemblyConverter.toAssemblyStat(x));
 
+    apolloClientSpy.query.and.returnValue(Promise.resolve({
+      data: {
+        Assembly: expectedAssemblies,
+        AssemblyCount: 2
+      },
+      loading: false,
+      networkStatus: 3
+    }));
+
     service.assemblyStatistics(10, 2, 'test', 'order').subscribe({
-      next: ({assemblies, count }) => {
+      next: ({ assemblies, count }) => {
         expect(assemblies).toEqual(expectedResultAssemblies);
         expect(count).toBe(2);
       }
     });
 
-    const mockOperation = controller.expectOne(getAssembliesWithFilterQuery);
-
-    mockOperation.flush({
-      data: {
-        Assembly: expectedAssemblies,
-        AssemblyCount: 2
+    expect(apolloClientSpy.query).toHaveBeenCalledWith({
+      query: getAssembliesWithFilterQuery,
+      variables: {
+        first: 10,
+        offset: 20,
+        order: 'order',
+        filter: 'test'
       }
     });
-
-    expect(mockOperation.operation.variables.first).toEqual(10);
-    expect(mockOperation.operation.variables.offset).toEqual(20);
-    expect(mockOperation.operation.variables.order).toEqual('order');
-    expect(mockOperation.operation.variables.filter).toEqual('test');
 
   }));
 
@@ -134,63 +141,79 @@ describe('AssemblyService', () => {
 
     const expectedResultAssemblies = expectedAssemblies.map(x => AssemblyConverter.toAssemblyStat(x));
 
+    apolloClientSpy.query.and.returnValue(Promise.resolve({
+      data: {
+        Assembly: expectedAssemblies,
+        AssemblyCount: 2
+      },
+      loading: false,
+      networkStatus: 3
+    }))
+
     service.assemblyStatistics(10, 2, '', 'order').subscribe({
-      next: ({assemblies, count }) => {
+      next: ({ assemblies, count }) => {
         expect(assemblies).toEqual(expectedResultAssemblies);
         expect(count).toBe(2);
       }
     });
 
-    const mockOperation = controller.expectOne(getAssembliesQuery);
-
-    mockOperation.flush({
-      data: {
-        Assembly: expectedAssemblies,
-        AssemblyCount: 2
+    expect(apolloClientSpy.query).toHaveBeenCalledWith({
+      query: getAssembliesQuery,
+      variables: {
+        first: 10,
+        offset: 20,
+        order: 'order',
       }
     });
-
-    expect(mockOperation.operation.variables.first).toEqual(10);
-    expect(mockOperation.operation.variables.offset).toEqual(20);
-    expect(mockOperation.operation.variables.order).toEqual('order');
 
   }));
 
   it('should call delete mutation', fakeAsync(() => {
 
+
+    apolloClientSpy.mutate.and.returnValue(Promise.resolve({
+      data: { removeAssembly: { name: 'test1' } },
+      loading: false,
+      networkStatus: 3
+    }));
+
     service.remove('1').subscribe({
       next: (x => expect(x).toEqual('test1'))
     });
 
-    const mockOperation = controller.expectOne(removeAssemblyQuery);
-
-    mockOperation.flush({
-      data: { removeAssembly: {name: 'test1'} }
+    expect(apolloClientSpy.mutate).toHaveBeenCalledWith({
+      mutation: removeAssemblyQuery,
+      variables: {
+        assemblyName: '1',
+      }
     });
-
-    expect(mockOperation.operation.variables.assemblyName).toEqual('1');
 
   }));
 
   it('should load assembly depth max', fakeAsync(() => {
 
-    service.assemblyDepthMax('test').subscribe({
-      next: (x) => {
-        expect(x).toEqual({id: 'test', value: 3});
-      }
-    });
-
-    const mockOperation = controller.expectOne(getAssemblyDepthMaxQuery);
-
-    mockOperation.flush({
+    apolloClientSpy.query.and.returnValue(Promise.resolve({
       data: {
         Assembly: [
           { name: 'test', maxDepth: 3 }
         ]
+      },
+      loading: false,
+      networkStatus: 3
+    }));
+
+    service.assemblyDepthMax('test').subscribe({
+      next: (x) => {
+        expect(x).toEqual({ id: 'test', value: 3 });
       }
     });
 
-    expect(mockOperation.operation.variables.assemblyId).toEqual('test');
+    expect(apolloClientSpy.query).toHaveBeenCalledWith({
+      query: getAssemblyDepthMaxQuery,
+      variables: {
+        assemblyId: 'test',
+      }
+    });
   }));
 
 });

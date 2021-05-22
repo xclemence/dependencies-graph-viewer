@@ -42,11 +42,6 @@ export class SecurityConfigurationService {
       });
 
       if (await this.keycloak.isLoggedIn()) {
-
-        const value = await this.keycloak.loadUserProfile();
-
-        console.log(value);
-
         this.store.dispatch(setCurrentUserAction({
           name: this.keycloak.getUsername(),
           rights: this.keycloak.getUserRoles().map(x => this.rightsMapping.getApplicationRight(x))
