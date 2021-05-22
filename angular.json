@@ -32,7 +32,7 @@
             "styles": [
               "src/styles/styles.scss",
               "src/styles/app-theme.scss",
-              "src/styles/snow.scss",
+              "src/styles/snow.scss"
             ],
             "scripts": []
           },

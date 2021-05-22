@@ -31,7 +31,6 @@
     "@ngrx/store": "^11.0.1",
     "@ngrx/store-devtools": "^11.0.1",
     "angular-auth-oidc-client": "11.6.4",
-    "apollo-angular": "^2.4.0",
     "core-js": "^3.9.1",
     "d3": "^6.6.0",
     "graphql": "^15.5.0",
