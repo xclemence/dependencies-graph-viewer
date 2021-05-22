@@ -26,7 +26,11 @@
               "src/application.ico",
               "src/assets",
               "src/silent-check-sso.html",
-              { "glob": "config.js", "input": "src/configurations/dev/", "output": "configurations" }
+              {
+                "glob": "config.js",
+                "input": "src/configurations/dev/",
+                "output": "configurations"
+              }
             ],
             "styles": [
               "src/styles/styles.scss",
@@ -47,7 +51,11 @@
                 "src/application.ico",
                 "src/assets",
                 "src/silent-check-sso.html",
-                { "glob": "config.js", "input": "src/configurations/prod/", "output": "configurations" }
+                {
+                  "glob": "config.js",
+                  "input": "src/configurations/prod/",
+                  "output": "configurations"
+                }
               ],
               "fileReplacements": [
                 {
@@ -74,12 +82,16 @@
                 }
               ]
             },
-            "mock" : {
+            "mock": {
               "assets": [
                 "src/application.ico",
                 "src/assets",
                 "src/silent-check-sso.html",
-                { "glob": "config.js", "input": "src/configurations/mock/", "output": "configurations" }
+                {
+                  "glob": "config.js",
+                  "input": "src/configurations/mock/",
+                  "output": "configurations"
+                }
               ],
               "fileReplacements": [
                 {
@@ -132,14 +144,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
             ]
           }
         }
@@ -172,11 +181,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "e2e/**/*.ts",
+              "e2e/**/*.html"
             ]
           }
         }
@@ -186,6 +195,6 @@
   "defaultProject": "dependencies-graph",
   "cli": {
     "analytics": false,
-    "defaultCollection": "@ngrx/schematics"
+    "defaultCollection": "@angular-eslint/schematics"
   }
 }

@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-user-test',
+  selector: 'tst-user-test',
   templateUrl: './user-test.component.html'
 })
 export class UserTestComponent {

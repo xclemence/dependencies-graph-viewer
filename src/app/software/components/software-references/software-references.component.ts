@@ -12,7 +12,7 @@ import { displayLabel } from './../../store/actions/software-assemblies.actions'
 import { displayLabelSelector } from './../../store/software.selectors';
 
 @Component({
-  selector: 'app-software-references',
+  selector: 'sft-software-references',
   templateUrl: './software-references.component.html',
   styleUrls: ['./software-references.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
