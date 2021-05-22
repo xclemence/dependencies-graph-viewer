@@ -8,7 +8,7 @@ declare global {
 @Injectable()
 export class ConfigurationServiceMock {
 
-  #configuration ={
+  #configuration = {
     assemblyGraphqlUri: 'http://kmaster/graphql-service/graphql',
     security: {
       enabled: true,

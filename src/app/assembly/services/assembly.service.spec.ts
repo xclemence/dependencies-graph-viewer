@@ -148,7 +148,7 @@ describe('AssemblyService', () => {
       },
       loading: false,
       networkStatus: 3
-    }))
+    }));
 
     service.assemblyStatistics(10, 2, '', 'order').subscribe({
       next: ({ assemblies, count }) => {
