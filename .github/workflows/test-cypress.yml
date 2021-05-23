@@ -21,5 +21,5 @@ jobs:
 
     - name: Cypress run
       uses: cypress-io/github-action@v2
-       with:
-          start: yarn e2e --configuration=mock
+      with:
+        start: yarn e2e --configuration=mock
