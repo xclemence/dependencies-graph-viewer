@@ -3,10 +3,6 @@ name: "Setup project"
 runs:
   using: "composite"
   steps:
-  - uses: actions/checkout@v2
-    with:
-      fetch-depth: 0
-
   - name: Use Node.js
     uses: actions/setup-node@v1
     with:

@@ -19,6 +19,10 @@ jobs:
   test-build:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
     - uses: ./.github/steps/setup
 
     - name: Unit Tests
