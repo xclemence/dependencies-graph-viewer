@@ -19,7 +19,7 @@ jobs:
   test-build:
     runs-on: ubuntu-latest
     steps:
-    - uses: ./.github/steps/setiup
+    - uses: ./.github/steps/setup
 
     - name: Unit Tests
       run: yarn ng test --watch=false --code-coverage --browsers=chromeNoSandbox

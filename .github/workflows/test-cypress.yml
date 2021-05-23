@@ -3,15 +3,7 @@
 
 name: Branche
 
-on:
-  push:
-    branches-ignore:
-      - master
-    paths-ignore:
-      - '**/doc/**'
-      - '**/README.md'
-      - '**/LICENSE'
-      - '**/.typo-ci.yml'
+on: [workflow_dispatch]
 
 jobs:
   test-build:
