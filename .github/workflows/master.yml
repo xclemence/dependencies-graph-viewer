@@ -3,22 +3,21 @@
 
 name: Build master
 
-# on:
-#   push:
-#     branches: [ master ]
-#     paths-ignore:
-#       - '**/doc/**'
-#       - '**/README.md'
-#       - '**/LICENSE'
-#       - '**/.typo-ci.yml'
-#   pull_request:
-#     branches: [ master ]
-#     paths-ignore:
-#       - '**/doc/**'
-#       - '**/README.md'
-#       - '**/LICENSE'
-#       - '**/.typo-ci.yml'
-on: [push]
+on:
+  push:
+    branches: [ master ]
+    paths-ignore:
+      - '**/doc/**'
+      - '**/README.md'
+      - '**/LICENSE'
+      - '**/.typo-ci.yml'
+  pull_request:
+    branches: [ master ]
+    paths-ignore:
+      - '**/doc/**'
+      - '**/README.md'
+      - '**/LICENSE'
+      - '**/.typo-ci.yml'
 
 jobs:
   build:
