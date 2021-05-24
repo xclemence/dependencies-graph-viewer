@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ApolloQueryResult, gql, NormalizedCacheObject } from '@apollo/client/core';
+import { ApolloClient, ApolloQueryResult, gql, NormalizedCacheObject } from '@apollo/client/core';
 import { AssemblyConverter } from '@app/core/converters';
 import { Assembly, AssemblyStat } from '@app/core/models/assembly';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ApolloClient } from '@apollo/client/core';
 
 export const getAssembliesQuery = gql`
   query assemblies($first: Int!, $offset: Int!, $order: [_AssemblyOrdering]) {
