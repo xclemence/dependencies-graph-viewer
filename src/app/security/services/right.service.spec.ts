@@ -1,10 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { environment } from 'environments/environment';
 import { TestScheduler } from 'rxjs/testing';
 import { currentUserSelector, featuresRightsSelector } from '../store/security.selectors';
 
 import { RightService } from './right.service';
+import { ConfigurationService } from '@app/core/services/configuration.service';
+import { ConfigurationServiceMock } from '@app/core/services/configuration.service.mock';
 
 const initialState = {
   security: { },
@@ -14,6 +15,7 @@ describe('RightService', () => {
   let service: RightService;
   let mockStore: MockStore;
   let testScheduler: TestScheduler;
+  let configService: ConfigurationService;
 
   beforeEach(() => {
     testScheduler = new TestScheduler((actual, expected) => {
@@ -24,11 +26,13 @@ describe('RightService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideMockStore({ initialState })
+        provideMockStore({ initialState }),
+        {provide : ConfigurationService, useClass: ConfigurationServiceMock }
       ]
     });
     service = TestBed.inject(RightService);
     mockStore = TestBed.inject(MockStore);
+    configService = TestBed.inject(ConfigurationService);
   });
 
   it('should be created', () => {
@@ -36,7 +40,7 @@ describe('RightService', () => {
   });
 
   it('should have right with security disabled', () => {
-    environment.security.enabled = false;
+    configService.configuration.security.enabled = false;
     testScheduler.run(({ expectObservable }) => {
       const result = service.hasFeature('test');
       expectObservable(result).toBe('(a|)', { a: true });
@@ -44,7 +48,7 @@ describe('RightService', () => {
   });
 
   it('should not have right (no user and no feature)', () => {
-    environment.security.enabled = true;
+    configService.configuration.security.enabled = true;
     testScheduler.run(({ expectObservable }) => {
       const result = service.hasFeature('test');
       expectObservable(result).toBe('a', { a: false });
@@ -53,7 +57,7 @@ describe('RightService', () => {
 
 
   it('should not have right (no user)', () => {
-    environment.security.enabled = true;
+    configService.configuration.security.enabled = true;
     testScheduler.run(({ expectObservable }) => {
 
       const featuresRightsSelectorMock = mockStore.overrideSelector(featuresRightsSelector, []);
@@ -70,7 +74,7 @@ describe('RightService', () => {
   });
 
   it('should not have right (no feature)', () => {
-    environment.security.enabled = true;
+    configService.configuration.security.enabled = true;
     testScheduler.run(({ expectObservable }) => {
 
       const currentUserSelectorMock = mockStore.overrideSelector(currentUserSelector, undefined);
@@ -87,7 +91,7 @@ describe('RightService', () => {
   });
 
   it('should have right', () => {
-    environment.security.enabled = true;
+    configService.configuration.security.enabled = true;
     testScheduler.run(({ expectObservable }) => {
 
       const currentUserSelectorMock = mockStore.overrideSelector(currentUserSelector, undefined);
@@ -104,8 +108,7 @@ describe('RightService', () => {
   });
 
   it('should not have right (bad right)', () => {
-    environment.security.enabled = true;
-    environment.security.enabled = true;
+    configService.configuration.security.enabled = true;
     testScheduler.run(({ expectObservable }) => {
 
       const currentUserSelectorMock = mockStore.overrideSelector(currentUserSelector, undefined);
@@ -122,8 +125,7 @@ describe('RightService', () => {
   });
 
   it('should not have right (missing right)', () => {
-    environment.security.enabled = true;
-    environment.security.enabled = true;
+    configService.configuration.security.enabled = true;
     testScheduler.run(({ expectObservable }) => {
 
       const currentUserSelectorMock = mockStore.overrideSelector(currentUserSelector, undefined);

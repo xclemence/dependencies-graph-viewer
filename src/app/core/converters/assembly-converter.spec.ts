@@ -13,10 +13,10 @@ describe('AssemblyConverter', () => {
 
     const result = AssemblyConverter.toAssemblyBase(input);
 
-    expect(result.id).toBe(input.name, 'bad id mapping');
-    expect(result.version).toBe(input.version, 'bad version mapping');
-    expect(result.name).toBe(input.shortName, 'bad name mapping');
-    expect(result.isNative).toBe(input.isNative, 'bad isNative mapping');
+    expect(result.id).withContext('bad id mapping').toBe(input.name);
+    expect(result.version).withContext('bad version mapping').toBe(input.version);
+    expect(result.name).withContext('bad name mapping').toBe(input.shortName);
+    expect(result.isNative).withContext('bad isNative mapping').toBe(input.isNative);
   });
 
   it('create assembly stat', () => {
@@ -32,8 +32,8 @@ describe('AssemblyConverter', () => {
 
     const result = AssemblyConverter.toAssemblyStat(input);
 
-    expect(result.depthMax).toBe(input.maxDepth, 'bad depthMax mapping');
-    expect(result.assemblyLinkCount).toBe(input.directReferenceCount, 'bad assemblyLinkCount mapping');
+    expect(result.depthMax).withContext('bad depthMax mapping').toBe(input.maxDepth);
+    expect(result.assemblyLinkCount).withContext('bad assemblyLinkCount mapping').toBe(input.directReferenceCount);
   });
 
   it('create assembly', () => {
@@ -56,8 +56,8 @@ describe('AssemblyConverter', () => {
 
     const result = AssemblyConverter.toAssembly(input);
 
-    expect(result.referencedAssemblies.length).toBe(2, 'referenced assemblies length');
-    expect(result.links.length).toBe(3, 'links number');
+    expect(result.referencedAssemblies.length).withContext('referenced assemblies length').toBe(2);
+    expect(result.links.length).withContext('links number').toBe(3);
   });
 
 
@@ -79,7 +79,7 @@ describe('AssemblyConverter', () => {
 
     const result = AssemblyConverter.toAssembly(input);
 
-    expect(result.links.length).toBe(1, 'links number');
+    expect(result.links.length).withContext('links number').toBe(1);
   });
 
 });

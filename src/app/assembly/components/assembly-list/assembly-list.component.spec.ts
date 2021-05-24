@@ -16,6 +16,9 @@ import { ActivatedRoute, convertToParamMap, ParamMap } from '@angular/router';
 import { ActionBusyAppender } from '@app/core/busy/action-busy-appender';
 import { AssemblyColors } from '@app/core/models';
 import { UrlService } from '@app/core/services';
+import { ConfigurationService } from '@app/core/services/configuration.service';
+import { ConfigurationServiceMock } from '@app/core/services/configuration.service.mock';
+import { RightService } from '@app/security/services';
 import { BusyComponent } from '@app/shared/components';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { of, Subject } from 'rxjs';
@@ -36,6 +39,7 @@ describe('AssemblyListComponent', () => {
   let matDialogSpy: jasmine.SpyObj<MatDialog>;
   let paramMap: Subject<ParamMap>;
   let loader: HarnessLoader;
+  let rightSpy: jasmine.SpyObj<RightService>;
 
   const initialState = {
     assembly: {
@@ -79,6 +83,7 @@ describe('AssemblyListComponent', () => {
     converterServiceSpy = jasmine.createSpyObj<SortDefinitionConverterService>('serviceConvertor', ['getAssemblyServiceOrder']);
     urlServiceSpy = jasmine.createSpyObj<UrlService>('urlService', ['replaceSegment', 'removeAt']);
     matDialogSpy = jasmine.createSpyObj<MatDialog>('matDialog', ['open']);
+    rightSpy = jasmine.createSpyObj<RightService>('rigths', ['hasFeature']);
 
     TestBed.configureTestingModule({
       imports: [
@@ -99,6 +104,7 @@ describe('AssemblyListComponent', () => {
         { provide: SortDefinitionConverterService, useValue: converterServiceSpy },
         { provide: UrlService, useValue: urlServiceSpy },
         { provide: ActivatedRoute, useValue: { paramMap: paramMap.asObservable() } },
+        { provide: RightService, useValue: rightSpy },
         provideMockStore({ initialState })
       ]
     })
@@ -106,6 +112,8 @@ describe('AssemblyListComponent', () => {
   }));
 
   beforeEach(() => {
+    rightSpy.hasFeature.and.returnValue(of(true));
+
     fixture = TestBed.createComponent(AssemblyListComponent);
     loader = TestbedHarnessEnvironment.loader(fixture);
 
@@ -113,7 +121,6 @@ describe('AssemblyListComponent', () => {
     fixture.detectChanges();
 
     mockStore = TestBed.inject(MockStore);
-
   });
 
   it('should create', () => {

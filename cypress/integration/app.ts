@@ -9,6 +9,6 @@ describe('workspace-project App', () => {
 
   it('should display title message', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('DGV');
+    page.getTitle().contains('DGV');
   });
 });

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
+import { ApolloClient, gql, NormalizedCacheObject } from '@apollo/client/core';
 import { AssemblyConverter } from '@app/core/converters';
 import { Assembly, AssemblyBase } from '@app/core/models/assembly';
-import { Apollo, gql } from 'apollo-angular';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { map, mergeMap, toArray } from 'rxjs/operators';
 
 export const getSoftwareNames = gql`
@@ -38,10 +38,10 @@ export const getSoftwareAssemblies = gql`
 })
 export class SoftwareService {
 
-  constructor(private apolloService: Apollo) { }
+  constructor(private readonly apolloService: ApolloClient<NormalizedCacheObject>) { }
 
   names(): Observable<AssemblyBase[]> {
-    return this.apolloService.query({ query: getSoftwareNames }).pipe(
+    return from(this.apolloService.query({ query: getSoftwareNames })).pipe(
       mergeMap((x: any) => x.data.Software),
       map((x: any) => AssemblyConverter.toAssemblyBase<AssemblyBase>(x)),
       toArray()
@@ -49,7 +49,7 @@ export class SoftwareService {
   }
 
   software(assemblyId: string): Observable<Assembly> {
-    return this.apolloService.query({ query: getSoftwareAssemblies, variables: { assemblyId } }).pipe(
+    return from(this.apolloService.query({ query: getSoftwareAssemblies, variables: { assemblyId } })).pipe(
       map((x: any) => x.data.Assembly[0]),
       map((x: any) => AssemblyConverter.toAssembly(x))
     );

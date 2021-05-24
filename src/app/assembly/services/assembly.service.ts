@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ApolloQueryResult } from '@apollo/client/core';
+import { ApolloClient, ApolloQueryResult, gql, NormalizedCacheObject } from '@apollo/client/core';
 import { AssemblyConverter } from '@app/core/converters';
 import { Assembly, AssemblyStat } from '@app/core/models/assembly';
-import { Apollo, gql } from 'apollo-angular';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export const getAssembliesQuery = gql`
@@ -74,7 +73,7 @@ export const removeAssemblyQuery = gql`
 })
 export class AssemblyService {
 
-  constructor(private apolloService: Apollo) { }
+  constructor(private readonly apolloClient: ApolloClient<NormalizedCacheObject>) { }
 
   assemblyStatistics(pageSize: number, page: number, namefilter: string, order: string)
     : Observable<{ assemblies: AssemblyStat[], count: number }> {
@@ -93,7 +92,7 @@ export class AssemblyService {
   private assemblyStatisticsWithFilter(pageSize: number, page: number, namefilter: string, order: string)
     : Observable<ApolloQueryResult<unknown>> {
 
-    return this.apolloService.query({
+    return from(this.apolloClient.query({
       query: getAssembliesWithFilterQuery,
       variables: {
         first: pageSize,
@@ -101,52 +100,52 @@ export class AssemblyService {
         order,
         filter: namefilter
       }
-    });
+    }));
   }
 
   private assemblyStatisticsNoFilter(pageSize: number, page: number, order: string): Observable<ApolloQueryResult<unknown>> {
 
-    return this.apolloService.query({
+    return from(this.apolloClient.query({
       query: getAssembliesQuery,
       variables: {
         first: pageSize,
         offset: pageSize * page,
         order
       }
-    });
+    }));
   }
 
   references(id: string, depth: number): Observable<Assembly> {
-    return this.apolloService.query({
+    return from(this.apolloClient.query({
       query: getAssemblyDepthQuery,
       variables: {
         assemblyId: id,
         depth
       }
-    }).pipe(
+    })).pipe(
       map((x: any) => x.data.Assembly[0]),
       map((x: any) => AssemblyConverter.toAssembly(x))
     );
   }
 
   assemblyDepthMax(id: string): Observable<{id: string, value: number}> {
-    return this.apolloService.query({
+    return from(this.apolloClient.query({
       query: getAssemblyDepthMaxQuery,
       variables: {
         assemblyId: id
       }
-    }).pipe(
+    })).pipe(
       map((x: any) => ({id, value: x.data.Assembly[0].maxDepth }))
     );
   }
 
   remove(id: string): Observable<string> {
-    return this.apolloService.mutate({
+    return from(this.apolloClient.mutate({
       mutation: removeAssemblyQuery,
       variables: {
         assemblyName: id
       }
-    }).pipe(
+    })).pipe(
       map((x: any) => x.data.removeAssembly.name)
     );
   }

@@ -22,7 +22,7 @@ class SoftwareListStubComponent {
   @Input() selectedId?: string;
 }
 
-@Component({ selector: 'app-software-references', template: '' })
+@Component({ selector: 'sft-software-references', template: '' })
 class SoftwareReferencesStubComponent { }
 
 describe('SoftwareMainComponent', () => {

@@ -2,17 +2,20 @@ import { Injectable } from '@angular/core';
 import { CoreState } from '@app/core/store/models';
 import { Store } from '@ngrx/store';
 import { combineLatest, Observable, of } from 'rxjs';
-import { environment } from 'environments/environment';
 import { map } from 'rxjs/operators';
 import { FeatureRightsState } from '../store/models';
 import { currentUserSelector, featuresRightsSelector } from '../store/security.selectors';
+import { ConfigurationService } from '@app/core/services/configuration.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RightService {
 
-  constructor(private readonly store: Store<CoreState>) { }
+  constructor(
+    private readonly store: Store<CoreState>,
+    private readonly configService: ConfigurationService
+    ) { }
 
   private testRights(userRights: string[], featureRights: string[]): boolean {
     return featureRights.every(x => userRights.some(r => r === x));
@@ -34,7 +37,7 @@ export class RightService {
 
   hasRights(rights: string[]): Observable<boolean> {
 
-    if (!environment.security.enabled) {
+    if (!this.configService.configuration.security.enabled) {
       return of(true);
     }
 

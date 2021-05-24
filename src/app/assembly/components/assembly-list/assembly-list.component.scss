@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import '~styles/app-colors';
 
 .assemblies-container {
@@ -19,7 +20,7 @@
 }
 
 .mat-row:hover {
-  background: mat-color($accent, 700);
+  background: mat.get-color-from-palette($accent, 700);
   cursor: pointer;
 }
 

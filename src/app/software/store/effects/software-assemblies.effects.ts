@@ -8,13 +8,16 @@ import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { loadSoftwareAssemblies, loadSoftwareAssembliesSuccess } from '../actions';
 import { SoftwareState } from '../models';
-import { operationCanceled } from './../../../core/store/actions/cancel.actions';
+import { operationCanceled } from '@app/core/store/actions/cancel.actions';
 import { softwareAssembliesStateSelector } from './../software.selectors';
 
 @Injectable()
 export class SoftwareAssembliesEffects {
 
-  constructor(private store: Store<SoftwareState>, private actions: Actions, private softwareService: SoftwareService) { }
+  constructor(
+    private readonly store: Store<SoftwareState>,
+    private readonly actions: Actions,
+    private readonly softwareService: SoftwareService) { }
 
   loadSoftwareAssemblies = createEffect(() => {
     return this.actions.pipe(

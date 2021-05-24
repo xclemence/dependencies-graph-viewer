@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
-import { environment } from 'environments/environment';
+import { ConfigurationService } from '@app/core/services/configuration.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RightMappingService {
 
+  constructor(private readonly configService: ConfigurationService) {}
+
   getApplicationRight(right: string): string {
-    return environment.security.rightMapping?.find(x => x.server === right)?.app ?? right;
+    return this.configService.configuration.security.rightMapping?.find(x => x.server === right)?.app ?? right;
   }
 }

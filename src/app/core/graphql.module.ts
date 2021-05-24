@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
-import { InMemoryCache } from '@apollo/client/core';
-import { APOLLO_OPTIONS } from 'apollo-angular';
-import { HttpLink } from 'apollo-angular/http';
-import { environment } from 'environments/environment';
+import { ApolloClient, InMemoryCache } from '@apollo/client/core';
+import { ConfigurationService } from './services/configuration.service';
 
-export function createApollo(httpLink: HttpLink): any {
-  return {
-    link: httpLink.create({uri: environment.assemblyGraphqlUri}),
+export function createApollo(configService: ConfigurationService): any {
+  return new ApolloClient({
+    uri: configService.configuration.assemblyGraphqlUri,
     cache: new InMemoryCache(),
     defaultOptions: {
       query: {
@@ -14,15 +12,15 @@ export function createApollo(httpLink: HttpLink): any {
         errorPolicy: 'all',
       }
     }
-  };
+  });
 }
 
 @NgModule({
   providers: [
     {
-      provide: APOLLO_OPTIONS,
+      provide: ApolloClient,
       useFactory: createApollo,
-      deps: [HttpLink],
+      deps: [ConfigurationService],
     },
   ],
 })

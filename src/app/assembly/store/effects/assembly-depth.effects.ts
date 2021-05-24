@@ -10,7 +10,9 @@ import { loadAssemblyDepth, loadAssemblyDepthSuccess } from '../actions';
 @Injectable()
 export class AssemblyDepthEffects {
 
-  constructor(private actions: Actions, private assemblyService: AssemblyService) {}
+  constructor(
+    private readonly actions: Actions,
+    private readonly assemblyService: AssemblyService) {}
 
   loadAssemblyDepth = createEffect(() => {
     return this.actions.pipe(

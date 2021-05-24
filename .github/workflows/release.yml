@@ -7,7 +7,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -22,7 +21,7 @@ jobs:
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
       run: echo "::set-output name=dir::$(yarn cache dir)"
-      
+
     - uses: actions/cache@v2
       id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
       with:
@@ -33,27 +32,88 @@ jobs:
 
     - name: Install dependencies
       run: yarn --frozen-lockfile
-      
+
     - name: Build
       run: yarn ng build --prod --aot --no-progress
 
-    # Docker Image
+    - uses: actions/upload-artifact@v2
+      with:
+        name: dgv-site
+        path: dist/
+
+  docker-github:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: dgv-site
+        path: dist/
 
     - name: get-npm-version
       id: package-version
       uses: martinbeentjes/npm-get-version-action@v1.1.0
 
     - name: Build the Docker image
-      run: docker build . --tag dependencies-graph-viewer:${{ steps.package-version.outputs.current-version }}
+      run: docker build . --tag dependencies-graph-viewer:local
 
     - name: Docker login
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
 
     - name: Docker push
-      run: | 
-        docker tag dependencies-graph-viewer:${{ steps.package-version.outputs.current-version }} docker.pkg.github.com/xclemence/dependencies-graph-viewer/dependencies-graph-viewer:${{ steps.package-version.outputs.current-version }}
+      run: |
+        docker tag dependencies-graph-viewer:local docker.pkg.github.com/xclemence/dependencies-graph-viewer/dependencies-graph-viewer:${{ steps.package-version.outputs.current-version }}
         docker push docker.pkg.github.com/xclemence/dependencies-graph-viewer/dependencies-graph-viewer:${{ steps.package-version.outputs.current-version }}
-    
+
+  docker-dockerhub:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: dgv-site
+        path: dist/
+
+    - name: get-npm-version
+      id: package-version
+      uses: martinbeentjes/npm-get-version-action@v1.1.0
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build and push
+      uses: docker/build-push-action@v2
+      with:
+        platforms: linux/amd64,linux/arm64
+        context: .
+        push: true
+        tags: xclemence/dependencies-graph-viewer:${{ steps.package-version.outputs.current-version }}
+
+  release-note:
+    needs: [docker-github, docker-dockerhub]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
     # Release Creation
     - uses: olegtarasov/get-tag@v2
       id: tagName

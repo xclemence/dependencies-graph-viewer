@@ -2,6 +2,7 @@ import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { currentUserSelector } from '@app/security/store/security.selectors';
+import { PageMainComponent } from '@app/test/router-test';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TestScheduler } from 'rxjs/testing';
 import { HeaderLinksComponent } from './header-links.component';
@@ -31,7 +32,7 @@ describe('HeaderLinksComponent', () => {
         provideMockStore({ initialState })
       ],
       imports: [
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([{ path: 'test', component: PageMainComponent}]),
         MatTabsModule
       ]
     })

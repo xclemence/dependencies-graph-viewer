@@ -17,7 +17,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "aot": true,
             "outputPath": "dist/dependencies-graph",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -26,17 +25,38 @@
             "assets": [
               "src/application.ico",
               "src/assets",
-              "src/silent-check-sso.html"
+              "src/silent-check-sso.html",
+              {
+                "glob": "config.js",
+                "input": "src/configurations/dev/",
+                "output": "configurations"
+              }
             ],
             "styles": [
               "src/styles/styles.scss",
               "src/styles/app-theme.scss",
               "src/styles/snow.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
+              "assets": [
+                "src/application.ico",
+                "src/assets",
+                "src/silent-check-sso.html",
+                {
+                  "glob": "config.js",
+                  "input": "src/configurations/prod/",
+                  "output": "configurations"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -47,7 +67,6 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -63,7 +82,17 @@
                 }
               ]
             },
-            "mock" : {
+            "mock": {
+              "assets": [
+                "src/application.ico",
+                "src/assets",
+                "src/silent-check-sso.html",
+                {
+                  "glob": "config.js",
+                  "input": "src/configurations/mock/",
+                  "output": "configurations"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -115,31 +144,44 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
             ]
           }
-        }
-      }
-    },
-    "dependencies-graph-e2e": {
-      "root": "e2e/",
-      "projectType": "application",
-      "prefix": "",
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
+        },
+        "cypress-run": {
+          "builder": "@briebug/cypress-schematic:cypress",
           "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "dependencies-graph:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "dependencies-graph:serve:production"
+            }
+          }
+        },
+        "cypress-open": {
+          "builder": "@briebug/cypress-schematic:cypress",
+          "options": {
             "devServerTarget": "dependencies-graph:serve",
-            "webdriverUpdate": false
-
+            "watch": true,
+            "headless": false
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "dependencies-graph:serve:production"
+            }
+          }
+        },
+        "e2e": {
+          "builder": "@briebug/cypress-schematic:cypress",
+          "options": {
+            "devServerTarget": "dependencies-graph:serve",
+            "watch": true,
+            "headless": false
           },
           "configurations": {
             "production": {
@@ -147,20 +189,7 @@
             },
             "mock": {
               "devServerTarget": "dependencies-graph:serve:mock"
-            },
-            "ci": {
-              "devServerTarget": "dependencies-graph:serve:mock",
-              "protractorConfig": "e2e/protractor-ci.conf.js"
             }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }
@@ -169,6 +198,6 @@
   "defaultProject": "dependencies-graph",
   "cli": {
     "analytics": false,
-    "defaultCollection": "@ngrx/schematics"
+    "defaultCollection": "@angular-eslint/schematics"
   }
 }

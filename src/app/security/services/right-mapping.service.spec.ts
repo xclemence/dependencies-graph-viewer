@@ -1,12 +1,25 @@
-import { environment } from 'environments/environment';
+import { TestBed } from '@angular/core/testing';
+import { ConfigurationService } from '@app/core/services/configuration.service';
+import { ConfigurationServiceMock } from '@app/core/services/configuration.service.mock';
 
 import { RightMappingService } from './right-mapping.service';
 
 describe('RightMappingService', () => {
+  let service: RightMappingService;
+  let configService: ConfigurationService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        {provide : ConfigurationService, useClass: ConfigurationServiceMock }
+      ]
+    });
+    service = TestBed.inject(RightMappingService);
+    configService = TestBed.inject(ConfigurationService);
+  });
 
   it('should find corresponding right', () => {
-    const service = new RightMappingService();
-    environment.security.rightMapping = [
+    configService.configuration.security.rightMapping = [
       {app: 'app1', server: 's1'}
     ];
 
@@ -16,8 +29,7 @@ describe('RightMappingService', () => {
   });
 
   it('should have no corresponding right', () => {
-    const service = new RightMappingService();
-    environment.security.rightMapping = [
+    configService.configuration.security.rightMapping = [
       {app: 'app1', server: 's1'}
     ];
 

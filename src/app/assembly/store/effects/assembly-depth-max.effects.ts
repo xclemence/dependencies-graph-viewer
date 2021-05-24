@@ -11,7 +11,9 @@ import { loadAssemblyDepthMax, loadAssemblyDepthMaxSuccess } from './../actions/
 @Injectable()
 export class AssemblyDepthMaxEffects {
 
-  constructor(private actions: Actions, private assemblyService: AssemblyService) {}
+  constructor(
+    private readonly actions: Actions,
+    private readonly assemblyService: AssemblyService) {}
 
   loadAssemblyDepthMax = createEffect(() => {
     return this.actions.pipe(
