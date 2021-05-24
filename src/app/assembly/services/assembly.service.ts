@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { gql } from '@apollo/client/core';
-import { ApolloQueryResult, NormalizedCacheObject } from '@apollo/client/core';
+import { ApolloQueryResult, gql, NormalizedCacheObject } from '@apollo/client/core';
 import { AssemblyConverter } from '@app/core/converters';
 import { Assembly, AssemblyStat } from '@app/core/models/assembly';
 import { from, Observable } from 'rxjs';
@@ -75,7 +74,7 @@ export const removeAssemblyQuery = gql`
 })
 export class AssemblyService {
 
-  constructor(private apolloClient: ApolloClient<NormalizedCacheObject>) { }
+  constructor(private readonly apolloClient: ApolloClient<NormalizedCacheObject>) { }
 
   assemblyStatistics(pageSize: number, page: number, namefilter: string, order: string)
     : Observable<{ assemblies: AssemblyStat[], count: number }> {

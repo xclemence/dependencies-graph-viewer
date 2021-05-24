@@ -1,7 +1,7 @@
 (function (window) {
 
   window.__env = {
-    assemblyGraphqlUri: 'http://kmaster/graphql-service/graphql',
+    assemblyGraphqlUri: 'http://localhost:4001/graphql',
     security: {
       enabled: true,
       server: 'http://localhost:9080/auth',

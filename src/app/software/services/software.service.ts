@@ -38,7 +38,7 @@ export const getSoftwareAssemblies = gql`
 })
 export class SoftwareService {
 
-  constructor(private apolloService: ApolloClient<NormalizedCacheObject>) { }
+  constructor(private readonly apolloService: ApolloClient<NormalizedCacheObject>) { }
 
   names(): Observable<AssemblyBase[]> {
     return from(this.apolloService.query({ query: getSoftwareNames })).pipe(

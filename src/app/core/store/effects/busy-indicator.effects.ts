@@ -20,5 +20,5 @@ export class BusyIndicatorEffects {
     );
   });
 
-  constructor(private actions: Actions) {}
+  constructor(private readonly actions: Actions) {}
 }

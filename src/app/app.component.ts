@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { select, Store } from '@ngrx/store';
-import { environment } from 'environments/environment';
 import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { ConfigurationService } from './core/services/configuration.service';

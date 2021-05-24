@@ -10,7 +10,9 @@ import * as SoftwareActions from '../actions';
 @Injectable()
 export class SoftwareNameEffects {
 
-  constructor(private actions: Actions, private softwareService: SoftwareService) {}
+  constructor(
+    private readonly actions: Actions,
+    private readonly softwareService: SoftwareService) {}
 
   loadSoftwareNames = createEffect(() => {
     return this.actions.pipe(

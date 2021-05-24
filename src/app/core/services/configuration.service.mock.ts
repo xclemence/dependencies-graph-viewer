@@ -9,7 +9,7 @@ declare global {
 export class ConfigurationServiceMock {
 
   #configuration = {
-    assemblyGraphqlUri: 'http://kmaster/graphql-service/graphql',
+    assemblyGraphqlUri: 'https://localhost:4001/graphql',
     security: {
       enabled: true,
       server: 'http://localhost:9080/auth',
