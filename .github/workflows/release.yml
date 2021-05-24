@@ -53,6 +53,7 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: dgv-site
+        path: dist/
 
     - name: get-npm-version
       id: package-version
@@ -85,6 +86,7 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: dgv-site
+        path: dist/
 
     - name: get-npm-version
       id: package-version
