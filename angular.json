@@ -153,7 +153,7 @@
           }
         },
         "cypress-run": {
-          "builder": "@briebug/cypress-schematic:cypress",
+          "builder": "@cypress/schematic:cypress",
           "options": {
             "devServerTarget": "dependencies-graph:serve"
           },
@@ -164,9 +164,8 @@
           }
         },
         "cypress-open": {
-          "builder": "@briebug/cypress-schematic:cypress",
+          "builder": "@cypress/schematic:cypress",
           "options": {
-            "devServerTarget": "dependencies-graph:serve",
             "watch": true,
             "headless": false
           },
@@ -177,7 +176,7 @@
           }
         },
         "e2e": {
-          "builder": "@briebug/cypress-schematic:cypress",
+          "builder": "@cypress/schematic:cypress",
           "options": {
             "devServerTarget": "dependencies-graph:serve",
             "watch": true,
