@@ -1,0 +1,146 @@
+name: Release
+
+on:
+  push:
+    tags:
+    - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '14.X'
+
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+
+    - uses: actions/cache@v2
+      id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+
+    - name: Install dependencies
+      run: yarn --frozen-lockfile
+
+    - name: Build
+      run: yarn ng build --prod --aot --no-progress
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: dgv-site
+        path: dist/
+
+  docker-github:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: dgv-site
+        path: dist/
+
+    - name: get-npm-version
+      id: package-version
+      uses: martinbeentjes/npm-get-version-action@v1.1.0
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build and push
+      uses: docker/build-push-action@v2
+      with:
+        platforms: linux/amd64,linux/arm64,linux/arm/v7
+        context: .
+        push: true
+        tags: ghcr.io/${{ github.repository_owner }}/dependencies-graph-viewer:${{ steps.package-version.outputs.current-version }}
+
+  docker-dockerhub:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: dgv-site
+        path: dist/
+
+    - name: get-npm-version
+      id: package-version
+      uses: martinbeentjes/npm-get-version-action@v1.1.0
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build and push
+      uses: docker/build-push-action@v2
+      with:
+        platforms: linux/amd64,linux/arm64,linux/arm/v7
+        context: .
+        push: true
+        tags: xclemence/dependencies-graph-viewer:${{ steps.package-version.outputs.current-version }}
+
+  release-note:
+    needs: [docker-github, docker-dockerhub]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    # Release Creation
+    - uses: olegtarasov/get-tag@v2.1
+      id: tagName
+
+    - name: Read Release Notes
+      id: release_notes
+      uses: juliangruber/read-file-action@v1
+      with:
+        path: ./doc/releases/${{ steps.tagName.outputs.tag }}.md
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: ${{ steps.release_notes.outputs.content }}
+        draft: false
+        prerelease: false
