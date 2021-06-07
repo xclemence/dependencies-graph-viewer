@@ -31,6 +31,7 @@
     "@ngrx/schematics": "^12.0.0",
     "@ngrx/store": "^12.0.0",
     "@ngrx/store-devtools": "^12.0.0",
+    "apollo-angular": "2.6.0",
     "core-js": "^3.13.1",
     "d3": "^6.7.0",
     "graphql": "^15.5.0",

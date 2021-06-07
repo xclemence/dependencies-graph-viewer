@@ -273,7 +273,7 @@ describe('AssemblyListComponent', () => {
 
   it('should refresh view with filter', fakeAsync(() => {
 
-    converterServiceSpy.getAssemblyServiceOrder.and.returnValue('order');
+    converterServiceSpy.getAssemblyServiceOrder.and.returnValue({ field: 'ASC'});
 
     const dispatchSpy = spyOn(mockStore, 'dispatch');
 
@@ -283,7 +283,7 @@ describe('AssemblyListComponent', () => {
       take: component.pageSize,
       page: component.currentPage,
       filter: 'test',
-      order: 'order'
+      order:  { field: 'ASC'}
     }), 'AssemblyList');
 
     searchElements.nativeElement.value = 'test';

@@ -1,27 +1,38 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { ApolloClient, InMemoryCache } from '@apollo/client/core';
+import { InMemoryCache } from '@apollo/client/core';
+import { APOLLO_OPTIONS } from 'apollo-angular';
+import { HttpLink } from 'apollo-angular/http';
 import { ConfigurationService } from './services/configuration.service';
 
-export function createApollo(configService: ConfigurationService): any {
-  return new ApolloClient({
-    uri: configService.configuration.assemblyGraphqlUri,
-    cache: new InMemoryCache(),
-    defaultOptions: {
-      query: {
-        fetchPolicy: 'no-cache',
-        errorPolicy: 'all',
-      }
-    }
-  });
-}
+const defaultOptions = {
+  watchQuery: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'ignore',
+  },
+  query: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'all',
+  },
+};
+
 
 @NgModule({
+  imports: [HttpClientModule],
   providers: [
     {
-      provide: ApolloClient,
-      useFactory: createApollo,
-      deps: [ConfigurationService],
+      provide: APOLLO_OPTIONS,
+      useFactory: (httpLink: HttpLink, configService: ConfigurationService) => {
+        return {
+          cache: new InMemoryCache(),
+          link: httpLink.create({
+            uri: configService.configuration.assemblyGraphqlUri,
+          }),
+          defaultOptions
+        }
+      },
+      deps: [HttpLink, ConfigurationService],
     },
   ],
 })
-export class GraphQLModule {}
+export class GraphQLModule { }
