@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ApolloClient, ApolloQueryResult, gql, NormalizedCacheObject } from '@apollo/client/core';
+import { ApolloQueryResult, gql } from '@apollo/client/core';
 import { AssemblyConverter } from '@app/core/converters';
 import { Assembly, AssemblyStat } from '@app/core/models/assembly';
 import { handleApolloError } from '@app/shared/apollo-error';
 import { SortDirection } from '@app/shared/models';
 import { Apollo } from 'apollo-angular';
-import { from, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export const getAssembliesQuery = gql`

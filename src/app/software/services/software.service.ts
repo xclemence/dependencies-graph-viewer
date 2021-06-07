@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ApolloClient, gql, NormalizedCacheObject } from '@apollo/client/core';
+import { gql } from '@apollo/client/core';
 import { AssemblyConverter } from '@app/core/converters';
 import { Assembly, AssemblyBase } from '@app/core/models/assembly';
-import { operationFailure } from '@app/core/store/actions';
 import { handleApolloError } from '@app/shared/apollo-error';
-import { Store } from '@ngrx/store';
 import { Apollo } from 'apollo-angular';
-import { from, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, mergeMap, toArray } from 'rxjs/operators';
 
 export const getSoftwareNames = gql`
