@@ -23,7 +23,7 @@ export const getAssembliesQuery = gql`
 `;
 
 export const getAssembliesWithFilterQuery = gql`
-  query assemblies($options: [AssemblyOptions], $filter: String!) {
+  query assemblies($options: AssemblyOptions, $filter: String!) {
     assemblies(options: $options, where: {shortName_CONTAINS : $filter}) {
         name,
         version,

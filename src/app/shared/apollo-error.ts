@@ -3,9 +3,16 @@ export function handleApolloError(result: any): any {
     return result;
   }
 
+  throw new Error(extractApolloError(result));
+}
+
+export function extractApolloError(result: any): string {
+
   let errorMessage = "Service error(s):";
   for (const error of result.errors) {
     errorMessage = `${errorMessage}\n${error.message}`;
   }
-  throw new Error(errorMessage);
+
+  return errorMessage;
 }
+

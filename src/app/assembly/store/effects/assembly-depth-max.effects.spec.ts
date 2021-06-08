@@ -1,5 +1,5 @@
 import { AssemblyService } from '@app/assembly/services/assembly.service';
-import { operationFailure } from '@app/core/store/actions/error.actions';
+import { empty } from '@app/core/store/actions/empty.actions';
 import { Actions } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
@@ -86,7 +86,7 @@ describe('AssemblyDepthMaxEffects', () => {
       const effects = new AssemblyDepthMaxEffects(actions, serviceSpy);
 
       expectObservable(effects.loadAssemblyDepthMax).toBe('-a', {
-        a: operationFailure({ error: 'new error', origin: originAction })
+        a: empty({ origin: originAction })
       });
     });
   });

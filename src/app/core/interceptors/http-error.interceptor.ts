@@ -1,5 +1,6 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { extractApolloError } from '@app/shared/apollo-error';
 import { Store } from '@ngrx/store';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
@@ -21,6 +22,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         if (error.error instanceof ErrorEvent) {
           // client-side error
           errorMessage = `Error: ${error?.error.message}`;
+        } else if (error.error?.errors) {
+          errorMessage = extractApolloError(error.error);
         } else {
           // server-side error
           errorMessage = `Error (${error?.status}): ${error?.message}`;
