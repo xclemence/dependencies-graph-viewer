@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { operationFailure } from '@app/core/store/actions/error.actions';
+import { empty } from '@app/core/store/actions/empty.actions';
 import { SoftwareService } from '@app/software/services/software.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
@@ -12,14 +12,14 @@ export class SoftwareNameEffects {
 
   constructor(
     private readonly actions: Actions,
-    private readonly softwareService: SoftwareService) {}
+    private readonly softwareService: SoftwareService) { }
 
   loadSoftwareNames = createEffect(() => {
     return this.actions.pipe(
       ofType(SoftwareActions.loadSoftwareNames),
       switchMap(action => this.softwareService.names().pipe(
         map(data => SoftwareActions.loadSoftwareNamesSuccess({ data, origin: action })),
-        catchError(error => of(operationFailure({ error: error.message, origin: action })))
+        catchError(() => of(empty({ origin: action }))),
       )),
     );
   });

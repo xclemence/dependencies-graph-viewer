@@ -1,6 +1,6 @@
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { operationCanceled } from '@app/core/store/actions';
-import { operationFailure } from '@app/core/store/actions/error.actions';
+import { empty } from '@app/core/store/actions/empty.actions';
 import { Actions } from '@ngrx/effects';
 import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
@@ -128,7 +128,7 @@ describe('SoftwareAssembliesEffects', () => {
       const effects = TestBed.inject(SoftwareAssembliesEffects);
 
       expectObservable(effects.loadSoftwareAssemblies).toBe('-a', {
-        a: operationFailure({ error: 'new error', origin: originAction })
+        a: empty({ origin: originAction })
       });
     });
   });

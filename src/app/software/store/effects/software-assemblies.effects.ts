@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { operationFailure } from '@app/core/store/actions/error.actions';
 import { SoftwareService } from '@app/software/services/software.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -10,6 +9,7 @@ import { loadSoftwareAssemblies, loadSoftwareAssembliesSuccess } from '../action
 import { SoftwareState } from '../models';
 import { operationCanceled } from '@app/core/store/actions/cancel.actions';
 import { softwareAssembliesStateSelector } from './../software.selectors';
+import { empty } from '@app/core/store/actions/empty.actions';
 
 @Injectable()
 export class SoftwareAssembliesEffects {
@@ -28,7 +28,7 @@ export class SoftwareAssembliesEffects {
         of(operationCanceled({ origin: action })),
         this.softwareService.software(action.assemblyId).pipe(
           map(data => loadSoftwareAssembliesSuccess({ data, origin: action })),
-          catchError(error => of(operationFailure({ error: error.message, origin: action })))
+          catchError(() => of(empty({ origin: action }))),
         )),
       )
     );

@@ -1,3 +1,4 @@
+import { empty } from '@app/core/store/actions/empty.actions';
 import { operationFailure } from '@app/core/store/actions/error.actions';
 import { Actions } from '@ngrx/effects';
 import { of } from 'rxjs';
@@ -81,7 +82,7 @@ describe('SoftwareNameEffects', () => {
       const effects = new SoftwareNameEffects(actions, serviceSpy);
 
       expectObservable(effects.loadSoftwareNames).toBe('-a', {
-        a: operationFailure({ error: 'new error', origin: originAction })
+        a: empty({ origin: originAction })
       });
     });
   });
