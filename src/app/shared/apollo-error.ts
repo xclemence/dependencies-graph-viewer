@@ -6,7 +6,7 @@ export function handleApolloError(result: any): any {
   throw new Error(extractApolloError(result));
 }
 
-export function extractApolloError(result: any): any {
+export function extractApolloError(result: any): string {
 
   let errorMessage = "Service error(s):";
   for (const error of result.errors) {

@@ -59,11 +59,11 @@ describe('HttpErrorInterceptor with ErrorEvent', () => {
 
   it('should dispatch graphql error', () => {
 
-    const expectedActionOnError = operationFailure({ error: 'Service error(s):\nhello', origin: undefined });
+    const expectedActionOnError = operationFailure({ error: 'Service error(s):\n hello', origin: undefined });
 
     httpHandlerSpy.handle.and.returnValue(throwError({
       status: 500,
-      error:  { errors: [ {message: 'hello'} ]}
+      error:  { errors: [ {message: ' hello'} ]}
     }));
 
     const errorInterceptor = new HttpErrorInterceptor(storeSpy);
@@ -72,7 +72,7 @@ describe('HttpErrorInterceptor with ErrorEvent', () => {
       .subscribe(
         () => fail('should generate error'),
         err => {
-          expect(err).toEqual('Service error(s):\nhello');
+          expect(err).toEqual('Service error(s):\n hello');
           expect(storeSpy.dispatch).toHaveBeenCalledWith(expectedActionOnError);
         }
       );
