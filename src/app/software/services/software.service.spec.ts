@@ -1,21 +1,23 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client/core';
 import { AssemblyConverter } from '@app/core/converters';
 import { AssemblyBase } from '@app/core/models';
 
 import { getSoftwareAssemblies, SoftwareService } from './software.service';
 
+import { Apollo } from 'apollo-angular';
+import { of } from 'rxjs';
+
 describe('SoftwareService', () => {
 
   let service: SoftwareService;
 
-  let apolloClientSpy: jasmine.SpyObj<ApolloClient<NormalizedCacheObject>>;
+  let apolloSpy: jasmine.SpyObj<Apollo>;
 
   beforeEach(() => {
-    apolloClientSpy = jasmine.createSpyObj<ApolloClient<NormalizedCacheObject>>('apollo', ['query', 'mutate']);
+    apolloSpy = jasmine.createSpyObj<Apollo>('apollo', ['query', 'mutate']);
     TestBed.configureTestingModule({
       providers: [
-        { provide: ApolloClient, useValue: apolloClientSpy },
+        { provide: Apollo, useValue: apolloSpy },
       ]
     });
     service = TestBed.inject(SoftwareService);
@@ -29,9 +31,9 @@ describe('SoftwareService', () => {
 
     const expectedResult = expectedNames.map(x => AssemblyConverter.toAssemblyBase<AssemblyBase>(x));
 
-    apolloClientSpy.query.and.returnValue(Promise.resolve({
+    apolloSpy.query.and.returnValue(of({
       data: {
-        Software: expectedNames
+        software: expectedNames
       },
       loading: false,
       networkStatus: 3
@@ -59,9 +61,9 @@ describe('SoftwareService', () => {
       ]
     };
 
-    apolloClientSpy.query.and.returnValue(Promise.resolve({
+    apolloSpy.query.and.returnValue(of({
       data: {
-        Assembly: [
+        assemblies: [
           software
         ]
       },
@@ -75,7 +77,7 @@ describe('SoftwareService', () => {
 
     tick();
 
-    expect(apolloClientSpy.query).toHaveBeenCalledWith({
+    expect(apolloSpy.query).toHaveBeenCalledWith({
       query: getSoftwareAssemblies,
       variables: {
         assemblyId: 'test1',

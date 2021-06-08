@@ -29,7 +29,7 @@ describe('assemblyReducer', () => {
 
     const action = loadAssemblies({
       filter: '',
-      order: '',
+      order: {},
       page: 3,
       take: 10
     });

@@ -44,8 +44,8 @@ export function configurationInit(
     ...environment.modules,
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor,  multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor,  multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor,  multi: true },
     {
       provide: APP_INITIALIZER,
       useFactory: configurationInit,

@@ -10,7 +10,10 @@ import { loadAssemblies, loadAssembliesSuccess } from './../actions';
 @Injectable()
 export class AssembliesEffects {
 
-  constructor(private actions: Actions, private assemblyService: AssemblyService) {}
+  constructor(
+    private readonly actions: Actions,
+    private readonly assemblyService: AssemblyService
+  ) { }
 
   loadAssemblies = createEffect(() => {
     return this.actions.pipe(

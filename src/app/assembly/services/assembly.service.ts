@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
-import { ApolloClient, ApolloQueryResult, gql, NormalizedCacheObject } from '@apollo/client/core';
+import { ApolloQueryResult, gql } from '@apollo/client/core';
 import { AssemblyConverter } from '@app/core/converters';
 import { Assembly, AssemblyStat } from '@app/core/models/assembly';
-import { from, Observable } from 'rxjs';
+import { handleApolloError } from '@app/shared/apollo-error';
+import { SortDirection } from '@app/shared/models';
+import { Apollo } from 'apollo-angular';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export const getAssembliesQuery = gql`
-  query assemblies($first: Int!, $offset: Int!, $order: [_AssemblyOrdering]) {
-    Assembly(first: $first, offset: $offset, orderBy: $order) {
+  query assemblies($options: AssemblyOptions) {
+    assemblies(options: $options) {
         name,
         version,
         shortName,
@@ -15,13 +18,13 @@ export const getAssembliesQuery = gql`
       	maxDepth,
         directReferenceCount
     },
-    AssemblyCount
+    assemblyCount
   }
 `;
 
 export const getAssembliesWithFilterQuery = gql`
-  query assemblies($first: Int!, $offset: Int!, $order: [_AssemblyOrdering], $filter: String!) {
-    Assembly(first: $first, offset: $offset, orderBy: $order, filter: {shortName_contains : $filter}) {
+  query assemblies($options: [AssemblyOptions], $filter: String!) {
+    assemblies(options: $options, where: {shortName_CONTAINS : $filter}) {
         name,
         version,
         shortName,
@@ -29,13 +32,13 @@ export const getAssembliesWithFilterQuery = gql`
       	maxDepth,
         directReferenceCount
     },
-    AssemblyCount(filter: {shortName_contains : $filter})
+    assemblyCount(where: {shortName_CONTAINS: $filter})
   }
 `;
 
 export const getAssemblyDepthQuery = gql`
   query assemblyDepth($assemblyId: String!, $depth: Int!) {
-    Assembly(filter: { name: $assemblyId }){
+    assemblies(where: { name: $assemblyId }){
       name,
       shortName,
       isNative,
@@ -53,7 +56,7 @@ export const getAssemblyDepthQuery = gql`
 
 export const getAssemblyDepthMaxQuery = gql`
   query assemblyDepthMax($assemblyId: String!) {
-    Assembly(filter: { name: $assemblyId }){
+    assemblies(where: { name: $assemblyId }){
       name,
       maxDepth,
     }
@@ -73,79 +76,87 @@ export const removeAssemblyQuery = gql`
 })
 export class AssemblyService {
 
-  constructor(private readonly apolloClient: ApolloClient<NormalizedCacheObject>) { }
+  constructor(private readonly apollo: Apollo) {}
 
-  assemblyStatistics(pageSize: number, page: number, namefilter: string, order: string)
+  assemblyStatistics(pageSize: number, page: number, namefilter: string, order: {[key:string]: SortDirection})
     : Observable<{ assemblies: AssemblyStat[], count: number }> {
 
     const query = !namefilter ? this.assemblyStatisticsNoFilter(pageSize, page, order) :
       this.assemblyStatisticsWithFilter(pageSize, page, namefilter, order);
 
     return query.pipe(
+      map(handleApolloError),
       map((x: any) => ({
-        assemblies: x.data.Assembly.map((a: any) => AssemblyConverter.toAssemblyStat(a)),
-        count: x.data.AssemblyCount
+        assemblies: x.data.assemblies.map((a: any) => AssemblyConverter.toAssemblyStat(a)),
+        count: x.data.assemblyCount
       }))
     );
   }
 
-  private assemblyStatisticsWithFilter(pageSize: number, page: number, namefilter: string, order: string)
+  private assemblyStatisticsWithFilter(pageSize: number, page: number, namefilter: string, orders: {[key:string]: SortDirection})
     : Observable<ApolloQueryResult<unknown>> {
 
-    return from(this.apolloClient.query({
+    return this.apollo.query({
       query: getAssembliesWithFilterQuery,
       variables: {
-        first: pageSize,
-        offset: pageSize * page,
-        order,
-        filter: namefilter
+        filter: namefilter,
+        options: {
+          limit: pageSize,
+          skip: pageSize * page,
+          sort: orders
+        }
       }
-    }));
+    });
   }
 
-  private assemblyStatisticsNoFilter(pageSize: number, page: number, order: string): Observable<ApolloQueryResult<unknown>> {
+  private assemblyStatisticsNoFilter(pageSize: number, page: number, orders: {[key:string]: SortDirection}): Observable<ApolloQueryResult<unknown>> {
 
-    return from(this.apolloClient.query({
+    return this.apollo.query({
       query: getAssembliesQuery,
       variables: {
-        first: pageSize,
-        offset: pageSize * page,
-        order
+        options: {
+          limit: pageSize,
+          skip: pageSize * page,
+          sort: orders
+        }
       }
-    }));
+    });
   }
 
   references(id: string, depth: number): Observable<Assembly> {
-    return from(this.apolloClient.query({
+    return this.apollo.query({
       query: getAssemblyDepthQuery,
       variables: {
         assemblyId: id,
         depth
       }
-    })).pipe(
-      map((x: any) => x.data.Assembly[0]),
+    }).pipe(
+      map(handleApolloError),
+      map((x: any) => x.data.assemblies[0]),
       map((x: any) => AssemblyConverter.toAssembly(x))
     );
   }
 
   assemblyDepthMax(id: string): Observable<{id: string, value: number}> {
-    return from(this.apolloClient.query({
+    return this.apollo.query({
       query: getAssemblyDepthMaxQuery,
       variables: {
         assemblyId: id
       }
-    })).pipe(
-      map((x: any) => ({id, value: x.data.Assembly[0].maxDepth }))
+    }).pipe(
+      map(handleApolloError),
+      map((x: any) => ({id, value: x.data.assemblies[0].maxDepth }))
     );
   }
 
   remove(id: string): Observable<string> {
-    return from(this.apolloClient.mutate({
+    return this.apollo.mutate({
       mutation: removeAssemblyQuery,
       variables: {
         assemblyName: id
       }
-    })).pipe(
+    }).pipe(
+      map(handleApolloError),
       map((x: any) => x.data.removeAssembly.name)
     );
   }

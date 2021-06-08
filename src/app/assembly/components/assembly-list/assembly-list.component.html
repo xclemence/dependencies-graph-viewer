@@ -30,12 +30,12 @@
           </ng-container>
 
           <ng-container matColumnDef="depth">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header="depth" scope="col"> Depth Max </th>
+            <th mat-header-cell *matHeaderCellDef scope="col"> Depth Max </th>
             <td mat-cell *matCellDef="let element"> {{element.depthMax}} </td>
           </ng-container>
 
           <ng-container matColumnDef="links">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header="links" scope="col"> Assembly Link Count </th>
+            <th mat-header-cell *matHeaderCellDef scope="col"> Assembly Link Count </th>
             <td mat-cell *matCellDef="let element">
               <span [class.no-value]="!hasReferences(element)"> {{element.assemblyLinkCount}}</span>
             </td>

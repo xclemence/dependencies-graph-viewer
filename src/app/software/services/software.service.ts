@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
-import { ApolloClient, gql, NormalizedCacheObject } from '@apollo/client/core';
+import { gql } from '@apollo/client/core';
 import { AssemblyConverter } from '@app/core/converters';
 import { Assembly, AssemblyBase } from '@app/core/models/assembly';
-import { from, Observable } from 'rxjs';
+import { handleApolloError } from '@app/shared/apollo-error';
+import { Apollo } from 'apollo-angular';
+import { Observable } from 'rxjs';
 import { map, mergeMap, toArray } from 'rxjs/operators';
 
 export const getSoftwareNames = gql`
   query softwareNames {
-    Software {
+    software {
         name,
         version,
         shortName
@@ -17,7 +19,7 @@ export const getSoftwareNames = gql`
 
 export const getSoftwareAssemblies = gql`
   query softwareAssemblies($assemblyId: String!) {
-    Assembly(filter: { name: $assemblyId }){
+    assemblies(where: { name: $assemblyId }){
       name,
       shortName,
       isNative,
@@ -33,24 +35,27 @@ export const getSoftwareAssemblies = gql`
   }
 `;
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class SoftwareService {
 
-  constructor(private readonly apolloService: ApolloClient<NormalizedCacheObject>) { }
+  constructor(private readonly apollo: Apollo) { }
 
   names(): Observable<AssemblyBase[]> {
-    return from(this.apolloService.query({ query: getSoftwareNames })).pipe(
-      mergeMap((x: any) => x.data.Software),
+    return this.apollo.query({ query: getSoftwareNames }).pipe(
+      map(handleApolloError),
+      mergeMap((x: any) => x.data.software),
       map((x: any) => AssemblyConverter.toAssemblyBase<AssemblyBase>(x)),
       toArray()
     );
   }
 
   software(assemblyId: string): Observable<Assembly> {
-    return from(this.apolloService.query({ query: getSoftwareAssemblies, variables: { assemblyId } })).pipe(
-      map((x: any) => x.data.Assembly[0]),
+    return this.apollo.query({ query: getSoftwareAssemblies, variables: { assemblyId } }).pipe(
+      map(handleApolloError),
+      map((x: any) => x.data.assemblies[0]),
       map((x: any) => AssemblyConverter.toAssembly(x))
     );
   }
