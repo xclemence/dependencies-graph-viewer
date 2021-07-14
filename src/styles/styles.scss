@@ -47,11 +47,15 @@ html {
 }
 
 .flex-panel {
-  display: flex;
+  display: flex !important;
 }
 
 .flex-one {
   flex: 1 1 auto;
+}
+
+.flex-width-fix {
+  width: 1px;
 }
 
 .no-pointer-events {
@@ -64,4 +68,24 @@ html {
 
 .no-padding-dialog .mat-dialog-container {
   padding: 0;
+}
+
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.mat-checkbox-layout {
+  display: flex;
+  overflow: hidden;
+}
+
+.mat-checkbox-label {
+  display: flex;
+  overflow: hidden;
 }
