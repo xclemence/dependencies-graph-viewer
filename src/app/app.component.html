@@ -1,15 +1,14 @@
 <div class="mat-elevation-z6 header">
   <div class="flex-panel left-panel">
-    <dgv-header-previous></dgv-header-previous>
+    <div class="right-panel">
+      <h3 class="header-title">DGV</h3>
+      <h6 class="header-title">{{version}}</h6>
+    </div>
     <dgv-header-links [allLinks]="links"></dgv-header-links>
   </div>
 
   <div class="header-right">
     <dgv-header-user *ngIf="canLogon"></dgv-header-user>
-    <div class="right-panel">
-      <h3 class="header-title flex-panel">DGV</h3>
-      <h6 class="header-title flex-panel">{{version}}</h6>
-    </div>
   </div>
 </div>
 

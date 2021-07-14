@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { AllMaterialModuleModule } from './all-material-module.module';
-import { HeaderLinksComponent, HeaderPreviousComponent, HeaderUserComponent } from './components';
+import { HeaderLinksComponent, HeaderUserComponent } from './components';
 import { BusyComponent } from './components/busy/busy.component';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { ForceGraphComponent } from './components/force-graph/force-graph.component';
@@ -26,7 +26,6 @@ import { NoRightComponent } from './components/no-right/no-right.component';
     SnowDialogDirective,
     ThreeForceGraphComponent,
     HeaderLinksComponent,
-    HeaderPreviousComponent,
     HeaderUserComponent,
     StateButtonComponent,
     SnowInputDirective,
@@ -47,7 +46,6 @@ import { NoRightComponent } from './components/no-right/no-right.component';
     ConfirmationDialogComponent,
     SnowDialogDirective,
     HeaderLinksComponent,
-    HeaderPreviousComponent,
     HeaderUserComponent,
     SnowInputDirective,
   ],

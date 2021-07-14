@@ -23,7 +23,9 @@
         <mat-list>
           <mat-list-item *ngFor="let item of filteredAssemblies" (mouseover)="onOverItem(item.id)"
             (mouseleave)="onOverItem()">
-            <mat-checkbox [checked]="item.isVisible" (change)="toggleVisibility(item)">{{item.name}}</mat-checkbox>
+            <mat-checkbox class="flex-panel flex-one flex-width-fix overflow-hidden" [checked]="item.isVisible" (change)="toggleVisibility(item)">
+              <span class="ellipsis">{{item.name}}</span>
+            </mat-checkbox>
           </mat-list-item>
         </mat-list>
       </section>
